@@ -253,31 +253,31 @@ clusterColor model clusterIndex =
 
 addInfraButton : Html Msg
 addInfraButton =
-    addButton nodeStyles AddInfra
+    addButton "infra" nodeStyles AddInfra
 
 
 addComputeButton : Int -> Html Msg
 addComputeButton clusterIndex =
-    addButton nodeStyles (AddCompute clusterIndex)
+    addButton "compute" nodeStyles (AddCompute clusterIndex)
 
 
 addClusterButton : Html Msg
 addClusterButton =
-    addButton domainStyles AddCluster
+    addButton "cluster" domainStyles AddCluster
 
 
-addButton : (Color -> List Style) -> Msg -> Html Msg
-addButton colorToStyles addMsg =
+addButton : String -> (Color -> List Style) -> Msg -> Html Msg
+addButton itemToAdd colorToStyles addMsg =
     let
         styles =
             List.concat
-                [ [ fontSize (px 30), Css.width (pct 100) ]
+                [ [ fontSize (px 20), Css.width (pct 100) ]
                 , colorToStyles green
                 ]
     in
     button
         [ css styles, onClick addMsg ]
-        [ text "+" ]
+        [ text <| "+" ++ itemToAdd ]
 
 
 viewNode : Color -> Node -> Html Msg
