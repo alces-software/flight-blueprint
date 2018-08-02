@@ -28,6 +28,10 @@ coreName =
     "core"
 
 
+
+-- XXX Consider using same type for all nodes, since effectively the same
+
+
 type alias Gateway =
     { name : String
     }
@@ -74,6 +78,7 @@ init =
 
 type Msg
     = AddCluster
+    | AddCompute Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,6 +95,35 @@ update msg model =
                     , login =
                         { name = "login1" }
                     , compute = []
+                    }
+            in
+            { model | clusters = newClusters } ! []
+
+        AddCompute clusterIndex ->
+            let
+                newClusters =
+                    List.indexedMap
+                        (\i c ->
+                            if i == clusterIndex then
+                                addComputeToCluster c
+                            else
+                                c
+                        )
+                        model.clusters
+
+                addComputeToCluster cluster =
+                    let
+                        newComputeNode =
+                            -- XXX Have compute node names auto-increment
+                            { name = "node01"
+                            }
+                    in
+                    { cluster
+                        | compute =
+                            List.concat
+                                [ cluster.compute
+                                , [ newComputeNode ]
+                                ]
                     }
             in
             { model | clusters = newClusters } ! []
@@ -115,7 +149,7 @@ view model =
         ]
         (List.concat
             [ [ viewCore model.core ]
-            , List.map viewCluster model.clusters
+            , List.indexedMap viewCluster model.clusters
             , [ addClusterButton ]
             ]
         )
@@ -137,33 +171,56 @@ viewCore core =
         ]
 
 
-viewCluster : ClusterDomain -> Html Msg
-viewCluster cluster =
+viewCluster : Int -> ClusterDomain -> Html Msg
+viewCluster index cluster =
     let
         clusterColor =
             -- XXX Select cluster colors rather than always using red.
             red
+
+        loginNode =
+            div
+                [ css <| nodeStyles clusterColor ]
+                [ text cluster.login.name ]
     in
     div
         [ css <| domainStyles clusterColor ]
-        [ text cluster.name
-        , div
-            [ css <| nodeStyles clusterColor ]
-            [ text cluster.login.name ]
-        ]
+        (List.concat
+            [ [ text cluster.name, loginNode ]
+            , List.map (viewComputeNode clusterColor) cluster.compute
+            , [ addComputeButton index ]
+            ]
+        )
+
+
+viewComputeNode : Color -> Compute -> Html Msg
+viewComputeNode domainColor compute =
+    div
+        [ css <| nodeStyles domainColor ]
+        [ text compute.name ]
+
+
+addComputeButton : Int -> Html Msg
+addComputeButton clusterIndex =
+    addButton nodeStyles (AddCompute clusterIndex)
 
 
 addClusterButton : Html Msg
 addClusterButton =
+    addButton domainStyles AddCluster
+
+
+addButton : (Color -> List Style) -> Msg -> Html Msg
+addButton colorToStyles addMsg =
     let
         styles =
             List.concat
-                [ [ fontSize (px 30) ]
-                , domainStyles green
+                [ [ fontSize (px 30), Css.width (pct 100) ]
+                , colorToStyles green
                 ]
     in
     button
-        [ css styles, onClick AddCluster ]
+        [ css styles, onClick addMsg ]
         [ text "+" ]
 
 
@@ -176,6 +233,7 @@ domainStyles color =
     List.concat
         [ [ Css.width (px 200)
           , display inlineBlock
+          , margin standardMargin
           ]
         , boxStyles 2 color
         ]
@@ -183,7 +241,10 @@ domainStyles color =
 
 nodeStyles : Color -> List Style
 nodeStyles domainColor =
-    boxStyles 1 domainColor
+    List.concat
+        [ [ marginTop standardMargin ]
+        , boxStyles 1 domainColor
+        ]
 
 
 boxStyles : Float -> Color -> List Style
@@ -193,10 +254,15 @@ boxStyles borderWidth boxColor =
     , borderColor boxColor
     , borderStyle solid
     , color boxColor
-    , margin (px 20)
     , minHeight (px 50)
+    , padding (px 10)
     , verticalAlign top
     ]
+
+
+standardMargin : Px
+standardMargin =
+    px 20
 
 
 
