@@ -77,6 +77,7 @@ init =
 type Msg
     = AddCluster
     | AddCompute Int
+    | RemoveCompute Int
     | AddInfra
     | RemoveInfra
 
@@ -110,6 +111,13 @@ update msg model =
                         ]
             in
             changeComputeForCluster model clusterIndex addCompute
+
+        RemoveCompute clusterIndex ->
+            let
+                removeLastComputeNode currentCompute =
+                    exceptLast currentCompute
+            in
+            changeComputeForCluster model clusterIndex removeLastComputeNode
 
         AddInfra ->
             changeInfra model <| Just { name = "infra" }
@@ -223,13 +231,31 @@ viewCluster model index cluster =
     let
         color =
             clusterColor model index
+
+        ( otherNodes, lastNode ) =
+            ( exceptLast cluster.compute
+            , List.Extra.last cluster.compute
+            )
+
+        viewClusterNode =
+            viewNode color
+
+        viewLastNode =
+            case lastNode of
+                Just node ->
+                    viewClusterNode (Just <| RemoveCompute index) node
+
+                Nothing ->
+                    nothing
     in
     viewDomain color
         cluster.name
         (List.concat
-            [ [ viewNode color Nothing cluster.login ]
-            , List.map (viewNode color Nothing) cluster.compute
-            , [ addComputeButton index ]
+            [ [ viewClusterNode Nothing cluster.login ]
+            , List.map (viewClusterNode Nothing) otherNodes
+            , [ viewLastNode
+              , addComputeButton index
+              ]
             ]
         )
 
@@ -382,6 +408,18 @@ standardMargin =
 buttonFontSize : Style
 buttonFontSize =
     fontSize (px 20)
+
+
+
+---- UTILS ----
+
+
+exceptLast : List a -> List a
+exceptLast list =
+    List.reverse list
+        |> List.tail
+        |> Maybe.withDefault []
+        |> List.reverse
 
 
 
