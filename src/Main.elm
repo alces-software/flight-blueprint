@@ -6,6 +6,7 @@ import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick)
+import List.Extra
 
 
 ---- MODEL ----
@@ -165,7 +166,7 @@ view model =
         ]
         (List.concat
             [ [ viewCore model.core ]
-            , List.indexedMap viewCluster model.clusters
+            , List.indexedMap (viewCluster model) model.clusters
             , [ addClusterButton ]
             ]
         )
@@ -182,21 +183,49 @@ viewCore core =
         [ viewNode coreColor core.gateway ]
 
 
-viewCluster : Int -> ClusterDomain -> Html Msg
-viewCluster index cluster =
+viewCluster : Model -> Int -> ClusterDomain -> Html Msg
+viewCluster model index cluster =
     let
-        clusterColor =
-            -- XXX Select cluster colors rather than always using red.
-            red
+        color =
+            clusterColor model index
     in
-    viewDomain clusterColor
+    viewDomain color
         cluster.name
         (List.concat
-            [ [ viewNode clusterColor cluster.login ]
-            , List.map (viewNode clusterColor) cluster.compute
+            [ [ viewNode color cluster.login ]
+            , List.map (viewNode color) cluster.compute
             , [ addComputeButton index ]
             ]
         )
+
+
+clusterColor : Model -> Int -> Color
+clusterColor model clusterIndex =
+    let
+        colors =
+            -- Available colors = all default colors provided by elm-css, in
+            -- rainbow order, minus:
+            -- - colors already used for other things (blue, green)
+            -- - colors which are too pale and so hard/impossible to read
+            -- (lime, aqua, white)
+            -- - colors which are too dark and so look the same as black (navy)
+            [ red
+            , orange
+            , yellow
+            , olive
+            , teal
+            , purple
+            , fuchsia
+            , maroon
+            , black
+            , fallbackColor
+            ]
+
+        fallbackColor =
+            gray
+    in
+    List.Extra.getAt clusterIndex colors
+        |> Maybe.withDefault fallbackColor
 
 
 addComputeButton : Int -> Html Msg
