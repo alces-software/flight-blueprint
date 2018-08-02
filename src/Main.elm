@@ -5,6 +5,7 @@ import Css.Colors exposing (..)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
+import Html.Styled.Events exposing (onClick)
 
 
 ---- MODEL ----
@@ -72,12 +73,26 @@ init =
 
 
 type Msg
-    = NoOp
+    = AddCluster
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        AddCluster ->
+            let
+                newClusters =
+                    List.concat [ model.clusters, [ newCluster ] ]
+
+                newCluster =
+                    -- XXX Have cluster names auto-increment
+                    { name = "cluster1"
+                    , login =
+                        { name = "login1" }
+                    , compute = []
+                    }
+            in
+            { model | clusters = newClusters } ! []
 
 
 
@@ -98,8 +113,11 @@ view model =
                 ]
             ]
         ]
-        (viewCore model.core
-            :: List.map viewCluster model.clusters
+        (List.concat
+            [ [ viewCore model.core ]
+            , List.map viewCluster model.clusters
+            , [ addClusterButton ]
+            ]
         )
 
 
@@ -110,6 +128,7 @@ viewCore core =
             blue
     in
     div
+        -- XXX DRY up drawing domains, nodes
         [ css <| domainStyles coreColor ]
         [ text coreName
         , div
@@ -119,9 +138,33 @@ viewCore core =
 
 
 viewCluster : ClusterDomain -> Html Msg
-viewCluster clusters =
-    -- XXX Actually implement this
-    div [ css <| domainStyles red ] []
+viewCluster cluster =
+    let
+        clusterColor =
+            -- XXX Select cluster colors rather than always using red.
+            red
+    in
+    div
+        [ css <| domainStyles clusterColor ]
+        [ text cluster.name
+        , div
+            [ css <| nodeStyles clusterColor ]
+            [ text cluster.login.name ]
+        ]
+
+
+addClusterButton : Html Msg
+addClusterButton =
+    let
+        styles =
+            List.concat
+                [ [ fontSize (px 30) ]
+                , domainStyles green
+                ]
+    in
+    button
+        [ css styles, onClick AddCluster ]
+        [ text "+" ]
 
 
 
@@ -131,7 +174,9 @@ viewCluster clusters =
 domainStyles : Color -> List Style
 domainStyles color =
     List.concat
-        [ [ Css.width (px 200) ]
+        [ [ Css.width (px 200)
+          , display inlineBlock
+          ]
         , boxStyles 2 color
         ]
 
@@ -143,12 +188,14 @@ nodeStyles domainColor =
 
 boxStyles : Float -> Color -> List Style
 boxStyles borderWidth boxColor =
-    [ border (px borderWidth)
+    [ backgroundColor white
+    , border (px borderWidth)
     , borderColor boxColor
     , borderStyle solid
     , color boxColor
     , margin (px 20)
     , minHeight (px 50)
+    , verticalAlign top
     ]
 
 
