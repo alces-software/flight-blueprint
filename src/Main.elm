@@ -177,14 +177,9 @@ viewCore core =
         coreColor =
             blue
     in
-    div
-        -- XXX DRY up drawing domains, nodes
-        [ css <| domainStyles coreColor ]
-        [ text coreName
-        , div
-            [ css <| nodeStyles coreColor ]
-            [ text core.gateway.name ]
-        ]
+    viewDomain coreColor
+        coreName
+        [ viewNode coreColor core.gateway ]
 
 
 viewCluster : Int -> ClusterDomain -> Html Msg
@@ -193,27 +188,15 @@ viewCluster index cluster =
         clusterColor =
             -- XXX Select cluster colors rather than always using red.
             red
-
-        loginNode =
-            div
-                [ css <| nodeStyles clusterColor ]
-                [ text cluster.login.name ]
     in
-    div
-        [ css <| domainStyles clusterColor ]
+    viewDomain clusterColor
+        cluster.name
         (List.concat
-            [ [ text cluster.name, loginNode ]
-            , List.map (viewComputeNode clusterColor) cluster.compute
+            [ [ viewNode clusterColor cluster.login ]
+            , List.map (viewNode clusterColor) cluster.compute
             , [ addComputeButton index ]
             ]
         )
-
-
-viewComputeNode : Color -> Compute -> Html Msg
-viewComputeNode domainColor compute =
-    div
-        [ css <| nodeStyles domainColor ]
-        [ text compute.name ]
 
 
 addComputeButton : Int -> Html Msg
@@ -238,6 +221,20 @@ addButton colorToStyles addMsg =
     button
         [ css styles, onClick addMsg ]
         [ text "+" ]
+
+
+viewNode : Color -> Node -> Html Msg
+viewNode color node =
+    div
+        [ css <| nodeStyles color ]
+        [ text node.name ]
+
+
+viewDomain : Color -> String -> List (Html Msg) -> Html Msg
+viewDomain color name children =
+    div
+        [ css <| domainStyles color ]
+        (text name :: children)
 
 
 
