@@ -28,18 +28,12 @@ coreName =
     "core"
 
 
-
--- XXX Consider using same type for all nodes, since effectively the same
-
-
 type alias Gateway =
-    { name : String
-    }
+    Node
 
 
 type alias Infra =
-    { name : String
-    }
+    Node
 
 
 type alias ClusterDomain =
@@ -50,11 +44,14 @@ type alias ClusterDomain =
 
 
 type alias Login =
-    { name : String
-    }
+    Node
 
 
 type alias Compute =
+    Node
+
+
+type alias Node =
     { name : String
     }
 
