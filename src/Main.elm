@@ -100,31 +100,16 @@ update msg model =
 
         AddCompute clusterIndex ->
             let
-                newClusters =
-                    List.indexedMap
-                        (\i c ->
-                            if i == clusterIndex then
-                                addComputeToCluster c
-                            else
-                                c
-                        )
-                        model.clusters
-
-                addComputeToCluster cluster =
-                    let
-                        newComputeNode =
-                            { name = nextComputeNodeName cluster.compute
+                addCompute currentCompute =
+                    List.concat
+                        [ currentCompute
+                        , [ { name =
+                                nextComputeNodeName currentCompute
                             }
-                    in
-                    { cluster
-                        | compute =
-                            List.concat
-                                [ cluster.compute
-                                , [ newComputeNode ]
-                                ]
-                    }
+                          ]
+                        ]
             in
-            { model | clusters = newClusters } ! []
+            changeComputeForCluster model clusterIndex addCompute
 
         AddInfra ->
             changeInfra model <| Just { name = "infra" }
@@ -164,6 +149,26 @@ changeInfra model infra =
             model.core
     in
     { model | core = newCore } ! []
+
+
+changeComputeForCluster :
+    Model
+    -> Int
+    -> (List Compute -> List Compute)
+    -> ( Model, Cmd Msg )
+changeComputeForCluster model clusterIndex changeCompute =
+    let
+        newClusters =
+            List.indexedMap
+                (\i c ->
+                    if i == clusterIndex then
+                        { c | compute = changeCompute c.compute }
+                    else
+                        c
+                )
+                model.clusters
+    in
+    { model | clusters = newClusters } ! []
 
 
 
