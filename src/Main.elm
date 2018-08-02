@@ -90,8 +90,7 @@ update msg model =
                     List.concat [ model.clusters, [ newCluster ] ]
 
                 newCluster =
-                    -- XXX Have cluster names auto-increment
-                    { name = "cluster1"
+                    { name = nextClusterName model.clusters
                     , login =
                         { name = "login1" }
                     , compute = []
@@ -114,8 +113,7 @@ update msg model =
                 addComputeToCluster cluster =
                     let
                         newComputeNode =
-                            -- XXX Have compute node names auto-increment
-                            { name = "node01"
+                            { name = nextComputeNodeName cluster.compute
                             }
                     in
                     { cluster
@@ -127,6 +125,27 @@ update msg model =
                     }
             in
             { model | clusters = newClusters } ! []
+
+
+nextClusterName : List ClusterDomain -> String
+nextClusterName clusters =
+    "cluster" ++ nextIndex clusters
+
+
+nextComputeNodeName : List Compute -> String
+nextComputeNodeName nodes =
+    let
+        suffix =
+            String.padLeft 3 '0' <| nextIndex nodes
+    in
+    "node" ++ suffix
+
+
+nextIndex : List a -> String
+nextIndex items =
+    List.length items
+        + 1
+        |> toString
 
 
 
