@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, div, h1, img)
+import Html exposing (Html, div, h1, img, text)
 import Html.Attributes exposing (src)
 
 
@@ -8,12 +8,55 @@ import Html.Attributes exposing (src)
 
 
 type alias Model =
-    {}
+    { core : CoreDomain
+    , clusters : List ClusterDomain
+    }
+
+
+type alias CoreDomain =
+    { gateway : Gateway
+    , infra : Maybe Infra
+    }
+
+
+type alias Gateway =
+    { name : String
+    }
+
+
+type alias Infra =
+    { name : String
+    }
+
+
+type alias ClusterDomain =
+    { name : String
+    , login : Login
+    , compute : List Compute
+    }
+
+
+type alias Login =
+    { name : String
+    }
+
+
+type alias Compute =
+    { name : String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    { core =
+        { gateway =
+            { name = "gateway"
+            }
+        , infra = Nothing
+        }
+    , clusters = []
+    }
+        ! []
 
 
 
