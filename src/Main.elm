@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Css exposing (..)
+import Css.Colors exposing (..)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
@@ -19,6 +20,11 @@ type alias CoreDomain =
     { gateway : Gateway
     , infra : Maybe Infra
     }
+
+
+coreName : String
+coreName =
+    "core"
 
 
 type alias Gateway =
@@ -92,8 +98,58 @@ view model =
                 ]
             ]
         ]
-        [ h1 [] [ text "Your Elm App is working!" ]
+        (viewCore model.core
+            :: List.map viewCluster model.clusters
+        )
+
+
+viewCore : CoreDomain -> Html Msg
+viewCore core =
+    let
+        coreColor =
+            blue
+    in
+    div
+        [ css <| domainStyles coreColor ]
+        [ text coreName
+        , div
+            [ css <| nodeStyles coreColor ]
+            [ text core.gateway.name ]
         ]
+
+
+viewCluster : ClusterDomain -> Html Msg
+viewCluster clusters =
+    -- XXX Actually implement this
+    div [ css <| domainStyles red ] []
+
+
+
+---- STYLES ----
+
+
+domainStyles : Color -> List Style
+domainStyles color =
+    List.concat
+        [ [ Css.width (px 200) ]
+        , boxStyles 2 color
+        ]
+
+
+nodeStyles : Color -> List Style
+nodeStyles domainColor =
+    boxStyles 1 domainColor
+
+
+boxStyles : Float -> Color -> List Style
+boxStyles borderWidth boxColor =
+    [ border (px borderWidth)
+    , borderColor boxColor
+    , borderStyle solid
+    , color boxColor
+    , margin (px 20)
+    , minHeight (px 50)
+    ]
 
 
 
