@@ -312,11 +312,6 @@ removeButton removeMsg =
         [ text "x" ]
 
 
-buttonFontSize : Style
-buttonFontSize =
-    fontSize (px 20)
-
-
 viewNode : Color -> Maybe Msg -> Node -> Html Msg
 viewNode color removeMsg node =
     div
@@ -382,6 +377,11 @@ boxStyles borderWidth boxColor =
 standardMargin : Px
 standardMargin =
     px 20
+
+
+buttonFontSize : Style
+buttonFontSize =
+    fontSize (px 20)
 
 
 
