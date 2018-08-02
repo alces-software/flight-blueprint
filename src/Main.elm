@@ -1,7 +1,9 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, h1, img, text)
-import Html.Attributes exposing (src)
+import Css exposing (..)
+import Html
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
 
 
 ---- MODEL ----
@@ -78,7 +80,18 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
+    div
+        [ css
+            [ fontFamilies
+                [ "Source Sans Pro"
+                , "Trebuchet MS"
+                , "Lucida Grande"
+                , "Bitstream Vera Sans"
+                , "Helvetica Neue"
+                , "sans-serif"
+                ]
+            ]
+        ]
         [ h1 [] [ text "Your Elm App is working!" ]
         ]
 
@@ -90,7 +103,7 @@ view model =
 main : Program Never Model Msg
 main =
     Html.program
-        { view = view
+        { view = view >> toUnstyled
         , init = init
         , update = update
         , subscriptions = always Sub.none
