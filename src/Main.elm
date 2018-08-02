@@ -77,6 +77,7 @@ init =
 type Msg
     = AddCluster
     | AddCompute Int
+    | AddInfra
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -123,6 +124,18 @@ update msg model =
                     }
             in
             { model | clusters = newClusters } ! []
+
+        AddInfra ->
+            let
+                newCore =
+                    { currentCore
+                        | infra = Just <| { name = "infra" }
+                    }
+
+                currentCore =
+                    model.core
+            in
+            { model | core = newCore } ! []
 
 
 nextClusterName : List ClusterDomain -> String
@@ -177,10 +190,20 @@ viewCore core =
     let
         coreColor =
             blue
+
+        infraNodeOrButton =
+            case core.infra of
+                Just infra ->
+                    viewNode coreColor infra
+
+                Nothing ->
+                    addInfraButton
     in
     viewDomain coreColor
         coreName
-        [ viewNode coreColor core.gateway ]
+        [ viewNode coreColor core.gateway
+        , infraNodeOrButton
+        ]
 
 
 viewCluster : Model -> Int -> ClusterDomain -> Html Msg
@@ -226,6 +249,11 @@ clusterColor model clusterIndex =
     in
     List.Extra.getAt clusterIndex colors
         |> Maybe.withDefault fallbackColor
+
+
+addInfraButton : Html Msg
+addInfraButton =
+    addButton nodeStyles AddInfra
 
 
 addComputeButton : Int -> Html Msg
