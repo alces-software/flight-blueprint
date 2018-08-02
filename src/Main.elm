@@ -78,6 +78,7 @@ type Msg
     = AddCluster
     | AddCompute Int
     | AddInfra
+    | RemoveInfra
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -126,16 +127,10 @@ update msg model =
             { model | clusters = newClusters } ! []
 
         AddInfra ->
-            let
-                newCore =
-                    { currentCore
-                        | infra = Just <| { name = "infra" }
-                    }
+            changeInfra model <| Just { name = "infra" }
 
-                currentCore =
-                    model.core
-            in
-            { model | core = newCore } ! []
+        RemoveInfra ->
+            changeInfra model Nothing
 
 
 nextClusterName : List ClusterDomain -> String
@@ -157,6 +152,18 @@ nextIndex items =
     List.length items
         + 1
         |> toString
+
+
+changeInfra : Model -> Maybe Infra -> ( Model, Cmd Msg )
+changeInfra model infra =
+    let
+        newCore =
+            { currentCore | infra = infra }
+
+        currentCore =
+            model.core
+    in
+    { model | core = newCore } ! []
 
 
 
@@ -194,14 +201,14 @@ viewCore core =
         infraNodeOrButton =
             case core.infra of
                 Just infra ->
-                    viewNode coreColor infra
+                    viewNode coreColor (Just RemoveInfra) infra
 
                 Nothing ->
                     addInfraButton
     in
     viewDomain coreColor
         coreName
-        [ viewNode coreColor core.gateway
+        [ viewNode coreColor Nothing core.gateway
         , infraNodeOrButton
         ]
 
@@ -215,8 +222,8 @@ viewCluster model index cluster =
     viewDomain color
         cluster.name
         (List.concat
-            [ [ viewNode color cluster.login ]
-            , List.map (viewNode color) cluster.compute
+            [ [ viewNode color Nothing cluster.login ]
+            , List.map (viewNode color Nothing) cluster.compute
             , [ addComputeButton index ]
             ]
         )
@@ -271,7 +278,9 @@ addButton itemToAdd colorToStyles addMsg =
     let
         styles =
             List.concat
-                [ [ fontSize (px 20), Css.width (pct 100) ]
+                [ [ buttonFontSize
+                  , Css.width (pct 100)
+                  ]
                 , colorToStyles green
                 ]
     in
@@ -280,11 +289,41 @@ addButton itemToAdd colorToStyles addMsg =
         [ text <| "+" ++ itemToAdd ]
 
 
-viewNode : Color -> Node -> Html Msg
-viewNode color node =
+removeButton : Msg -> Html Msg
+removeButton removeMsg =
+    let
+        styles =
+            [ backgroundColor white
+            , border unset
+            , buttonFontSize
+            , color red
+            , float right
+            , padding unset
+            , verticalAlign top
+            ]
+    in
+    button
+        [ css styles, onClick removeMsg ]
+        [ text "x" ]
+
+
+buttonFontSize : Style
+buttonFontSize =
+    fontSize (px 20)
+
+
+viewNode : Color -> Maybe Msg -> Node -> Html Msg
+viewNode color removeMsg node =
     div
         [ css <| nodeStyles color ]
-        [ text node.name ]
+        [ text node.name
+        , case removeMsg of
+            Just msg ->
+                removeButton msg
+
+            Nothing ->
+                nothing
+        ]
 
 
 viewDomain : Color -> String -> List (Html Msg) -> Html Msg
@@ -292,6 +331,11 @@ viewDomain color name children =
     div
         [ css <| domainStyles color ]
         (text name :: children)
+
+
+nothing : Html Msg
+nothing =
+    text ""
 
 
 
