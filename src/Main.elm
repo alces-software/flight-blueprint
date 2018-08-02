@@ -76,6 +76,7 @@ init =
 
 type Msg
     = AddCluster
+    | RemoveCluster Int
     | AddCompute Int
     | RemoveCompute Int
     | AddInfra
@@ -98,6 +99,12 @@ update msg model =
                     }
             in
             { model | clusters = newClusters } ! []
+
+        RemoveCluster clusterIndex ->
+            { model
+                | clusters = List.Extra.removeAt clusterIndex model.clusters
+            }
+                ! []
 
         AddCompute clusterIndex ->
             let
@@ -251,7 +258,9 @@ viewCluster model index cluster =
     viewDomain color
         cluster.name
         (List.concat
-            [ [ viewClusterNode Nothing cluster.login ]
+            [ [ removeButton <| RemoveCluster index
+              , viewClusterNode Nothing cluster.login
+              ]
             , List.map (viewClusterNode Nothing) otherNodes
             , [ viewLastNode
               , addComputeButton index
