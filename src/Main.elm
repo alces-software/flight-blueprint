@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -17,7 +17,7 @@ import Maybe.Extra
 type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
-    , exportedJson : E.Value
+    , exportedYaml : String
     }
 
 
@@ -63,22 +63,17 @@ type alias Node =
 init : ( Model, Cmd Msg )
 init =
     let
-        initialModelWithoutExportedJson =
+        initialModel =
             { core =
                 { gateway =
                     { name = "gateway" }
                 , infra = Nothing
                 }
             , clusters = []
-            , exportedJson = E.null
-            }
-
-        initialModel =
-            { initialModelWithoutExportedJson
-                | exportedJson = encodeModel initialModelWithoutExportedJson
+            , exportedYaml = ""
             }
     in
-    initialModel ! []
+    initialModel ! [ convertToYamlCmd initialModel ]
 
 
 
@@ -92,6 +87,7 @@ type Msg
     | RemoveCompute Int
     | AddInfra
     | RemoveInfra
+    | NewConvertedYaml String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -99,8 +95,18 @@ update msg model =
     let
         newModel =
             updateInterfaceState msg model
+
+        convertYamlCmd =
+            case msg of
+                NewConvertedYaml _ ->
+                    -- Do not convert model to YAML when we've just handled
+                    -- receiving new converted YAML, to avoid infinite loop.
+                    Cmd.none
+
+                _ ->
+                    convertToYamlCmd newModel
     in
-    { newModel | exportedJson = encodeModel newModel } ! []
+    newModel ! [ convertYamlCmd ]
 
 
 updateInterfaceState : Msg -> Model -> Model
@@ -150,6 +156,14 @@ updateInterfaceState msg model =
 
         RemoveInfra ->
             changeInfra model Nothing
+
+        NewConvertedYaml yaml ->
+            { model | exportedYaml = yaml }
+
+
+convertToYamlCmd : Model -> Cmd Msg
+convertToYamlCmd =
+    encodeModel >> convertToYaml
 
 
 nextClusterName : List ClusterDomain -> String
@@ -287,7 +301,7 @@ view model =
                 )
             ]
             [ Html.Styled.pre []
-                [ text <| E.encode 2 model.exportedJson ]
+                [ text model.exportedYaml ]
             ]
         ]
 
@@ -522,6 +536,25 @@ exceptLast list =
 
 
 
+---- PORTS ----
+
+
+port convertToYaml : E.Value -> Cmd msg
+
+
+port convertedYaml : (String -> msg) -> Sub msg
+
+
+
+---- SUBSCRIPTIONS ----
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    convertedYaml NewConvertedYaml
+
+
+
 ---- PROGRAM ----
 
 
@@ -531,5 +564,5 @@ main =
         { view = view >> toUnstyled
         , init = init
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }
