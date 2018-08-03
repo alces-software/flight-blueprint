@@ -295,13 +295,12 @@ view model =
                 ]
             )
         , div
-            [ css
-                (Css.property "grid-column-start" "2"
-                    :: boxStyles containerBoxBorderWidth black
-                )
-            ]
-            [ Html.Styled.pre []
-                [ text model.exportedYaml ]
+            [ css [ Css.property "grid-column-start" "2" ] ]
+            [ div
+                [ css <| boxStyles containerBoxBorderWidth black ]
+                [ Html.Styled.pre []
+                    [ text model.exportedYaml ]
+                ]
             ]
         ]
 
