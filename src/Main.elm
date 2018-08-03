@@ -6,7 +6,9 @@ import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick)
+import Json.Encode as E
 import List.Extra
+import Maybe.Extra
 
 
 ---- MODEL ----
@@ -15,6 +17,7 @@ import List.Extra
 type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
+    , exportedJson : E.Value
     }
 
 
@@ -59,15 +62,23 @@ type alias Node =
 
 init : ( Model, Cmd Msg )
 init =
-    { core =
-        { gateway =
-            { name = "gateway"
+    let
+        initialModelWithoutExportedJson =
+            { core =
+                { gateway =
+                    { name = "gateway" }
+                , infra = Nothing
+                }
+            , clusters = []
+            , exportedJson = E.null
             }
-        , infra = Nothing
-        }
-    , clusters = []
-    }
-        ! []
+
+        initialModel =
+            { initialModelWithoutExportedJson
+                | exportedJson = encodeModel initialModelWithoutExportedJson
+            }
+    in
+    initialModel ! []
 
 
 
@@ -85,6 +96,15 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        newModel =
+            updateInterfaceState msg model
+    in
+    { newModel | exportedJson = encodeModel newModel } ! []
+
+
+updateInterfaceState : Msg -> Model -> Model
+updateInterfaceState msg model =
     case msg of
         AddCluster ->
             let
@@ -98,13 +118,12 @@ update msg model =
                     , compute = []
                     }
             in
-            { model | clusters = newClusters } ! []
+            { model | clusters = newClusters }
 
         RemoveCluster clusterIndex ->
             { model
                 | clusters = List.Extra.removeAt clusterIndex model.clusters
             }
-                ! []
 
         AddCompute clusterIndex ->
             let
@@ -154,7 +173,7 @@ nextIndex items =
         |> toString
 
 
-changeInfra : Model -> Maybe Infra -> ( Model, Cmd Msg )
+changeInfra : Model -> Maybe Infra -> Model
 changeInfra model infra =
     let
         newCore =
@@ -163,14 +182,14 @@ changeInfra model infra =
         currentCore =
             model.core
     in
-    { model | core = newCore } ! []
+    { model | core = newCore }
 
 
 changeComputeForCluster :
     Model
     -> Int
     -> (List Compute -> List Compute)
-    -> ( Model, Cmd Msg )
+    -> Model
 changeComputeForCluster model clusterIndex changeCompute =
     let
         newClusters =
@@ -183,7 +202,54 @@ changeComputeForCluster model clusterIndex changeCompute =
                 )
                 model.clusters
     in
-    { model | clusters = newClusters } ! []
+    { model | clusters = newClusters }
+
+
+encodeModel : Model -> E.Value
+encodeModel model =
+    let
+        coreField =
+            ( "core", encodeCore model.core )
+
+        clusterFields =
+            List.map
+                (\c -> ( c.name, encodeCluster c ))
+                model.clusters
+    in
+    E.object (coreField :: clusterFields)
+
+
+encodeCore : CoreDomain -> E.Value
+encodeCore core =
+    let
+        coreFields =
+            Maybe.Extra.values
+                [ Just <| ( "gateway", encodeNode core.gateway )
+                , Maybe.map
+                    (\i -> ( "infra", encodeNode i ))
+                    core.infra
+                ]
+    in
+    E.object coreFields
+
+
+encodeCluster : ClusterDomain -> E.Value
+encodeCluster cluster =
+    let
+        loginField =
+            ( "login", encodeNode cluster.login )
+
+        computeField =
+            ( "compute"
+            , E.list <| List.map encodeNode cluster.compute
+            )
+    in
+    E.object [ loginField, computeField ]
+
+
+encodeNode : Node -> E.Value
+encodeNode node =
+    E.string node.name
 
 
 
@@ -202,14 +268,28 @@ view model =
                 , "Helvetica Neue"
                 , "sans-serif"
                 ]
+            , Css.property "display" "grid"
+            , Css.property "grid-template-columns" "66% 33%"
             ]
         ]
-        (List.concat
-            [ [ viewCore model.core ]
-            , List.indexedMap (viewCluster model) model.clusters
-            , [ addClusterButton ]
+        [ div
+            [ css [ Css.property "grid-column-start" "1" ] ]
+            (List.concat
+                [ [ viewCore model.core ]
+                , List.indexedMap (viewCluster model) model.clusters
+                , [ addClusterButton ]
+                ]
+            )
+        , div
+            [ css
+                (Css.property "grid-column-start" "2"
+                    :: boxStyles containerBoxBorderWidth black
+                )
             ]
-        )
+            [ Html.Styled.pre []
+                [ text <| E.encode 2 model.exportedJson ]
+            ]
+        ]
 
 
 viewCore : CoreDomain -> Html Msg
@@ -384,7 +464,7 @@ domainStyles color =
           , display inlineBlock
           , margin standardMargin
           ]
-        , boxStyles 2 color
+        , boxStyles containerBoxBorderWidth color
         ]
 
 
@@ -392,7 +472,7 @@ nodeStyles : Color -> List Style
 nodeStyles domainColor =
     List.concat
         [ [ marginTop standardMargin ]
-        , boxStyles 1 domainColor
+        , boxStyles innerBoxBorderWidth domainColor
         ]
 
 
@@ -417,6 +497,16 @@ standardMargin =
 buttonFontSize : Style
 buttonFontSize =
     fontSize (px 20)
+
+
+containerBoxBorderWidth : Float
+containerBoxBorderWidth =
+    innerBoxBorderWidth * 2
+
+
+innerBoxBorderWidth : Float
+innerBoxBorderWidth =
+    1
 
 
 
