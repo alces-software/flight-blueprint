@@ -5,7 +5,7 @@ import Css.Colors exposing (..)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
-import Html.Styled.Events exposing (onClick)
+import Html.Styled.Events exposing (onClick, onInput)
 import Json.Encode as E
 import List.Extra
 import Maybe.Extra
@@ -88,6 +88,14 @@ type Msg
     | AddInfra
     | RemoveInfra
     | NewConvertedYaml String
+    | SetNodeName NodeSpecifier String
+
+
+type NodeSpecifier
+    = Gateway
+    | Infra
+    | Login Int
+    | Compute Int Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -159,6 +167,60 @@ updateInterfaceState msg model =
 
         NewConvertedYaml yaml ->
             { model | exportedYaml = yaml }
+
+        SetNodeName nodeSpecifier name ->
+            -- XXX This branch is a bit messy and could be tidied up - possibly
+            -- the best way to do this is to store all nodes in the same way in
+            -- model.
+            let
+                { core, clusters } =
+                    model
+
+                newNode =
+                    Node name
+            in
+            case nodeSpecifier of
+                Gateway ->
+                    let
+                        newCore =
+                            { core | gateway = newNode }
+                    in
+                    { model | core = newCore }
+
+                Infra ->
+                    let
+                        newCore =
+                            case core.infra of
+                                Just infra ->
+                                    { core | infra = Just newNode }
+
+                                Nothing ->
+                                    core
+                    in
+                    { model | core = newCore }
+
+                Login clusterIndex ->
+                    let
+                        newClusters =
+                            List.Extra.updateAt
+                                clusterIndex
+                                changeClusterLogin
+                                clusters
+
+                        changeClusterLogin cluster =
+                            { cluster | login = newNode }
+                    in
+                    { model | clusters = newClusters }
+
+                Compute clusterIndex computeIndex ->
+                    let
+                        changeClusterCompute =
+                            List.Extra.updateAt computeIndex
+                                (always newNode)
+                    in
+                    changeComputeForCluster model
+                        clusterIndex
+                        changeClusterCompute
 
 
 convertToYamlCmd : Model -> Cmd Msg
@@ -310,23 +372,23 @@ viewCore core =
         infraNodeOrButton =
             case core.infra of
                 Just infra ->
-                    viewNode coreColor (Just RemoveInfra) infra
+                    viewNode coreColor Infra (Just RemoveInfra) infra
 
                 Nothing ->
                     addInfraButton
     in
     viewDomain coreColor
         coreName
-        [ viewNode coreColor Nothing core.gateway
+        [ viewNode coreColor Gateway Nothing core.gateway
         , infraNodeOrButton
         ]
 
 
 viewCluster : Model -> Int -> ClusterDomain -> Html Msg
-viewCluster model index cluster =
+viewCluster model clusterIndex cluster =
     let
         color =
-            clusterColor model index
+            clusterColor model clusterIndex
 
         ( otherNodes, lastNode ) =
             ( exceptLast cluster.compute
@@ -337,9 +399,16 @@ viewCluster model index cluster =
             viewNode color
 
         viewLastNode =
+            let
+                lastNodeIndex =
+                    List.length cluster.compute - 1
+            in
             case lastNode of
                 Just node ->
-                    viewClusterNode (Just <| RemoveCompute index) node
+                    viewClusterNode
+                        (Compute clusterIndex lastNodeIndex)
+                        (Just <| RemoveCompute clusterIndex)
+                        node
 
                 Nothing ->
                     nothing
@@ -347,12 +416,14 @@ viewCluster model index cluster =
     viewDomain color
         cluster.name
         (List.concat
-            [ [ removeButton <| RemoveCluster index
-              , viewClusterNode Nothing cluster.login
+            [ [ removeButton <| RemoveCluster clusterIndex
+              , viewClusterNode (Login clusterIndex) Nothing cluster.login
               ]
-            , List.map (viewClusterNode Nothing) otherNodes
+            , List.indexedMap
+                (\i -> viewClusterNode (Compute clusterIndex i) Nothing)
+                otherNodes
             , [ viewLastNode
-              , addComputeButton index
+              , addComputeButton clusterIndex
               ]
             ]
         )
@@ -436,11 +507,26 @@ removeButton removeMsg =
         [ text "x" ]
 
 
-viewNode : Color -> Maybe Msg -> Node -> Html Msg
-viewNode color removeMsg node =
+viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
+viewNode color nodeSpecifier removeMsg node =
     div
         [ css <| nodeStyles color ]
-        [ text node.name
+        [ input
+            [ value node.name
+            , onInput (SetNodeName nodeSpecifier)
+            , css
+                -- Reset input styles to look like regular text (adapted from
+                -- https://stackoverflow.com/a/38830702/2620402).
+                [ border unset
+                , display inline
+                , fontFamily inherit
+                , fontSize inherit
+                , padding (px 0)
+                , Css.width (pct 100)
+                , Css.color color
+                ]
+            ]
+            []
         , case removeMsg of
             Just msg ->
                 removeButton msg
