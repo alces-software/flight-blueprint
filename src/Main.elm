@@ -207,13 +207,9 @@ changeComputeForCluster :
 changeComputeForCluster model clusterIndex changeCompute =
     let
         newClusters =
-            List.indexedMap
-                (\i c ->
-                    if i == clusterIndex then
-                        { c | compute = changeCompute c.compute }
-                    else
-                        c
-                )
+            List.Extra.updateAt
+                clusterIndex
+                (\c -> { c | compute = changeCompute c.compute })
                 model.clusters
     in
     { model | clusters = newClusters }
