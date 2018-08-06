@@ -4,11 +4,14 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",
+    "elm": "^0.18.0",
+    "elm-webpack-loader": "^4.5.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
+    "elm-hot-loader": "^0.5.4",
     "webpack-dev-server": "2.11.2"
   }
 }
