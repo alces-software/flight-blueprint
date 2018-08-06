@@ -507,24 +507,29 @@ viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
 viewNode color nodeSpecifier removeMsg node =
     div
         [ css <| nodeStyles color ]
-        [ input
-            [ value node.name
-            , onInput (SetNodeName nodeSpecifier)
-            , css
-                -- Reset input styles to look like regular text (adapted from
-                -- https://stackoverflow.com/a/38830702/2620402).
-                [ border unset
-                , display inline
-                , fontFamily inherit
-                , fontSize inherit
-                , padding (px 0)
-                , Css.width (pct 100)
-                , Css.color color
-                ]
-            ]
-            []
+        [ nameInput color node (SetNodeName nodeSpecifier)
         , maybeHtml removeMsg removeButton
         ]
+
+
+nameInput : Color -> { a | name : String } -> (String -> Msg) -> Html Msg
+nameInput color { name } inputMsg =
+    input
+        [ value name
+        , onInput inputMsg
+        , css
+            -- Reset input styles to look like regular text (adapted from
+            -- https://stackoverflow.com/a/38830702/2620402).
+            [ border unset
+            , display inline
+            , fontFamily inherit
+            , fontSize inherit
+            , padding (px 0)
+            , Css.width (pct 100)
+            , Css.color color
+            ]
+        ]
+        []
 
 
 viewDomain : Color -> String -> List (Html Msg) -> Html Msg
