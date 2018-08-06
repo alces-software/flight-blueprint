@@ -2,6 +2,7 @@ port module Main exposing (..)
 
 import Css exposing (..)
 import Css.Colors exposing (..)
+import FeatherIcons as Icons
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
@@ -9,6 +10,8 @@ import Html.Styled.Events exposing (onClick, onInput)
 import Json.Encode as E
 import List.Extra
 import Maybe.Extra
+import Svg
+import Svg.Attributes exposing (points, x1, x2, y1, y2)
 
 
 ---- MODEL ----
@@ -521,9 +524,52 @@ viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
 viewNode color nodeSpecifier removeMsg node =
     div
         [ css <| nodeStyles color ]
-        [ nameInput color node (SetNodeName nodeSpecifier)
+        [ nodeIcon nodeSpecifier
+        , nameInput color node (SetNodeName nodeSpecifier)
         , maybeHtml removeMsg removeButton
         ]
+
+
+nodeIcon : NodeSpecifier -> Html msg
+nodeIcon nodeSpecifier =
+    let
+        ( icon, titleText ) =
+            case nodeSpecifier of
+                Gateway ->
+                    ( Icons.cloud, "Gateway node" )
+
+                Infra ->
+                    ( Icons.users, "Infra node" )
+
+                Login _ ->
+                    -- XXX Icon grabbed from
+                    -- https://1602.github.io/elm-feather-icons/ but not yet
+                    -- made it into https://github.com/1602/elm-feather-icons -
+                    -- can simplify this to `Icons.terminal` and possibly
+                    -- remove our `elm-lang/svg` dependency when it does.
+                    ( Icons.customIcon
+                        [ Svg.polyline [ points "4 17 10 11 4 5" ] []
+                        , Svg.line [ x1 "12", y1 "19", x2 "20", y2 "19" ] []
+                        ]
+                    , "Login node"
+                    )
+
+                Compute _ _ ->
+                    ( Icons.settings, "Compute node" )
+
+        iconHtml =
+            Icons.withSize 15 icon
+                |> Icons.toHtml []
+                |> Html.Styled.fromUnstyled
+    in
+    div
+        [ css
+            [ display inlineBlock
+            , marginRight (px 5)
+            ]
+        , title titleText
+        ]
+        [ iconHtml ]
 
 
 nameInput : Color -> { a | name : String } -> (String -> Msg) -> Html Msg
