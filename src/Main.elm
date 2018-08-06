@@ -525,7 +525,9 @@ nameInput color { name } inputMsg =
             , fontFamily inherit
             , fontSize inherit
             , padding (px 0)
-            , Css.width (pct 100)
+
+            -- Do not set width to 100% to allow space for remove buttons.
+            , Css.width (pct 80)
             , Css.color color
             ]
         ]
