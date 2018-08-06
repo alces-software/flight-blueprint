@@ -89,6 +89,7 @@ type Msg
     | RemoveInfra
     | NewConvertedYaml String
     | SetNodeName NodeSpecifier String
+    | SetClusterName Int String
 
 
 type NodeSpecifier
@@ -221,6 +222,16 @@ updateInterfaceState msg model =
                     changeComputeForCluster model
                         clusterIndex
                         changeClusterCompute
+
+        SetClusterName clusterIndex name ->
+            let
+                newClusters =
+                    List.Extra.updateAt
+                        clusterIndex
+                        (\c -> { c | name = name })
+                        model.clusters
+            in
+            { model | clusters = newClusters }
 
 
 convertToYamlCmd : Model -> Cmd Msg
@@ -378,8 +389,11 @@ viewCore core =
                     addInfraButton
     in
     viewDomain coreColor
-        coreName
-        [ viewNode coreColor Gateway Nothing core.gateway
+        [ -- XXX If decide we want to allow changing `core` name then move this
+          -- from `viewCluster` into `viewDomain`, and remove name as just text
+          -- here.
+          text coreName
+        , viewNode coreColor Gateway Nothing core.gateway
         , infraNodeOrButton
         ]
 
@@ -410,9 +424,9 @@ viewCluster model clusterIndex cluster =
                 )
     in
     viewDomain color
-        cluster.name
         (List.concat
-            [ [ removeButton <| RemoveCluster clusterIndex
+            [ [ nameInput color cluster (SetClusterName clusterIndex)
+              , removeButton <| RemoveCluster clusterIndex
               , viewClusterNode (Login clusterIndex) Nothing cluster.login
               ]
             , List.indexedMap
@@ -534,11 +548,11 @@ nameInput color { name } inputMsg =
         []
 
 
-viewDomain : Color -> String -> List (Html Msg) -> Html Msg
-viewDomain color name children =
+viewDomain : Color -> List (Html Msg) -> Html Msg
+viewDomain color children =
     div
         [ css <| domainStyles color ]
-        (text name :: children)
+        children
 
 
 maybeHtml : Maybe a -> (a -> Html Msg) -> Html Msg
