@@ -390,7 +390,7 @@ viewCluster model clusterIndex cluster =
         color =
             clusterColor model clusterIndex
 
-        ( otherNodes, lastNode ) =
+        ( otherNodes, maybeLastNode ) =
             ( exceptLast cluster.compute
             , List.Extra.last cluster.compute
             )
@@ -403,15 +403,11 @@ viewCluster model clusterIndex cluster =
                 lastNodeIndex =
                     List.length cluster.compute - 1
             in
-            case lastNode of
-                Just node ->
-                    viewClusterNode
-                        (Compute clusterIndex lastNodeIndex)
-                        (Just <| RemoveCompute clusterIndex)
-                        node
-
-                Nothing ->
-                    nothing
+            maybeHtml maybeLastNode
+                (viewClusterNode
+                    (Compute clusterIndex lastNodeIndex)
+                    (Just <| RemoveCompute clusterIndex)
+                )
     in
     viewDomain color
         cluster.name
@@ -527,12 +523,7 @@ viewNode color nodeSpecifier removeMsg node =
                 ]
             ]
             []
-        , case removeMsg of
-            Just msg ->
-                removeButton msg
-
-            Nothing ->
-                nothing
+        , maybeHtml removeMsg removeButton
         ]
 
 
@@ -541,6 +532,16 @@ viewDomain color name children =
     div
         [ css <| domainStyles color ]
         (text name :: children)
+
+
+maybeHtml : Maybe a -> (a -> Html Msg) -> Html Msg
+maybeHtml maybeItem itemToHtml =
+    case maybeItem of
+        Just item ->
+            itemToHtml item
+
+        Nothing ->
+            nothing
 
 
 nothing : Html Msg
