@@ -6,10 +6,13 @@
     "babel-preset-react": "^6.24.1",
     "elm": "^0.18.0",
     "elm-webpack-loader": "^4.5.0",
+    "flight-reactware": "https://s3-eu-west-1.amazonaws.com/alces-flight/FlightReactware/0.1.51/flight-reactware.tgz",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-elm-components": "evancz/react-elm-components"
+    "react-router-config": "^1.0.0-beta.3",
+    "react-elm-components": "evancz/react-elm-components",
+    "universal-cookie": "^2.1.0"
   },
   "devDependencies": {
     "elm-hot-loader": "^0.5.4",

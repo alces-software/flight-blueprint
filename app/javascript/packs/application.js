@@ -7,8 +7,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from 'react_app';
+import 'index';
 
-document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<App />, document.getElementById('root'));
-});
+// import App from 'react_app';
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   ReactDOM.render(<App />, document.getElementById('root'));
+// });
