@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Container } from 'reactstrap';
+import {Container} from 'reactstrap';
 
 import Terminal from '../components/Terminal';
 
@@ -23,9 +23,9 @@ const PaddedContainer = styled(Container)`
 
 const TerminalPage = ({
   auth,
-  columns=80,
+  columns = 80,
   overview,
-  rows=25,
+  rows = 25,
   socketIOPath,
   socketIOUrl,
   termProps,

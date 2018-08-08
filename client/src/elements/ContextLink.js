@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ContextLink as ReactwareContextLink } from 'flight-reactware';
+import {ContextLink as ReactwareContextLink} from 'flight-reactware';
 
-const ContextLink = ({ linkSite, location, children, ...passThroughProps }) => (
+const ContextLink = ({linkSite, location, children, ...passThroughProps}) => (
   <ReactwareContextLink
     link={ReactwareContextLink.makeLink(linkSite, location)}
     site={process.env.REACT_APP_SITE}
-    {...passThroughProps}
-  >
+    {...passThroughProps}>
     {children}
   </ReactwareContextLink>
 );
@@ -19,9 +18,7 @@ ContextLink.propTypes = {
   location: PropTypes.string.isRequired,
 };
 
-ContextLink.makeLinkProps = (...props) => ReactwareContextLink.makeLinkProps(
-  process.env.REACT_APP_SITE,
-  ...props,
-);
+ContextLink.makeLinkProps = (...props) =>
+  ReactwareContextLink.makeLinkProps(process.env.REACT_APP_SITE, ...props);
 
 export default ContextLink;

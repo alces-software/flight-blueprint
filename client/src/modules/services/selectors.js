@@ -1,11 +1,11 @@
-import { createSelector } from 'reselect';
-import { loadingStates } from 'flight-reactware';
+import {createSelector} from 'reselect';
+import {loadingStates} from 'flight-reactware';
 
-import { NAME } from './constants';
+import {NAME} from './constants';
 
-const servicesState = state => state[NAME];
-const servicesData = state => servicesState(state).data;
-const servicesMeta = state => servicesState(state).meta;
+const servicesState = (state) => state[NAME];
+const servicesData = (state) => servicesState(state).data;
+const servicesMeta = (state) => servicesState(state).meta;
 
 // Return the site id, if any, that has been specified.
 //

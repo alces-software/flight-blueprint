@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { auth } from 'flight-reactware';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
+import {auth} from 'flight-reactware';
+import {compose} from 'recompose';
+import {connect} from 'react-redux';
+import {Button} from 'reactstrap';
 import styled from 'styled-components';
 
 const AlignedButton = styled(Button)`
@@ -13,15 +13,17 @@ const AlignedButton = styled(Button)`
   }
 `;
 
-const SignInLink = ({ children, showLoginForm }) => {
+const SignInLink = ({children, showLoginForm}) => {
   return (
     <AlignedButton
       color="link"
       href="/sign-in"
-      onClick={(evt) => { showLoginForm(); evt.preventDefault(); }}
+      onClick={(evt) => {
+        showLoginForm();
+        evt.preventDefault();
+      }}
       size="md"
-      tag="a"
-    >
+      tag="a">
       {children}
     </AlignedButton>
   );
@@ -33,7 +35,10 @@ SignInLink.propTypes = {
 };
 
 const enhance = compose(
-  connect(null, { showLoginForm: auth.actions.showLoginForm }),
+  connect(
+    null,
+    {showLoginForm: auth.actions.showLoginForm},
+  ),
 );
 
 export default enhance(SignInLink);

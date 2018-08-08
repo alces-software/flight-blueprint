@@ -15,7 +15,7 @@ const logics = Object.keys(modules).reduce(
 
 export default (store) => {
   store.subscribe(() => {
-    logics.forEach(logic => {
+    logics.forEach((logic) => {
       logic(store.dispatch, store.getState);
     });
   });

@@ -11,11 +11,8 @@ const defaultProps = {
   children: 'Alces Flight Community',
 };
 
-const CommunityLink = ({ children }) => (
-  <ContextLink
-    linkSite="Community"
-    location="/"
-  >
+const CommunityLink = ({children}) => (
+  <ContextLink linkSite="Community" location="/">
     {children}
   </ContextLink>
 );

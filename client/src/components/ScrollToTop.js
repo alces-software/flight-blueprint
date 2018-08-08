@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import {withRouter} from 'react-router';
 
-import { Scrolling } from 'flight-reactware';
+import {Scrolling} from 'flight-reactware';
 
 class ScrollToTopRoute extends React.Component {
   static propTypes = {
@@ -18,7 +18,7 @@ class ScrollToTopRoute extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if ( this.props.location.action === 'POP' ) {
+    if (this.props.location.action === 'POP') {
       return;
     }
     if (this.props.location.pathname !== prevProps.location.pathname) {

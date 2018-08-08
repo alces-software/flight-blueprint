@@ -1,10 +1,10 @@
-export const handleExample = ({ response }) => {
+export const handleExample = ({response}) => {
   console.log('hi', response);
   return new Promise((resolve, reject) => {
-    if ( true ) {
+    if (true) {
       resolve(true);
     } else {
-      reject("bad things happened");
+      reject('bad things happened');
     }
   });
 };

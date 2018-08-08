@@ -6,9 +6,4 @@ import session from './session';
 import terminal from './terminal';
 import users from './centerUsers';
 
-export {
-  services,
-  session,
-  terminal,
-  users,
-};
+export {services, session, terminal, users};

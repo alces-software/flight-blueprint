@@ -1,10 +1,10 @@
-import { createSelector } from 'reselect';
-import { loadingStates } from 'flight-reactware';
+import {createSelector} from 'reselect';
+import {loadingStates} from 'flight-reactware';
 
-import { NAME } from './constants';
+import {NAME} from './constants';
 
-const usersState = state => state[NAME];
-const usersData = state => usersState(state).data;
+const usersState = (state) => state[NAME];
+const usersData = (state) => usersState(state).data;
 // const usersMeta = state => usersState(state).meta;
 
 export const retrieval = createSelector(

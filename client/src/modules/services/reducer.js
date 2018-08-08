@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import { apiRequest, loadingStates } from 'flight-reactware';
+import {combineReducers} from 'redux';
+import {apiRequest, loadingStates} from 'flight-reactware';
 
 import {
   EXPLICIT_SITE_REQUESTED,
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 // A reducer to maintain the siteId.
-function siteIdReducer(state = null, { meta, payload, type }) {
+function siteIdReducer(state = null, {meta, payload, type}) {
   switch (type) {
     case EXPLICIT_SITE_REQUESTED:
       return payload;
@@ -52,7 +52,7 @@ const metaReducers = combineReducers({
   error: errorReducer,
 });
 
-function dataReducer(state=initialState, action) {
+function dataReducer(state = initialState, action) {
   switch (action.type) {
     case apiRequest.resolved(LOAD_TERMINAL_SERVICES_CONFIG_REQUESTED):
       const data = action.payload.data;

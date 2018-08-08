@@ -14,14 +14,20 @@
 var rewire = require('rewire');
 var proxyquire = require('proxyquire');
 
-switch(process.argv[2]) {
+switch (process.argv[2]) {
   // The "start" script is run during development mode
   case 'start':
-    rewireModule('react-scripts/scripts/start.js', loadCustomizer('../config/config-overrides.dev'));
+    rewireModule(
+      'react-scripts/scripts/start.js',
+      loadCustomizer('../config/config-overrides.dev'),
+    );
     break;
   // The "build" script is run to produce a production bundle
   case 'build':
-    rewireModule('react-scripts/scripts/build.js', loadCustomizer('../config/config-overrides.prod'));
+    rewireModule(
+      'react-scripts/scripts/build.js',
+      loadCustomizer('../config/config-overrides.prod'),
+    );
     break;
   // The "test" script runs all the tests with Jest
   case 'test':
@@ -35,11 +41,13 @@ switch(process.argv[2]) {
         // it through the customizer
         var createJestConfig = require('react-scripts/utils/createJestConfig');
         return customizer(createJestConfig(...args));
-      }
+      },
     });
     break;
   default:
-    console.log('customized-config only supports "start", "build", and "test" options.');
+    console.log(
+      'customized-config only supports "start", "build", and "test" options.',
+    );
     process.exit(-1);
 }
 
@@ -47,15 +55,15 @@ switch(process.argv[2]) {
 function loadCustomizer(module) {
   try {
     return require(module);
-  } catch(e) {
-    if(e.code !== "MODULE_NOT_FOUND") {
+  } catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') {
       throw e;
     }
   }
 
   // If the module doesn't exist, return a
   // noop that simply returns the config it's given.
-  return config => config;
+  return (config) => config;
 }
 
 function rewireModule(modulePath, customizer) {

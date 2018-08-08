@@ -2,5 +2,4 @@
 // components which are intended to only be used internally to the module
 // should not be included here.
 
-export {
-};
+export {};

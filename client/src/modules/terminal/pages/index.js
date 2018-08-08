@@ -4,6 +4,4 @@
 
 import Directory from './DirectoryPage';
 
-export {
-  Directory,
-};
+export {Directory};

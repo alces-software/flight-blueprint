@@ -1,9 +1,7 @@
-import { combineReducers } from 'redux';
-import { apiRequest, loadingStates } from 'flight-reactware';
+import {combineReducers} from 'redux';
+import {apiRequest, loadingStates} from 'flight-reactware';
 
-import {
-  LOAD_CENTER_USER_REQUESTED,
-} from './actionTypes';
+import {LOAD_CENTER_USER_REQUESTED} from './actionTypes';
 
 const metaReducers = combineReducers({
   [loadingStates.constants.NAME]: loadingStates.reducer({
@@ -13,7 +11,7 @@ const metaReducers = combineReducers({
   }),
 });
 
-function dataReducer(state=null, action) {
+function dataReducer(state = null, action) {
   switch (action.type) {
     case apiRequest.resolved(LOAD_CENTER_USER_REQUESTED):
       return action.payload.data;
