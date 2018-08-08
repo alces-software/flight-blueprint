@@ -6,7 +6,6 @@ import App from './components/App';
 import Home from './pages/Home';
 import Page from './components/Page';
 import licenseData from './data/licenses.json';
-import {terminal, services} from './modules';
 
 const metaPages = makeMetaPages(Page, {
   softwareLicenses: licenseData,
@@ -45,33 +44,7 @@ const routes = [
         path: '/',
         exact: true,
         component: Home,
-        title: 'Overview',
-      },
-      {
-        path: '/sites/:siteId',
-        component: services.withSiteContext(),
-        routes: [
-          {
-            path: '/sites/:siteId/directory',
-            exact: true,
-            component: terminal.pages.Directory,
-            title: 'Directory',
-            pageKey: 'Directory',
-          },
-        ],
-      },
-      {
-        path: '/',
-        component: services.withSiteContext(),
-        routes: [
-          {
-            path: '/directory',
-            exact: true,
-            component: terminal.pages.Directory,
-            title: 'Directory',
-            pageKey: 'Directory',
-          },
-        ],
+        title: 'Home',
       },
       notFoundRouteConfig,
     ],
