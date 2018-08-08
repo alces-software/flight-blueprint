@@ -1,0 +1,2366 @@
+{
+  "accepts@1.3.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/accepts",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/compression/node_modules/accepts/LICENSE"
+  },
+  "after@0.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/after",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/after/LICENCE"
+  },
+  "ansi-regex@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/ansi-regex",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ansi-regex/license"
+  },
+  "ansi-styles@2.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/ansi-styles",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/chalk/node_modules/ansi-styles/license"
+  },
+  "aphrodite@0.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Khan/aphrodite",
+    "publisher": "Jamie Wong"
+  },
+  "array-flatten@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blakeembrey/array-flatten",
+    "publisher": "Blake Embrey",
+    "email": "hello@blakeembrey.com",
+    "url": "http://blakeembrey.me",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/array-flatten/LICENSE"
+  },
+  "array-includes@3.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/array-includes",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/array-includes/LICENSE"
+  },
+  "arraybuffer.slice@0.0.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rase-/arraybuffer.slice",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/arraybuffer.slice/LICENCE"
+  },
+  "asap@2.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kriskowal/asap",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/asap/LICENSE.md"
+  },
+  "asap@2.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kriskowal/asap",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/aphrodite/node_modules/asap/LICENSE.md"
+  },
+  "async-limiter@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/strml/async-limiter",
+    "publisher": "Samuel Reed",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/async-limiter/LICENSE"
+  },
+  "axios@0.16.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mzabriskie/axios",
+    "publisher": "Matt Zabriskie",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/axios/LICENSE"
+  },
+  "babel-code-frame@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-code-frame",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-code-frame@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-code-frame",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-helper-builder-binary-assignment-operator-visitor@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-builder-binary-assignment-operator-visitor"
+  },
+  "babel-helper-builder-react-jsx@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-builder-react-jsx"
+  },
+  "babel-helper-call-delegate@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-call-delegate"
+  },
+  "babel-helper-define-map@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-define-map"
+  },
+  "babel-helper-explode-assignable-expression@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-explode-assignable-expression"
+  },
+  "babel-helper-function-name@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-function-name"
+  },
+  "babel-helper-function-name@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-function-name"
+  },
+  "babel-helper-get-function-arity@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-get-function-arity"
+  },
+  "babel-helper-get-function-arity@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-get-function-arity"
+  },
+  "babel-helper-hoist-variables@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-hoist-variables"
+  },
+  "babel-helper-optimise-call-expression@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-optimise-call-expression"
+  },
+  "babel-helper-optimise-call-expression@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-optimise-call-expression"
+  },
+  "babel-helper-regex@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-regex"
+  },
+  "babel-helper-remap-async-to-generator@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-remap-async-to-generator"
+  },
+  "babel-helper-replace-supers@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-replace-supers"
+  },
+  "babel-helper-replace-supers@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-helper-replace-supers"
+  },
+  "babel-messages@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-messages",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-plugin-check-es2015-constants@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-check-es2015-constants"
+  },
+  "babel-plugin-dynamic-import-node@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/airbnb/babel-plugin-dynamic-import-node",
+    "publisher": "Jordan Gensler",
+    "email": "jordan.gensler@airbnb.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-plugin-dynamic-import-node/LICENSE"
+  },
+  "babel-plugin-syntax-async-functions@6.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-functions"
+  },
+  "babel-plugin-syntax-class-properties@6.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-class-properties"
+  },
+  "babel-plugin-syntax-dynamic-import@6.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-dynamic-import"
+  },
+  "babel-plugin-syntax-exponentiation-operator@6.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-exponentation-operator"
+  },
+  "babel-plugin-syntax-flow@6.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-flow"
+  },
+  "babel-plugin-syntax-jsx@6.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-jsx"
+  },
+  "babel-plugin-syntax-object-rest-spread@6.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread"
+  },
+  "babel-plugin-syntax-trailing-function-commas@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-trailing-function-commas"
+  },
+  "babel-plugin-transform-async-to-generator@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-async-to-generator"
+  },
+  "babel-plugin-transform-class-properties@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-class-properties"
+  },
+  "babel-plugin-transform-es2015-arrow-functions@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-arrow-functions"
+  },
+  "babel-plugin-transform-es2015-block-scoped-functions@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-block-scoped-functions"
+  },
+  "babel-plugin-transform-es2015-block-scoping@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-block-scoping"
+  },
+  "babel-plugin-transform-es2015-classes@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-classes"
+  },
+  "babel-plugin-transform-es2015-computed-properties@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-computed-properties"
+  },
+  "babel-plugin-transform-es2015-destructuring@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-destructuring"
+  },
+  "babel-plugin-transform-es2015-duplicate-keys@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-duplicate-keys"
+  },
+  "babel-plugin-transform-es2015-for-of@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-for-of"
+  },
+  "babel-plugin-transform-es2015-function-name@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-function-name"
+  },
+  "babel-plugin-transform-es2015-literals@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-literals"
+  },
+  "babel-plugin-transform-es2015-modules-amd@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-amd"
+  },
+  "babel-plugin-transform-es2015-modules-amd@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-amd"
+  },
+  "babel-plugin-transform-es2015-modules-commonjs@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-commonjs"
+  },
+  "babel-plugin-transform-es2015-modules-commonjs@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-commonjs"
+  },
+  "babel-plugin-transform-es2015-modules-systemjs@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-systemjs"
+  },
+  "babel-plugin-transform-es2015-modules-umd@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-modules-umd"
+  },
+  "babel-plugin-transform-es2015-object-super@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-object-super"
+  },
+  "babel-plugin-transform-es2015-parameters@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-parameters"
+  },
+  "babel-plugin-transform-es2015-shorthand-properties@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-shorthand-properties"
+  },
+  "babel-plugin-transform-es2015-spread@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-spread"
+  },
+  "babel-plugin-transform-es2015-sticky-regex@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-sticky-regex"
+  },
+  "babel-plugin-transform-es2015-template-literals@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-template-literals"
+  },
+  "babel-plugin-transform-es2015-typeof-symbol@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-typeof-symbol"
+  },
+  "babel-plugin-transform-es2015-unicode-regex@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-es2015-unicode-regex"
+  },
+  "babel-plugin-transform-exponentiation-operator@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-exponentiation-operator"
+  },
+  "babel-plugin-transform-flow-strip-types@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-flow-strip-types"
+  },
+  "babel-plugin-transform-object-rest-spread@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-object-rest-spread"
+  },
+  "babel-plugin-transform-react-constant-elements@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements"
+  },
+  "babel-plugin-transform-react-display-name@6.25.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-display-name"
+  },
+  "babel-plugin-transform-react-jsx-self@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-self"
+  },
+  "babel-plugin-transform-react-jsx-source@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source"
+  },
+  "babel-plugin-transform-react-jsx@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx"
+  },
+  "babel-plugin-transform-regenerator@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-regenerator",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "babel-plugin-transform-regenerator@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-regenerator",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "babel-plugin-transform-runtime@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-runtime"
+  },
+  "babel-plugin-transform-strict-mode@6.22.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-strict-mode"
+  },
+  "babel-plugin-transform-strict-mode@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-strict-mode"
+  },
+  "babel-preset-env@1.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel-preset-env",
+    "publisher": "Henry Zhu",
+    "email": "hi@henryzoo.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-preset-env/LICENSE"
+  },
+  "babel-preset-flow@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-preset-flow",
+    "publisher": "James Kyle",
+    "email": "me@thejameskyle.com"
+  },
+  "babel-preset-react-app@3.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebookincubator/create-react-app"
+  },
+  "babel-preset-react@6.24.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-preset-react",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-runtime@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-runtime",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-runtime@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-runtime",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-template@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-template",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-template@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-template",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-traverse@6.23.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-traverse",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-traverse@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-traverse",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-types@6.23.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-types",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babel-types@6.26.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel/tree/master/packages/babel-types",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "babylon@6.16.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babylon",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babylon/LICENSE"
+  },
+  "babylon@6.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babylon",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-template/node_modules/babylon/LICENSE"
+  },
+  "backo2@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mokesmokes/backo"
+  },
+  "base64-arraybuffer@0.1.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/base64-arraybuffer",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "http://hertzen.com"
+  },
+  "base64-js@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/beatgammit/base64-js",
+    "publisher": "T. Jameson Little",
+    "email": "t.jameson.little@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/base64-js/LICENSE"
+  },
+  "basic-auth@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/basic-auth",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/basic-auth/LICENSE"
+  },
+  "batch-processor@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/wnr/batch-processor",
+    "publisher": "Lucas Wiener",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/batch-processor/LICENSE"
+  },
+  "better-assert@1.0.2": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/visionmedia/better-assert",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "blob@0.0.4": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/rase-/blob"
+  },
+  "body-parser@1.18.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/body-parser",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/body-parser/LICENSE"
+  },
+  "bootstrap@4.0.0-alpha.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/twbs/bootstrap",
+    "publisher": "The Bootstrap Authors",
+    "url": "https://github.com/twbs/bootstrap/graphs/contributors",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/bootstrap/LICENSE"
+  },
+  "bowser@1.9.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ded/bowser",
+    "publisher": "Dustin Diaz",
+    "email": "dustin@dustindiaz.com",
+    "url": "http://dustindiaz.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/bowser/LICENSE"
+  },
+  "browser-cookie-lite@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/litejs/browser-cookie-lite",
+    "publisher": "Lauri Rooden",
+    "email": "lauri@rooden.ee"
+  },
+  "browserslist@2.8.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ai/browserslist",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-preset-env/node_modules/browserslist/LICENSE"
+  },
+  "buffer@5.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/buffer/LICENSE"
+  },
+  "bytes@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/bytes.js",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/bytes/LICENSE"
+  },
+  "callsite@1.0.0": {
+    "licenses": "MIT*",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "caniuse-lite@1.0.30000760": {
+    "licenses": "CC-BY-4.0",
+    "repository": "https://github.com/ben-eb/caniuse-lite",
+    "publisher": "Ben Briggs",
+    "email": "beneb.info@gmail.com",
+    "url": "http://beneb.info",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/caniuse-lite/LICENSE"
+  },
+  "chain-function@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jquense/chain-function",
+    "publisher": "jquense"
+  },
+  "chalk@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/chalk",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/chalk/license"
+  },
+  "change-emitter@0.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/acdlite/change-emitter",
+    "publisher": "Andrew Clark",
+    "email": "acdlite@me.com"
+  },
+  "classnames@2.2.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/JedWatson/classnames",
+    "publisher": "Jed Watson",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/classnames/LICENSE"
+  },
+  "classnames@2.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/JedWatson/classnames",
+    "publisher": "Jed Watson",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-cookie-banner/node_modules/classnames/LICENSE"
+  },
+  "commonmark-react-renderer@4.3.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rexxars/commonmark-react-renderer",
+    "publisher": "Espen Hovlandsdal",
+    "email": "espen@hovlandsdal.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/commonmark-react-renderer/LICENSE"
+  },
+  "commonmark@0.24.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/jgm/commonmark.js",
+    "publisher": "John MacFarlane",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/commonmark/LICENSE"
+  },
+  "component-bind@1.0.0": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/component/bind"
+  },
+  "component-emitter@1.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/emitter",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/component-emitter/LICENSE"
+  },
+  "component-inherit@0.0.3": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/component/inherit"
+  },
+  "compressible@2.0.12": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/compressible",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/compressible/LICENSE"
+  },
+  "compression@1.7.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/compression",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/compression/LICENSE"
+  },
+  "content-disposition@0.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/content-disposition",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/content-disposition/LICENSE"
+  },
+  "content-type@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/content-type",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/content-type/LICENSE"
+  },
+  "cookie-signature@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/node-cookie-signature",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@learnboost.com"
+  },
+  "cookie@0.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/cookie",
+    "publisher": "Roman Shtylman",
+    "email": "shtylman@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/cookie/LICENSE"
+  },
+  "core-js@1.2.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zloirock/core-js",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-react/node_modules/core-js/LICENSE"
+  },
+  "core-js@2.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zloirock/core-js",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/core-js/LICENSE"
+  },
+  "create-react-class@15.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/create-react-class/LICENSE.txt"
+  },
+  "create-react-class@15.6.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-scrolllock/node_modules/create-react-class/LICENSE.txt"
+  },
+  "css-color-keywords@1.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/sonicdoe/css-color-keywords",
+    "publisher": "Jakob Krigovsky",
+    "email": "jakob@krigovsky.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/css-color-keywords/LICENSE"
+  },
+  "css-to-react-native@2.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/styled-components/css-to-react-native",
+    "publisher": "Jacob Parker",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/css-to-react-native/LICENSE.md"
+  },
+  "debug@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/debug",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "debug@2.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/debug",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-traverse/node_modules/debug/LICENSE"
+  },
+  "debug@2.6.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/debug",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/debug/LICENSE"
+  },
+  "debug@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/debug",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/socket.io-client/node_modules/debug/LICENSE"
+  },
+  "decode-uri-component@0.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/samverschueren/decode-uri-component",
+    "publisher": "Sam Verschueren",
+    "email": "sam.verschueren@gmail.com",
+    "url": "github.com/SamVerschueren",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/decode-uri-component/license"
+  },
+  "deep-diff@0.3.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/flitbit/diff",
+    "publisher": "Phillip Clark",
+    "email": "phillip@flitbit.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/deep-diff/LICENSE"
+  },
+  "deep-equal@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-deep-equal",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/deep-equal/LICENSE"
+  },
+  "define-properties@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/define-properties",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/define-properties/LICENSE"
+  },
+  "depd@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dougwilson/nodejs-depd",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/depd/LICENSE"
+  },
+  "destroy@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/destroy",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/destroy/LICENSE"
+  },
+  "doctrine@0.7.2": {
+    "licenses": "BSD",
+    "repository": "https://github.com/eslint/doctrine",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-react/node_modules/doctrine/LICENSE.esprima"
+  },
+  "dom-helpers@3.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jquense/dom-helpers",
+    "publisher": "Jason Quense",
+    "email": "monastic.panic@gmail.com"
+  },
+  "ee-first@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonathanong/ee-first",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ee-first/LICENSE"
+  },
+  "electron-to-chromium@1.3.27": {
+    "licenses": "ISC",
+    "repository": "https://github.com/kilian/electron-to-chromium/",
+    "publisher": "Kilian Valkhof"
+  },
+  "element-resize-detector@1.1.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/wnr/element-resize-detector",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/element-resize-detector/LICENSE"
+  },
+  "encodeurl@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/encodeurl",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/encodeurl/LICENSE"
+  },
+  "encoding@0.1.12": {
+    "licenses": "MIT",
+    "repository": "https://github.com/andris9/encoding",
+    "publisher": "Andris Reinman",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/encoding/LICENSE"
+  },
+  "engine.io-client@3.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/socketio/engine.io-client",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/engine.io-client/LICENSE"
+  },
+  "engine.io-parser@2.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/socketio/engine.io-parser",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/engine.io-parser/LICENSE"
+  },
+  "entities@1.1.1": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/fb55/node-entities",
+    "publisher": "Felix Boehm",
+    "email": "me@feedic.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/entities/LICENSE"
+  },
+  "es-abstract@1.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-abstract",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/es-abstract/LICENSE"
+  },
+  "es-abstract@1.9.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-abstract",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/array-includes/node_modules/es-abstract/LICENSE"
+  },
+  "es-to-primitive@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-to-primitive",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/es-to-primitive/LICENSE"
+  },
+  "es6-error@4.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bjyoungblood/es6-error",
+    "publisher": "Ben Youngblood",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/es6-error/LICENSE.md"
+  },
+  "escape-html@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/escape-html",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/escape-html/LICENSE"
+  },
+  "escape-string-regexp@1.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/escape-string-regexp",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/escape-string-regexp/license"
+  },
+  "esutils@1.1.6": {
+    "licenses": "BSD",
+    "repository": "https://github.com/Constellation/esutils",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-react/node_modules/esutils/LICENSE.BSD"
+  },
+  "esutils@2.0.2": {
+    "licenses": "BSD",
+    "repository": "https://github.com/estools/esutils",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/esutils/LICENSE.BSD"
+  },
+  "etag@1.8.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/etag",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/etag/LICENSE"
+  },
+  "exenv@1.2.1": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/JedWatson/exenv",
+    "publisher": "Jed Watson",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/exenv/LICENSE"
+  },
+  "express@4.16.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/express",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/LICENSE"
+  },
+  "fbjs@0.8.16": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/fbjs",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-react/node_modules/fbjs/LICENSE"
+  },
+  "fbjs@0.8.9": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/facebook/fbjs",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/fbjs/LICENSE"
+  },
+  "finalhandler@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/finalhandler",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/finalhandler/LICENSE"
+  },
+  "flight-reactware@0.1.49": {
+    "licenses": "ISC",
+    "publisher": "Alces Flight Ltd"
+  },
+  "flight-terminal-services-client@0.1.0": {
+    "licenses": "UNKNOWN",
+    "publisher": "Alces Flight Limited"
+  },
+  "flight-tutorials-client@0.1.20": {
+    "licenses": "MIT"
+  },
+  "flux-standard-action@0.6.0": {
+    "licenses": "MIT",
+    "publisher": "Andrew Clark",
+    "email": "acdlite@me.com"
+  },
+  "follow-redirects@1.2.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/olalonde/follow-redirects",
+    "publisher": "Olivier Lalonde",
+    "email": "olalonde@gmail.com",
+    "url": "http://www.syskall.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/follow-redirects/LICENSE"
+  },
+  "foreach@2.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/manuelstofer/foreach",
+    "publisher": "Manuel Stofer",
+    "email": "manuel@takimata.ch",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/foreach/LICENSE"
+  },
+  "forwarded@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/forwarded",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/forwarded/LICENSE"
+  },
+  "fresh@0.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/fresh",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/fresh/LICENSE"
+  },
+  "function-bind@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/function-bind",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/has/node_modules/function-bind/LICENSE"
+  },
+  "function-bind@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/function-bind",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/function-bind/LICENSE"
+  },
+  "get-comments@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tunnckocore/get-comments",
+    "publisher": "Charlike Mike Reagent",
+    "email": "@tunnckoCore",
+    "url": "http://www.tunnckocore.tk",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/get-comments/LICENSE.md"
+  },
+  "globals@9.16.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/globals",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-traverse/node_modules/globals/license"
+  },
+  "globals@9.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/globals",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/globals/license"
+  },
+  "has-ansi@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/has-ansi",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/has-ansi/license"
+  },
+  "has-binary2@1.0.3": {
+    "licenses": "MIT",
+    "publisher": "Kevin Roark",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/has-binary2/LICENSE"
+  },
+  "has-cors@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/has-cors",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/"
+  },
+  "has-flag@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/has-flag",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/has-flag/license"
+  },
+  "has@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tarruda/has",
+    "publisher": "Thiago de Arruda",
+    "email": "tpadilha84@gmail.com"
+  },
+  "history@4.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/history",
+    "publisher": "Michael Jackson",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/history/LICENSE.md"
+  },
+  "hoist-non-react-statics@1.2.0": {
+    "licenses": "BSD",
+    "repository": "https://github.com/mridgway/hoist-non-react-statics",
+    "publisher": "Michael Ridgway",
+    "email": "mridgway@yahoo-inc.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/hoist-non-react-statics/LICENSE.md"
+  },
+  "hoist-non-react-statics@2.3.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/mridgway/hoist-non-react-statics",
+    "publisher": "Michael Ridgway",
+    "email": "mcridgway@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-redux/node_modules/hoist-non-react-statics/LICENSE.md"
+  },
+  "hoist-non-react-statics@2.5.5": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/mridgway/hoist-non-react-statics",
+    "publisher": "Michael Ridgway",
+    "email": "mcridgway@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/hoist-non-react-statics/LICENSE.md"
+  },
+  "http-errors@1.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/http-errors",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/http-errors/LICENSE"
+  },
+  "hyphenate-style-name@1.0.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/rexxars/hyphenate-style-name",
+    "publisher": "Espen Hovlandsdal",
+    "email": "espen@hovlandsdal.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/hyphenate-style-name/LICENSE"
+  },
+  "iconv-lite@0.4.13": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ashtuchkin/iconv-lite",
+    "publisher": "Alexander Shtuchkin",
+    "email": "ashtuchkin@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/encoding/node_modules/iconv-lite/LICENSE"
+  },
+  "iconv-lite@0.4.19": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ashtuchkin/iconv-lite",
+    "publisher": "Alexander Shtuchkin",
+    "email": "ashtuchkin@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/iconv-lite/LICENSE"
+  },
+  "ieee754@1.1.8": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/feross/ieee754",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ieee754/LICENSE"
+  },
+  "ignore-styles@5.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bkonkle/ignore-styles",
+    "publisher": "Brandon Konkle",
+    "email": "brandon@konkle.us",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ignore-styles/LICENSE"
+  },
+  "indexof@0.0.1": {
+    "licenses": "MIT*"
+  },
+  "inherits@2.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/inherits",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/inherits/LICENSE"
+  },
+  "inline-style-prefixer@2.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rofrischmann/inline-style-prefixer",
+    "publisher": "Robin Frischmann",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/inline-style-prefixer/LICENSE"
+  },
+  "invariant@2.2.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/zertosh/invariant",
+    "publisher": "Andres Suarez",
+    "email": "zertosh@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/invariant/LICENSE"
+  },
+  "invariant@2.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zertosh/invariant",
+    "publisher": "Andres Suarez",
+    "email": "zertosh@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/react-router-dom/node_modules/invariant/LICENSE"
+  },
+  "ipaddr.js@1.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/whitequark/ipaddr.js",
+    "publisher": "whitequark",
+    "email": "whitequark@whitequark.org",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ipaddr.js/LICENSE"
+  },
+  "is-buffer@1.1.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/is-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-buffer/LICENSE"
+  },
+  "is-callable@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-callable",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-callable/LICENSE"
+  },
+  "is-date-object@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-date-object",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-date-object/LICENSE"
+  },
+  "is-function@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/grncdr/js-is-function",
+    "publisher": "Stephen Sugden",
+    "email": "me@stephensugden.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-function/LICENSE"
+  },
+  "is-plain-object@2.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonschlinkert/is-plain-object",
+    "publisher": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-plain-object/LICENSE"
+  },
+  "is-promise@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/then/is-promise",
+    "publisher": "ForbesLindesay",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-promise/LICENSE"
+  },
+  "is-regex@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-regex",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-regex/LICENSE"
+  },
+  "is-stream@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/is-stream",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-stream/license"
+  },
+  "is-symbol@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-symbol",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/is-symbol/LICENSE"
+  },
+  "isarray@0.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/isarray",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com"
+  },
+  "isarray@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/isarray",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com"
+  },
+  "isobject@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonschlinkert/isobject",
+    "publisher": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/isobject/LICENSE"
+  },
+  "isomorphic-fetch@2.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/matthew-andrews/isomorphic-fetch",
+    "publisher": "Matt Andrews",
+    "email": "matt@mattandre.ws",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/isomorphic-fetch/LICENSE"
+  },
+  "jquery@3.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jquery/jquery",
+    "publisher": "JS Foundation and other contributors",
+    "url": "https://github.com/jquery/jquery/blob/3.2.1/AUTHORS.txt",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/jquery/LICENSE.txt"
+  },
+  "js-tokens@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lydell/js-tokens",
+    "publisher": "Simon Lydell",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/js-tokens/LICENSE"
+  },
+  "js-tokens@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lydell/js-tokens",
+    "publisher": "Simon Lydell",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-template/node_modules/js-tokens/LICENSE"
+  },
+  "jsesc@0.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/jsesc",
+    "publisher": "Mathias Bynens",
+    "url": "http://mathiasbynens.be/"
+  },
+  "jwt-decode@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/auth0/jwt-decode",
+    "publisher": "Jose F. Romaniello",
+    "email": "jfromaniello@gmail.com",
+    "url": "http://joseoncode.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/jwt-decode/LICENSE"
+  },
+  "lodash-es@4.17.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash-es/LICENSE"
+  },
+  "lodash._arraymap@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._arraymap/LICENSE.txt"
+  },
+  "lodash._basedifference@3.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._basedifference/LICENSE"
+  },
+  "lodash._baseflatten@3.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._baseflatten/LICENSE"
+  },
+  "lodash._basefor@3.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._basefor/LICENSE"
+  },
+  "lodash._baseindexof@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._baseindexof/LICENSE.txt"
+  },
+  "lodash._bindcallback@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._bindcallback/LICENSE.txt"
+  },
+  "lodash._cacheindexof@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._cacheindexof/LICENSE.txt"
+  },
+  "lodash._createcache@3.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._createcache/LICENSE"
+  },
+  "lodash._getnative@3.9.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._getnative/LICENSE"
+  },
+  "lodash._pickbyarray@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._pickbyarray/LICENSE.txt"
+  },
+  "lodash._pickbycallback@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash._pickbycallback/LICENSE.txt"
+  },
+  "lodash.assign@4.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/commonmark-react-renderer/node_modules/lodash.assign/LICENSE"
+  },
+  "lodash.debounce@4.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.debounce/LICENSE"
+  },
+  "lodash.isarguments@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.isarguments/LICENSE"
+  },
+  "lodash.isarray@3.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.isarray/LICENSE"
+  },
+  "lodash.isfunction@3.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.isfunction/LICENSE"
+  },
+  "lodash.isobject@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.isobject/LICENSE.txt"
+  },
+  "lodash.isplainobject@3.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.isplainobject/LICENSE"
+  },
+  "lodash.isplainobject@4.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/commonmark-react-renderer/node_modules/lodash.isplainobject/LICENSE"
+  },
+  "lodash.keys@3.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.keys/LICENSE"
+  },
+  "lodash.keysin@3.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.keysin/LICENSE.txt"
+  },
+  "lodash.omit@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.omit/LICENSE.txt"
+  },
+  "lodash.restparam@3.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.restparam/LICENSE.txt"
+  },
+  "lodash.throttle@4.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.throttle/LICENSE"
+  },
+  "lodash.tonumber@4.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash.tonumber/LICENSE"
+  },
+  "lodash@4.17.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/lodash/LICENSE"
+  },
+  "loose-envify@1.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zertosh/loose-envify",
+    "publisher": "Andres Suarez",
+    "email": "zertosh@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/loose-envify/LICENSE"
+  },
+  "lorem-ipsum@1.0.4": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/knicklabs/node-lorem-ipsum",
+    "publisher": "Nickolas Kenyeres",
+    "email": "nkenyeres@gmail.com",
+    "url": "http://knicklabs.github.com"
+  },
+  "mdurl@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/mdurl",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/mdurl/LICENSE"
+  },
+  "media-typer@0.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/media-typer",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/media-typer/LICENSE"
+  },
+  "merge-descriptors@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/merge-descriptors",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/merge-descriptors/LICENSE"
+  },
+  "methods@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/methods",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/methods/LICENSE"
+  },
+  "mime-db@1.30.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-db",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/type-is/node_modules/mime-db/LICENSE"
+  },
+  "mime-db@1.31.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-db",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/compressible/node_modules/mime-db/LICENSE"
+  },
+  "mime-types@2.1.17": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-types",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/type-is/node_modules/mime-types/LICENSE"
+  },
+  "mime@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/broofa/node-mime",
+    "publisher": "Robert Kieffer",
+    "email": "robert@broofa.com",
+    "url": "http://github.com/broofa",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/mime/LICENSE"
+  },
+  "moment@2.22.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/moment/moment",
+    "publisher": "Iskren Ivov Chernev",
+    "email": "iskren.chernev@gmail.com",
+    "url": "https://github.com/ichernev",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/moment/LICENSE"
+  },
+  "morgan@1.9.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/morgan",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/morgan/LICENSE"
+  },
+  "ms@0.7.1": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/guille/ms.js",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/socket.io-stream/node_modules/ms/LICENSE"
+  },
+  "ms@0.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zeit/ms",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/babel-traverse/node_modules/ms/LICENSE.md"
+  },
+  "ms@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zeit/ms",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ms/license.md"
+  },
+  "negotiator@0.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/negotiator",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/negotiator/LICENSE"
+  },
+  "node-fetch@1.6.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bitinn/node-fetch",
+    "publisher": "David Frank",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/node-fetch/LICENSE.md"
+  },
+  "node-noop@1.0.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/euank/node-noop",
+    "publisher": "EuanK"
+  },
+  "object-assign@4.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/object-assign",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/object-assign/license"
+  },
+  "object-component@0.0.3": {
+    "licenses": "MIT*"
+  },
+  "object-keys@1.0.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/object-keys",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/object-keys/LICENSE"
+  },
+  "object.values@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/Object.values",
+    "publisher": "Jordan Harband",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/object.values/LICENSE"
+  },
+  "on-finished@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/on-finished",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/on-finished/LICENSE"
+  },
+  "on-headers@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/on-headers",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/on-headers/LICENSE"
+  },
+  "optimist@0.3.7": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/substack/node-optimist",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/optimist/LICENSE"
+  },
+  "parseqs@0.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/get/querystring",
+    "publisher": "Gal Koren",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/parseqs/LICENSE"
+  },
+  "parseuri@0.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/get/parseuri",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/parseuri/LICENSE"
+  },
+  "parseurl@1.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/parseurl",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/finalhandler/node_modules/parseurl/LICENSE"
+  },
+  "pascalcase@0.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonschlinkert/pascalcase",
+    "publisher": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/pascalcase/LICENSE"
+  },
+  "path-to-regexp@0.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/path-to-regexp",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/path-to-regexp/LICENSE"
+  },
+  "path-to-regexp@1.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/path-to-regexp",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/path-to-regexp/LICENSE"
+  },
+  "pluralize@7.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blakeembrey/pluralize",
+    "publisher": "Blake Embrey",
+    "email": "hello@blakeembrey.com",
+    "url": "http://blakeembrey.me",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/pluralize/LICENSE"
+  },
+  "polished@1.9.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/styled-components/polished",
+    "publisher": "Brian Hough",
+    "email": "brian@brianhought.net",
+    "url": "https://polished.js.org",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/polished/LICENSE.md"
+  },
+  "popper.js@1.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FezVrasta/popper.js",
+    "publisher": "Federico Zivolo",
+    "email": "federico.zivolo@gmail.com"
+  },
+  "postcss-value-parser@3.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TrySound/postcss-value-parser",
+    "publisher": "Bogdan Chadkin",
+    "email": "trysound@yandex.ru",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/postcss-value-parser/LICENSE"
+  },
+  "private@0.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/benjamn/private",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/private/LICENSE"
+  },
+  "promise@7.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/then/promise",
+    "publisher": "ForbesLindesay",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/promise/LICENSE"
+  },
+  "prop-types@15.5.9": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/reactjs/prop-types",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-fontawesome/node_modules/prop-types/LICENSE"
+  },
+  "prop-types@15.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactjs/prop-types",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/prop-types/LICENSE"
+  },
+  "prop-types@15.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/prop-types",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-markdown/node_modules/prop-types/LICENSE"
+  },
+  "proxy-addr@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/proxy-addr",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/proxy-addr/LICENSE"
+  },
+  "qs@6.5.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/ljharb/qs",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/body-parser/node_modules/qs/LICENSE"
+  },
+  "query-string@5.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/query-string",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/query-string/license"
+  },
+  "range-parser@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/range-parser",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/range-parser/LICENSE"
+  },
+  "raw-body@2.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/raw-body",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/raw-body/LICENSE"
+  },
+  "react-cookie-banner@0.0.18": {
+    "licenses": "ISC",
+    "repository": "https://github.com/buildo/react-cookie-banner",
+    "publisher": "Francesco Cioria",
+    "email": "francesco@buildo.io",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-cookie-banner/LICENSE"
+  },
+  "react-dom@15.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-dom/LICENSE"
+  },
+  "react-fontawesome@1.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/danawoodman/react-fontawesome",
+    "publisher": "Dana Woodman",
+    "email": "dana@danawoodman.com",
+    "url": "danawoodman.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-fontawesome/license"
+  },
+  "react-form@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tannerlinsley/react-form",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-form/LICENSE"
+  },
+  "react-ga@2.5.3": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/react-ga/react-ga",
+    "publisher": "@adamlofting",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-ga/LICENSE"
+  },
+  "react-helmet@5.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nfl/react-helmet",
+    "publisher": "NFL",
+    "email": "engineers@nfl.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-helmet/LICENSE"
+  },
+  "react-images@0.5.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jossmac/react-images",
+    "publisher": "Joss Mackison",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-images/LICENSE"
+  },
+  "react-lorem-component@0.12.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/martinandert/react-lorem-component",
+    "publisher": "Martin Andert",
+    "email": "mandert@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-lorem-component/LICENSE"
+  },
+  "react-markdown@2.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rexxars/react-markdown",
+    "publisher": "Espen Hovlandsdal",
+    "email": "rexxars@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-markdown/LICENSE"
+  },
+  "react-popper@0.7.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/souporserious/react-popper",
+    "publisher": "Travis Arnold",
+    "email": "travis@souporserious.com",
+    "url": "http://souporserious.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-popper/LICENSE"
+  },
+  "react-recaptcha@2.3.5": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/appleboy/react-recaptcha",
+    "publisher": "Bo-Yi Wu",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-recaptcha/LICENSE"
+  },
+  "react-redux@5.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactjs/react-redux",
+    "publisher": "Dan Abramov",
+    "email": "dan.abramov@me.com",
+    "url": "http://github.com/gaearon",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-redux/LICENSE.md"
+  },
+  "react-router-config@1.0.0-beta.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-router-dom@4.2.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-router-dom@4.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-router-redux@5.0.0-alpha.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-router@4.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-router@4.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reacttraining/react-router"
+  },
+  "react-s-alert@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliancwirko/react-s-alert",
+    "publisher": "Julian Ćwirko",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-s-alert/LICENSE"
+  },
+  "react-scroll@1.5.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/fisshy/react-scroll"
+  },
+  "react-scrolllock@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jossmac/react-scrolllock",
+    "publisher": "Joss Mackison",
+    "url": "https://github.com/jossmac",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-scrolllock/LICENSE"
+  },
+  "react-side-effect@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gaearon/react-side-effect",
+    "publisher": "Dan Abramov",
+    "email": "dan.abramov@me.com",
+    "url": "http://github.com/gaearon",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-side-effect/LICENSE"
+  },
+  "react-sizeme@2.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ctrlplusb/react-sizeme",
+    "publisher": "Sean Matheson",
+    "email": "sean@ctrlplusb.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-sizeme/LICENSE"
+  },
+  "react-transition-group@1.2.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/reactjs/react-transition-group"
+  },
+  "react-transition-group@1.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/reactjs/react-transition-group"
+  },
+  "react-transition-group@2.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/reactjs/react-transition-group",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/reactstrap/node_modules/react-transition-group/LICENSE"
+  },
+  "react@15.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react/LICENSE"
+  },
+  "react@16.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-react/node_modules/react/LICENSE"
+  },
+  "reactstrap@5.0.0-beta": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactstrap/reactstrap",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/reactstrap/LICENSE"
+  },
+  "recompose@0.24.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/acdlite/recompose",
+    "publisher": "Andrew Clark",
+    "email": "acdlite@me.com"
+  },
+  "redux-axios-middleware@4.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/svrcekmichal/redux-axios-middleware",
+    "publisher": "Michal Svrcek",
+    "email": "svrcekmichal@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux-axios-middleware/LICENSE.md"
+  },
+  "redux-cookie@0.5.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/iroy2000/redux-cookie",
+    "publisher": "Roy Yu",
+    "email": "iroy2000@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux-cookie/LICENSE"
+  },
+  "redux-form@6.8.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/erikras/redux-form",
+    "publisher": "Erik Rasmussen",
+    "email": "rasmussenerik@gmail.com",
+    "url": "http://github.com/erikras",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux-form/LICENSE"
+  },
+  "redux-logger@3.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/theaqua/redux-logger",
+    "publisher": "Eugene Rodionov",
+    "url": "https://github.com/theaqua",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux-logger/LICENSE"
+  },
+  "redux-simple-promise@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alanrubin/redux-simple-promise",
+    "publisher": "Alan Rubin",
+    "email": "alan@frubin.com"
+  },
+  "redux-thunk@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gaearon/redux-thunk",
+    "publisher": "Dan Abramov",
+    "email": "dan.abramov@me.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux-thunk/LICENSE.md"
+  },
+  "redux@3.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactjs/redux",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/redux/LICENSE.md"
+  },
+  "redux@3.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactjs/redux",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/redux/LICENSE.md"
+  },
+  "regenerate@1.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/regenerate",
+    "publisher": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/"
+  },
+  "regenerator-runtime@0.10.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "regenerator-runtime@0.11.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "regenerator-transform@0.10.1": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/facebook/regenerator/tree/master/packages/regenerator-transform",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "regenerator-transform@0.9.8": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/facebook/regenerator/tree/master/packages/regenerator-transform",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "regexpu-core@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/regexpu-core",
+    "publisher": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/"
+  },
+  "regjsgen@0.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/d10/regjsgen",
+    "publisher": "Benjamin Tan",
+    "email": "demoneaux@gmail.com",
+    "url": "https://d10.github.io/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/regjsgen/LICENSE.txt"
+  },
+  "regjsparser@0.1.5": {
+    "licenses": "BSD*",
+    "repository": "https://github.com/jviereck/regjsparser",
+    "publisher": "'Julian Viereck'",
+    "email": "julian.viereck@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/regjsparser/LICENSE.BSD"
+  },
+  "reselect@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactjs/reselect",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/reselect/LICENSE"
+  },
+  "resolve-pathname@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjackson/resolve-pathname",
+    "publisher": "Michael Jackson"
+  },
+  "safe-buffer@5.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/safe-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/safe-buffer/LICENSE"
+  },
+  "seamless-immutable@7.1.3": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/rtfeldman/seamless-immutable",
+    "publisher": "Richard Feldman",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/seamless-immutable/LICENSE"
+  },
+  "seedable-random@0.0.1": {
+    "licenses": "BSD*",
+    "publisher": "Antti Sykäri"
+  },
+  "semver@5.3.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/node-semver",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/semver/LICENSE"
+  },
+  "send@0.16.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/send",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/send/LICENSE"
+  },
+  "serve-static@1.13.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/serve-static",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/serve-static/LICENSE"
+  },
+  "setimmediate@1.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/yuzujs/setImmediate",
+    "publisher": "YuzuJS",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/setimmediate/LICENSE.txt"
+  },
+  "setprototypeof@1.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/wesleytodd/setprototypeof",
+    "publisher": "Wes Todd",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/setprototypeof/LICENSE"
+  },
+  "setprototypeof@1.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/wesleytodd/setprototypeof",
+    "publisher": "Wes Todd",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/express/node_modules/setprototypeof/LICENSE"
+  },
+  "shallowequal@0.2.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dashed/shallowequal",
+    "publisher": "Alberto Leal",
+    "email": "mailforalberto@gmail.com",
+    "url": "github.com/Dashed",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/shallowequal/LICENSE"
+  },
+  "shallowequal@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dashed/shallowequal",
+    "publisher": "Alberto Leal",
+    "email": "mailforalberto@gmail.com",
+    "url": "github.com/dashed",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/react-sizeme/node_modules/shallowequal/LICENSE"
+  },
+  "socket.io-client@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Automattic/socket.io-client",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/socket.io-client/LICENSE"
+  },
+  "socket.io-parser@3.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Automattic/socket.io-parser",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/socket.io-parser/LICENSE"
+  },
+  "socket.io-stream@0.9.1": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/nkzawa/socket.io-stream",
+    "publisher": "Naoyuki Kanezawa",
+    "email": "naoyuki.kanezawa@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/socket.io-stream/LICENSE"
+  },
+  "statuses@1.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/statuses",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/statuses/LICENSE"
+  },
+  "strict-uri-encode@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kevva/strict-uri-encode",
+    "publisher": "Kevin Mårtensson",
+    "email": "kevinmartensson@gmail.com",
+    "url": "github.com/kevva",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/strict-uri-encode/license"
+  },
+  "string.prototype.repeat@0.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/String.prototype.repeat",
+    "publisher": "Mathias Bynens",
+    "url": "http://mathiasbynens.be/"
+  },
+  "strip-ansi@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/strip-ansi",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/strip-ansi/license"
+  },
+  "styled-components@2.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/styled-components/styled-components",
+    "publisher": "Glen Maddern",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/styled-components/LICENSE"
+  },
+  "styled-components@2.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/styled-components/styled-components",
+    "publisher": "Glen Maddern",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-tutorials-client/node_modules/styled-components/LICENSE"
+  },
+  "stylis@3.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/thysultan/stylis.js",
+    "publisher": "Sultan Tarimo",
+    "email": "sultantarimo@me.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/stylis/LICENSE.md"
+  },
+  "stylis@3.5.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/thysultan/stylis.js",
+    "publisher": "Sultan Tarimo",
+    "email": "sultantarimo@me.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-tutorials-client/node_modules/stylis/LICENSE.md"
+  },
+  "supports-color@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/supports-color",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/chalk/node_modules/supports-color/license"
+  },
+  "supports-color@3.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/supports-color",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/supports-color/license"
+  },
+  "symbol-observable@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blesh/symbol-observable",
+    "publisher": "Ben Lesh",
+    "email": "ben@benlesh.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/symbol-observable/license"
+  },
+  "symbol-observable@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blesh/symbol-observable",
+    "publisher": "Ben Lesh",
+    "email": "ben@benlesh.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/symbol-observable/license"
+  },
+  "tcomb-doc@0.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gcanti/tcomb-doc",
+    "publisher": "Giulio Canti",
+    "email": "giulio.canti@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-doc/LICENSE"
+  },
+  "tcomb-react@0.9.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gcanti/tcomb-react",
+    "publisher": "Giulio Canti",
+    "email": "giulio.canti@gmail.com"
+  },
+  "tcomb-validation@3.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gcanti/tcomb-validation",
+    "publisher": "Giulio Canti",
+    "email": "giulio.canti@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb-validation/LICENSE"
+  },
+  "tcomb@3.2.27": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gcanti/tcomb",
+    "publisher": "Giulio Canti",
+    "email": "giulio.canti@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tcomb/LICENSE"
+  },
+  "terminal.js@1.0.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Gottox/terminal.js",
+    "publisher": "Enno Boland",
+    "email": "eb@s01.de",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/terminal.js/LICENSE"
+  },
+  "tether@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/HubSpot/tether",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/tether/LICENSE"
+  },
+  "to-array@0.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/to-array",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/to-array/LICENCE"
+  },
+  "to-fast-properties@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/to-fast-properties",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/regenerator-transform/node_modules/to-fast-properties/license"
+  },
+  "to-fast-properties@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/to-fast-properties",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/to-fast-properties/license"
+  },
+  "type-is@1.6.15": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/type-is",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/type-is/LICENSE"
+  },
+  "ua-parser-js@0.7.12": {
+    "licenses": "(GPL-2.0 OR MIT)",
+    "repository": "https://github.com/faisalman/ua-parser-js",
+    "publisher": "Faisal Salman",
+    "email": "fyzlman@gmail.com",
+    "url": "http://faisalman.com"
+  },
+  "ultron@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unshiftio/ultron",
+    "publisher": "Arnout Kazemier",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ultron/LICENSE"
+  },
+  "universal-cookie@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reactivestack/cookies",
+    "publisher": "Benoit Tremblay",
+    "email": "benoit@reactivestack.com"
+  },
+  "unpipe@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/unpipe",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/unpipe/LICENSE"
+  },
+  "url-search-params-polyfill@2.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jerrybendy/url-search-params-polyfill",
+    "publisher": "Jerry Bendy",
+    "email": "jerry@icewingcc.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/url-search-params-polyfill/LICENSE"
+  },
+  "utils-merge@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jaredhanson/utils-merge",
+    "publisher": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "http://www.jaredhanson.net/",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/utils-merge/LICENSE"
+  },
+  "validator@8.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chriso/validator.js",
+    "publisher": "Chris O'Hara",
+    "email": "cohara87@gmail.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/validator/LICENSE"
+  },
+  "value-equal@0.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjackson/value-equal",
+    "publisher": "Michael Jackson"
+  },
+  "vary@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/vary",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/compression/node_modules/vary/LICENSE"
+  },
+  "warning@3.0.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/BerkeleyTrue/warning",
+    "publisher": "Berkeley Martinez",
+    "email": "berkeley@r3dm.com",
+    "url": "http://www.freecodecamp.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/warning/LICENSE.md"
+  },
+  "warning@4.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/BerkeleyTrue/warning",
+    "publisher": "Berkeley Martinez",
+    "email": "berkeley@berkeleytrue.com",
+    "url": "http://www.berkeleytrue.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/flight-reactware/node_modules/warning/LICENSE.md"
+  },
+  "whatwg-fetch@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/github/fetch",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/isomorphic-fetch/node_modules/whatwg-fetch/LICENSE"
+  },
+  "wordwrap@0.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-wordwrap",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/wordwrap/LICENSE"
+  },
+  "ws@3.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/websockets/ws",
+    "publisher": "Einar Otto Stangvik",
+    "email": "einaros@gmail.com",
+    "url": "http://2x.io",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/ws/LICENSE"
+  },
+  "xmlhttprequest-ssl@1.5.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjwwit/node-XMLHttpRequest",
+    "publisher": "Michael de Wit",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/xmlhttprequest-ssl/LICENSE"
+  },
+  "xss-filters@1.2.7": {
+    "licenses": "BSD",
+    "repository": "https://github.com/yahoo/xss-filters",
+    "publisher": "Adonis Fung",
+    "email": "adon@yahoo-inc.com",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/xss-filters/LICENSE"
+  },
+  "yeast@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unshiftio/yeast",
+    "publisher": "Arnout Kazemier",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/yeast/LICENSE"
+  },
+  "zxcvbn@4.4.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dropbox/zxcvbn",
+    "publisher": "Dan Wheeler",
+    "licenseFile": "/home/ben/projects/flight-terminal-services-client/node_modules/zxcvbn/LICENSE.txt"
+  }
+}
