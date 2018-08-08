@@ -17,5 +17,16 @@ module.exports = function(config) {
 
   config = rewireStyledComponents(config);
 
+  // Compile Elm; add this as first rule so Elm files don't get handled by any
+  // other loader.
+  config.module.rules.unshift({
+    test: /\.elm$/,
+    exclude: [/elm-stuff/, /node_modules/],
+    use: {
+      loader: 'elm-webpack-loader',
+      options: {cwd: path.resolve('./src/elm')},
+    },
+  });
+
   return config;
 };

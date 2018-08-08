@@ -1,7 +1,9 @@
 import React from 'react';
 
+import ElmApp from '../components/ElmApp';
+
 const Home = () => {
-  return <div>TODO put stuff here</div>;
+  return <ElmApp />;
 };
 
 export default Home;

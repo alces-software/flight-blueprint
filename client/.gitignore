@@ -5,6 +5,7 @@ tags
 
 # dependencies
 /node_modules
+elm-stuff/
 
 # testing
 /coverage
