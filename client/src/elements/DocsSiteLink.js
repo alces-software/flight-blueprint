@@ -11,11 +11,8 @@ const defaultProps = {
   children: 'Alces Flight Appliance documentation site',
 };
 
-const DocsSiteLink = ({ children }) => (
-  <ContextLink
-    linkSite="Docs"
-    location="/"
-  >
+const DocsSiteLink = ({children}) => (
+  <ContextLink linkSite="Docs" location="/">
     {children}
   </ContextLink>
 );
@@ -23,6 +20,6 @@ const DocsSiteLink = ({ children }) => (
 DocsSiteLink.propTypes = propTypes;
 DocsSiteLink.defaultProps = defaultProps;
 
-export const docsSiteHref = ContextLink.makeLinkProps('Docs', '/',).href;
+export const docsSiteHref = ContextLink.makeLinkProps('Docs', '/').href;
 
 export default DocsSiteLink;

@@ -7,18 +7,18 @@ const path = require('path');
 
 require('babel-register')({
   ignore: function(filename) {
-    if ( filename.match(/\/(build|node_modules)\//) ) {
+    if (filename.match(/\/(build|node_modules)\//)) {
       return true;
     } else {
       return false;
     }
   },
-  presets: ['es2015', 'react-app']
+  presets: ['es2015', 'react-app'],
 });
 
 // routes
 const index = require('./routes/index');
-const { default: api } = require('./routes/api');
+const {default: api} = require('./routes/api');
 const universalLoader = require('./universal');
 
 const app = express();
@@ -28,7 +28,7 @@ app.use(compression());
 
 // Suport post requests with body data (doesn't support multipart, use multer)
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Setup logger
 app.use(morgan('combined'));

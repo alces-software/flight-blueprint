@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import Route from 'react-router/Route';
 import Switch from 'react-router/Switch';
-import { CSSTransitionGroup } from 'react-transition-group';
-import { compose } from 'recompose';
-import { matchRoutes } from 'react-router-config';
-import { withRouter } from 'react-router';
+import {CSSTransitionGroup} from 'react-transition-group';
+import {compose} from 'recompose';
+import {matchRoutes} from 'react-router-config';
+import {withRouter} from 'react-router';
 
-import { Page } from 'flight-reactware';
+import {Page} from 'flight-reactware';
 
 import ScrollToTop from './ScrollToTop';
 import SitePage from './Page';
 import routes from '../routes';
 import appVersion from '../version';
-
 
 // Use our own version of `renderRoutes` which incorporates currently
 // unreleased fixes from `react-router-config`'s `renderRoutes`.  The
@@ -41,21 +40,22 @@ import appVersion from '../version';
 /* eslint-disable react/jsx-max-props-per-line */
 /* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable semi */
-const renderRoutes = (routes, extraProps = {}, switchProps = {}) => routes ? (
-  <Switch {...switchProps}>
-    {routes.map((route, i) => (
-      <Route
-        key={route.key || i}
-        path={route.path}
-        exact={route.exact}
-        strict={route.strict}
-        render={(props) => (
-          <route.component {...props} {...extraProps} route={route}/>
-        )}
-      />
-    ))}
-  </Switch>
-) : null
+const renderRoutes = (routes, extraProps = {}, switchProps = {}) =>
+  routes ? (
+    <Switch {...switchProps}>
+      {routes.map((route, i) => (
+        <Route
+          key={route.key || i}
+          path={route.path}
+          exact={route.exact}
+          strict={route.strict}
+          render={(props) => (
+            <route.component {...props} {...extraProps} route={route} />
+          )}
+        />
+      ))}
+    </Switch>
+  ) : null;
 /* eslint-enable react/jsx-sort-props */
 /* eslint-enable react/jsx-max-props-per-line */
 /* eslint-enable react/jsx-tag-spacing */
@@ -68,7 +68,7 @@ const propTypes = {
   route: PropTypes.object,
 };
 
-const App = ({ location, route }) => {
+const App = ({location, route}) => {
   const branch = matchRoutes(routes, location.pathname);
   const lastRouteComponent = branch[branch.length - 1].route;
 
@@ -76,28 +76,21 @@ const App = ({ location, route }) => {
     <ScrollToTop>
       <Page
         serviceText={process.env.REACT_APP_SERVICE_TEXT}
-        site={process.env.REACT_APP_SITE}
-      >
+        site={process.env.REACT_APP_SITE}>
         <Helmet
           defaultTitle={productName}
-          titleTemplate={`${productName} - %s`}
-        >
-          <meta
-            content={appVersion}
-            name="client-version"
-          />
+          titleTemplate={`${productName} - %s`}>
+          <meta content={appVersion} name="client-version" />
         </Helmet>
         <SitePage
           pageKey={lastRouteComponent.pageKey}
-          title={lastRouteComponent.title}
-        >
+          title={lastRouteComponent.title}>
           <CSSTransitionGroup
             transitionEnterTimeout={250}
             transitionLeave={false}
-            transitionName="fade"
-          >
+            transitionName="fade">
             <div key={lastRouteComponent.key || location.pathname}>
-              {renderRoutes(route.routes, {}, { location: location })}
+              {renderRoutes(route.routes, {}, {location: location})}
             </div>
           </CSSTransitionGroup>
         </SitePage>
@@ -108,8 +101,6 @@ const App = ({ location, route }) => {
 
 App.propTypes = propTypes;
 
-const enhance = compose(
-  withRouter,
-);
+const enhance = compose(withRouter);
 
 export default enhance(App);

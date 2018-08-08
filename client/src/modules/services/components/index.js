@@ -4,6 +4,4 @@
 
 import withSiteContext from './withSiteContext';
 
-export {
-  withSiteContext,
-};
+export {withSiteContext};

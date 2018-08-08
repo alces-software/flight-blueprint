@@ -15,7 +15,6 @@ $EDITOR .env
 
 Once you have your environment variables configured, run the setup script.
 
-
 ```bash
 bin/setup.sh
 ```
@@ -30,5 +29,5 @@ yarn run start
 ```
 
 Flight Terminal Services Client will then be accessible at
-`http://launch.alces-flight.lvh.me:3008`.  Configuring the port has been left
+`http://launch.alces-flight.lvh.me:3008`. Configuring the port has been left
 as a future enhancement.

@@ -1,6 +1,4 @@
-import {
-  LOAD_CENTER_USER_REQUESTED,
-} from './actionTypes';
+import {LOAD_CENTER_USER_REQUESTED} from './actionTypes';
 
 const centerBaseUrl = process.env.REACT_APP_CENTER_BASE_URL;
 

@@ -1,19 +1,21 @@
-import { auth } from 'flight-reactware';
+import {auth} from 'flight-reactware';
 
 import {
   EXPLICIT_SITE_REQUESTED,
   LOAD_TERMINAL_SERVICES_CONFIG_REQUESTED,
 } from './actionTypes';
-import { retrieval } from './selectors';
+import {retrieval} from './selectors';
 
 const centerBaseUrl = process.env.REACT_APP_CENTER_BASE_URL;
 
 export function fetchTerminalServicesConfig(siteId) {
   return (dispatch, getState) => {
     const ssoUser = auth.selectors.currentUserSelector(getState());
-    if (ssoUser == null) { return; }
+    if (ssoUser == null) {
+      return;
+    }
 
-    const { initiated, rejected } = retrieval(getState());
+    const {initiated, rejected} = retrieval(getState());
     if (!initiated || rejected) {
       let url;
       if (siteId == null) {

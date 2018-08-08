@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container } from 'reactstrap';
-import { Redirect } from 'react-router';
-import { compose, branch, nest, renderComponent } from 'recompose';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { auth, showSpinnerUntil } from 'flight-reactware';
+import {Container} from 'reactstrap';
+import {Redirect} from 'react-router';
+import {compose, branch, nest, renderComponent} from 'recompose';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
+import {auth, showSpinnerUntil} from 'flight-reactware';
 
 import centerUsers from '../../../modules/centerUsers';
 import services from '../../../modules/services';
@@ -19,7 +19,10 @@ import TerminalPage from './TerminalPage';
 const NestedLoadError = nest(Container, LoadError);
 const NestedNotLoggedInError = nest(Container, NotLoggedInError);
 const NestedNoCenterAccount = nest(Container, NoCenterAccountError);
-const NestedCenterAccountIsViewerError = nest(Container, CenterAccountIsViewerError);
+const NestedCenterAccountIsViewerError = nest(
+  Container,
+  CenterAccountIsViewerError,
+);
 
 const propTypes = {
   jwt: PropTypes.string.isRequired,
@@ -33,15 +36,12 @@ const env = {
   LANG: 'en_GB.UTF-8',
 };
 
-const DirectoryPage = ({ jwt, site }) => {
-  const title = (
-    <span>
-      Flight Directory: {site.name}
-    </span>
-  );
+const DirectoryPage = ({jwt, site}) => {
+  const title = <span>Flight Directory: {site.name}</span>;
   const overview = (
     <span>
-      Alces Flight Directory provides user, group and host management across your compute estate.
+      Alces Flight Directory provides user, group and host management across
+      your compute estate.
     </span>
   );
 
@@ -66,51 +66,48 @@ const DirectoryPage = ({ jwt, site }) => {
 DirectoryPage.propTypes = propTypes;
 
 const enhance = compose(
-  connect(createStructuredSelector({
-    centerUser: centerUsers.selectors.currentUser,
-    centerUserRetrieval: centerUsers.selectors.retrieval,
-    jwt: auth.selectors.ssoToken,
-    servicesRetrieval: services.selectors.retrieval,
-    site: services.selectors.site,
-    ssoUser: auth.selectors.currentUserSelector,
-  })),
+  connect(
+    createStructuredSelector({
+      centerUser: centerUsers.selectors.currentUser,
+      centerUserRetrieval: centerUsers.selectors.retrieval,
+      jwt: auth.selectors.ssoToken,
+      servicesRetrieval: services.selectors.retrieval,
+      site: services.selectors.site,
+      ssoUser: auth.selectors.currentUserSelector,
+    }),
+  ),
 
   branch(
-    ({ ssoUser }) => ssoUser == null,
+    ({ssoUser}) => ssoUser == null,
     renderComponent(() => <NestedNotLoggedInError />),
   ),
 
-  showSpinnerUntil(
-    ({ centerUser, centerUserRetrieval, servicesRetrieval }) => {
-      const waitingOnCenterUser = !centerUserRetrieval.initiated
-        || centerUserRetrieval.pending;
-      const centerUserPresent = centerUser != null;
-      const waitingOnServices = !servicesRetrieval.initiated
-        || servicesRetrieval.pending;
+  showSpinnerUntil(({centerUser, centerUserRetrieval, servicesRetrieval}) => {
+    const waitingOnCenterUser =
+      !centerUserRetrieval.initiated || centerUserRetrieval.pending;
+    const centerUserPresent = centerUser != null;
+    const waitingOnServices =
+      !servicesRetrieval.initiated || servicesRetrieval.pending;
 
-      return !waitingOnCenterUser && (!centerUserPresent || !waitingOnServices);
-    }
-  ),
+    return !waitingOnCenterUser && (!centerUserPresent || !waitingOnServices);
+  }),
 
   branch(
-    ({ centerUser }) => centerUser == null,
+    ({centerUser}) => centerUser == null,
     renderComponent(() => <NestedNoCenterAccount />),
   ),
 
   branch(
-    ({ centerUser }) => centerUser.role === 'viewer',
+    ({centerUser}) => centerUser.role === 'viewer',
     renderComponent(() => <NestedCenterAccountIsViewerError />),
   ),
 
   branch(
-    ({ servicesRetrieval }) => servicesRetrieval.rejected,
+    ({servicesRetrieval}) => servicesRetrieval.rejected,
     renderComponent(() => <NestedLoadError />),
   ),
 
-  branch(
-    ({ site }) => !site,
-    renderComponent(() => <Redirect to="/" />),
-  )
+  branch(({site}) => !site, renderComponent(() => <Redirect to="/" />)),
 );
 
 export default enhance(DirectoryPage);

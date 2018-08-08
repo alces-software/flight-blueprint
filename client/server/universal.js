@@ -2,23 +2,23 @@ const path = require('path');
 const fs = require('fs');
 
 const React = require('react');
-const { Provider } = require('react-redux');
-const { applyMiddleware, createStore } = require('redux');
-const { default: thunk } = require('redux-thunk');
-const { default: promiseMiddleware } = require('redux-simple-promise');
+const {Provider} = require('react-redux');
+const {applyMiddleware, createStore} = require('redux');
+const {default: thunk} = require('redux-thunk');
+const {default: promiseMiddleware} = require('redux-simple-promise');
 
-const { renderToString } = require('react-dom/server');
-const { StaticRouter } = require('react-router-dom');
+const {renderToString} = require('react-dom/server');
+const {StaticRouter} = require('react-router-dom');
 
-const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
+const {ServerStyleSheet, StyleSheetManager} = require('styled-components');
 const Cookies = require('universal-cookie');
-const { default: Helmet } = require('react-helmet');
+const {default: Helmet} = require('react-helmet');
 
-const { middleware: flightMiddleware } = require('flight-reactware');
-const { default: createReducer } = require('../src/reducers');
+const {middleware: flightMiddleware} = require('flight-reactware');
+const {default: createReducer} = require('../src/reducers');
 
-const { default: routes } = require('../src/routes');
-const { renderRoutes } = require('react-router-config');
+const {default: routes} = require('../src/routes');
+const {renderRoutes} = require('react-router-config');
 
 module.exports = function universalLoader(req, res) {
   const sheet = new ServerStyleSheet();
@@ -35,24 +35,17 @@ module.exports = function universalLoader(req, res) {
     const store = createStore(
       createReducer(cookies),
       {},
-      applyMiddleware(
-        flightMiddleware,
-        thunk,
-        promiseMiddleware()
-      )
+      applyMiddleware(flightMiddleware, thunk, promiseMiddleware()),
     );
 
     const markup = renderToString(
       <StyleSheetManager sheet={sheet.instance}>
         <Provider store={store}>
-          <StaticRouter
-            context={context}
-            location={req.url}
-          >
+          <StaticRouter context={context} location={req.url}>
             {renderRoutes(routes)}
           </StaticRouter>
         </Provider>
-      </StyleSheetManager>
+      </StyleSheetManager>,
     );
 
     const helmet = Helmet.renderStatic();
@@ -60,7 +53,7 @@ module.exports = function universalLoader(req, res) {
     if (context.url) {
       // Somewhere a `<Redirect>` was rendered
       res.writeHead(301, {
-        Location: context.url
+        Location: context.url,
       });
       res.end();
     } else {
@@ -68,7 +61,12 @@ module.exports = function universalLoader(req, res) {
       const RenderedApp = htmlData
         .replace('<title></title>', helmet.title.toString())
         .replace('<div id="root">', '<div id="root">' + markup)
-        .replace('<script id="preload">', '<script id="preload">window.__PRELOADED_STATE__ = ' + JSON.stringify(store.getState()).replace(/</g, '\\u003c') + ';')
+        .replace(
+          '<script id="preload">',
+          '<script id="preload">window.__PRELOADED_STATE__ = ' +
+            JSON.stringify(store.getState()).replace(/</g, '\\u003c') +
+            ';',
+        )
         .replace('</head>', sheet.getStyleTags() + '</head>');
       res.send(RenderedApp);
     }

@@ -3,7 +3,7 @@ const app = require('./app');
 const PORT = process.env.PORT || 4009;
 
 // Why don't I need http createServer
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
 app.on('error', onError);
@@ -13,9 +13,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof PORT === 'string'
-    ? 'Pipe ' + PORT
-    : 'Port ' + PORT;
+  var bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {

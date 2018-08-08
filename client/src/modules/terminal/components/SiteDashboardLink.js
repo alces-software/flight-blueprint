@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import {compose} from 'recompose';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
 import ContextLink from '../../../elements/ContextLink';
 import services from '../../../modules/services';
 
-const SiteDashboardLink = ({ children, siteId }) => {
+const SiteDashboardLink = ({children, siteId}) => {
   const location = siteId == null ? '/' : `/sites/${siteId}`;
   return (
-    <ContextLink
-      linkSite="Center"
-      location={location}
-    >
+    <ContextLink linkSite="Center" location={location}>
       {children}
     </ContextLink>
   );
@@ -25,9 +22,11 @@ SiteDashboardLink.propTypes = {
 };
 
 const enhance = compose(
-  connect(createStructuredSelector({
-    siteId: services.selectors.siteId,
-  })),
+  connect(
+    createStructuredSelector({
+      siteId: services.selectors.siteId,
+    }),
+  ),
 );
 
 export default enhance(SiteDashboardLink);

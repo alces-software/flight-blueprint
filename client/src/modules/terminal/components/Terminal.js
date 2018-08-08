@@ -21,23 +21,17 @@ const lineHeight = '21px';
 const showOutputButtonHeight = '( 36px + 16px )';
 const terminalHeight = `calc( 100vh - ${productBarHeight} - ${terminalPadding} - ${lineHeight} - ${showOutputButtonHeight} )`;
 
-const Terminal = ({ auth, columns, env, rows, socketIOPath, socketIOUrl }) => (
+const Terminal = ({auth, columns, env, rows, socketIOPath, socketIOUrl}) => (
   <SocketContainer
     auth={auth}
     socketIOPath={socketIOPath}
-    socketIOUrl={socketIOUrl}
-  >
-    {({
-      onCloseSocketError,
-      socket,
-      socketError,
-    }) => (
+    socketIOUrl={socketIOUrl}>
+    {({onCloseSocketError, socket, socketError}) => (
       <TerminalContainer
         columns={columns}
         env={env}
         rows={rows}
-        socket={socket}
-      >
+        socket={socket}>
         {({
           getSessionHistory,
           onSessionRestartAccepted,
@@ -57,8 +51,7 @@ const Terminal = ({ auth, columns, env, rows, socketIOPath, socketIOUrl }) => (
             sessionHistoryHeight={terminalHeight}
             showSessionHistory={showSessionHistory}
             socketError={socketError}
-            terminalHeight={terminalHeight}
-          >
+            terminalHeight={terminalHeight}>
             {terminal}
           </TerminalLayout>
         )}

@@ -1,7 +1,7 @@
-import { ContextLink, NavItem } from 'flight-reactware';
+import {ContextLink, NavItem} from 'flight-reactware';
 
-const { makeItem } = NavItem;
-const { makeLink } = ContextLink;
+const {makeItem} = NavItem;
+const {makeLink} = ContextLink;
 
 const currentSite = process.env.REACT_APP_SITE;
 
@@ -35,7 +35,9 @@ export default function(currentUser, site, siteRetrieval) {
     haveSite ? directoryItem() : null,
   ];
   return items.reduce((accum, item) => {
-    if (item != null) { accum.push(item); };
+    if (item != null) {
+      accum.push(item);
+    }
     return accum;
   }, []);
 }

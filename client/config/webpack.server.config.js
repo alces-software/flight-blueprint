@@ -17,14 +17,17 @@ module.exports = {
   target: 'node',
   output: {
     path: path.join(__dirname, '../build/server'),
-    filename: 'server.js'
+    filename: 'server.js',
   },
   externals: nodeModules,
   plugins: [
     new webpack.NormalModuleReplacementPlugin(/\.css$/, 'node-noop'),
-//    new webpack.IgnorePlugin(/\.(css|less)$/),
-    new webpack.BannerPlugin({banner: 'require("source-map-support").install();',
-                              raw: true, entryOnly: false })
+    //    new webpack.IgnorePlugin(/\.(css|less)$/),
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false,
+    }),
   ],
   devtool: 'sourcemap',
   module: {
@@ -35,9 +38,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react-app']
-          }
-        }
+            presets: ['es2015', 'react-app'],
+          },
+        },
       },
       {
         exclude: [
@@ -62,7 +65,7 @@ module.exports = {
           limit: 10000,
           name: '../static/media/[name].[hash:8].[ext]',
         },
-      }
-    ]
-  }
-}
+      },
+    ],
+  },
+};
