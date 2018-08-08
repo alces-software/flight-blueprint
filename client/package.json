@@ -71,6 +71,6 @@
     "serve": "APPROOT=$(pwd) node build/server/server.js"
   },
   "engines": {
-    "node": "8.x.x"
+    "node": ">=8.x.x"
   }
 }
