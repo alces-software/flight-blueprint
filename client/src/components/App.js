@@ -10,7 +10,6 @@ import {withRouter} from 'react-router';
 
 import {Page} from 'flight-reactware';
 
-import ScrollToTop from './ScrollToTop';
 import SitePage from './Page';
 import routes from '../routes';
 import appVersion from '../version';
@@ -73,29 +72,25 @@ const App = ({location, route}) => {
   const lastRouteComponent = branch[branch.length - 1].route;
 
   return (
-    <ScrollToTop>
-      <Page
-        serviceText={process.env.REACT_APP_SERVICE_TEXT}
-        site={process.env.REACT_APP_SITE}>
-        <Helmet
-          defaultTitle={productName}
-          titleTemplate={`${productName} - %s`}>
-          <meta content={appVersion} name="client-version" />
-        </Helmet>
-        <SitePage
-          pageKey={lastRouteComponent.pageKey}
-          title={lastRouteComponent.title}>
-          <CSSTransitionGroup
-            transitionEnterTimeout={250}
-            transitionLeave={false}
-            transitionName="fade">
-            <div key={lastRouteComponent.key || location.pathname}>
-              {renderRoutes(route.routes, {}, {location: location})}
-            </div>
-          </CSSTransitionGroup>
-        </SitePage>
-      </Page>
-    </ScrollToTop>
+    <Page
+      serviceText={process.env.REACT_APP_SERVICE_TEXT}
+      site={process.env.REACT_APP_SITE}>
+      <Helmet defaultTitle={productName} titleTemplate={`${productName} - %s`}>
+        <meta content={appVersion} name="client-version" />
+      </Helmet>
+      <SitePage
+        pageKey={lastRouteComponent.pageKey}
+        title={lastRouteComponent.title}>
+        <CSSTransitionGroup
+          transitionEnterTimeout={250}
+          transitionLeave={false}
+          transitionName="fade">
+          <div key={lastRouteComponent.key || location.pathname}>
+            {renderRoutes(route.routes, {}, {location: location})}
+          </div>
+        </CSSTransitionGroup>
+      </SitePage>
+    </Page>
   );
 };
 
