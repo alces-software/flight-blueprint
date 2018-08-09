@@ -356,6 +356,7 @@ view model =
                 ]
             , Css.property "display" "grid"
             , Css.property "grid-template-columns" "66% 33%"
+            , minHeight (vh 75)
             ]
         ]
         [ div
