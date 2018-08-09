@@ -5,6 +5,9 @@ import Bootstrap.Modal as Modal
 import Css exposing (..)
 import Css.Colors exposing (..)
 import FeatherIcons as Icons
+import Form exposing (Form)
+import Form.Value as Value exposing (Value)
+import Form.View
 import Html
 import Html.Events
 import Html.Styled exposing (..)
@@ -25,12 +28,26 @@ type alias Model =
     , clusters : List ClusterDomain
     , exportedYaml : String
     , computeModal : ComputeModal
+    , computeForm : ComputeForm
     }
 
 
 type ComputeModal
     = Hidden
     | AddingCompute Int
+
+
+type alias ComputeForm =
+    Form.View.Model ComputeFormValues
+
+
+type alias ComputeFormValues =
+    { name : Value.Value String
+    , base : Value.Value String
+    , startIndex : Value.Value Float
+    , size : Value.Value Float
+    , indexPadding : Value.Value Float
+    }
 
 
 type alias CoreDomain =
@@ -97,9 +114,21 @@ init =
             , clusters = []
             , exportedYaml = ""
             , computeModal = Hidden
+            , computeForm = initComputeForm
             }
     in
     initialModel ! [ convertToYamlCmd initialModel ]
+
+
+initComputeForm : ComputeForm
+initComputeForm =
+    Form.View.idle
+        { name = Value.filled "nodes"
+        , base = Value.filled "node"
+        , startIndex = Value.filled 1
+        , size = Value.blank
+        , indexPadding = Value.filled 2
+        }
 
 
 
@@ -111,6 +140,8 @@ type Msg
     | RemoveCluster Int
     | StartAddingComputeGroup Int
     | CancelAddingComputeGroup
+    | ComputeGroupFormChanged ComputeForm
+    | CreateComputeGroup Int String String Int Int Int
     | AddInfra
     | RemoveInfra
     | NewConvertedYaml String
@@ -233,6 +264,42 @@ updateInterfaceState msg model =
 
         CancelAddingComputeGroup ->
             { model | computeModal = Hidden }
+
+        ComputeGroupFormChanged newFormModel ->
+            { model | computeForm = newFormModel }
+
+        CreateComputeGroup clusterIndex name base startIndex size indexPadding ->
+            let
+                newClusters =
+                    List.Extra.updateAt
+                        clusterIndex
+                        addGroup
+                        model.clusters
+
+                addGroup cluster =
+                    { cluster
+                        | computeGroups =
+                            List.concat
+                                [ cluster.computeGroups
+                                , [ newGroup ]
+                                ]
+                    }
+
+                newGroup =
+                    { name = name
+                    , nodes =
+                        { base = base
+                        , startIndex = startIndex
+                        , size = size
+                        , indexPadding = indexPadding
+                        }
+                    }
+            in
+            { model
+                | clusters = newClusters
+                , computeModal = Hidden
+                , computeForm = initComputeForm
+            }
 
 
 convertToYamlCmd : Model -> Cmd Msg
@@ -583,7 +650,7 @@ computeModal model =
                         Just cluster ->
                             ( Modal.shown
                             , "Add compute to " ++ cluster.name
-                            , addComputeGroupForm cluster |> toUnstyled
+                            , viewComputeGroupForm model.computeForm clusterIndex
                             )
 
                         Nothing ->
@@ -610,9 +677,96 @@ computeModal model =
         |> Html.Styled.fromUnstyled
 
 
-addComputeGroupForm : ClusterDomain -> Html Msg
-addComputeGroupForm cluster =
-    p [] [ text "TODO actual form" ]
+viewComputeGroupForm : ComputeForm -> Int -> Html.Html Msg
+viewComputeGroupForm computeFormModel clusterIndex =
+    Form.View.asHtml
+        { onChange = ComputeGroupFormChanged
+        , action = "Create"
+        , loading = "Creating..."
+        , validation = Form.View.ValidateOnBlur
+        }
+        (computeGroupForm clusterIndex)
+        computeFormModel
+
+
+computeGroupForm : Int -> Form ComputeFormValues Msg
+computeGroupForm clusterIndex =
+    let
+        nameField =
+            Form.textField
+                { parser = Ok
+                , value = .name
+                , update = \value values -> { values | name = value }
+                , attributes =
+                    { label = "New group name"
+                    , placeholder = ""
+                    }
+                }
+
+        baseField =
+            Form.textField
+                { parser = Ok
+                , value = .base
+                , update = \value values -> { values | base = value }
+                , attributes =
+                    { label = "Base to use for generated node names"
+                    , placeholder = ""
+                    }
+                }
+
+        startIndexField =
+            Form.numberField
+                { parser = intParser
+                , value = .startIndex
+                , update = \value values -> { values | startIndex = value }
+                , attributes =
+                    { label = "Index to start from when generating node names"
+                    , placeholder = ""
+                    , max = Nothing
+                    , min = Just 1
+                    , step = 1
+                    }
+                }
+
+        sizeField =
+            Form.numberField
+                { parser = intParser
+                , value = .size
+                , update = \value values -> { values | size = value }
+                , attributes =
+                    { label = "Number of nodes to generate"
+                    , placeholder = ""
+                    , max = Nothing
+                    , min = Just 1
+                    , step = 1
+                    }
+                }
+
+        indexPaddingField =
+            Form.numberField
+                { parser = intParser
+                , value = .indexPadding
+                , update = \value values -> { values | indexPadding = value }
+                , attributes =
+                    { label = "Padding to use for indices when generating nodes"
+                    , placeholder = ""
+                    , max = Just 10
+                    , min = Just 0
+                    , step = 1
+                    }
+                }
+
+        intParser float =
+            toString float
+                |> String.toInt
+                |> Result.mapError (always "Must be an integer.")
+    in
+    Form.succeed (CreateComputeGroup clusterIndex)
+        |> Form.append nameField
+        |> Form.append baseField
+        |> Form.append startIndexField
+        |> Form.append sizeField
+        |> Form.append indexPaddingField
 
 
 
