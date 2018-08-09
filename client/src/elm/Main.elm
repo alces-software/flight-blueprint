@@ -1,9 +1,12 @@
 port module Main exposing (..)
 
+import Bootstrap.Button as Button
+import Bootstrap.Modal as Modal
 import Css exposing (..)
 import Css.Colors exposing (..)
 import FeatherIcons as Icons
 import Html
+import Html.Events
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
@@ -21,7 +24,13 @@ type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
     , exportedYaml : String
+    , computeModal : ComputeModal
     }
+
+
+type ComputeModal
+    = Hidden
+    | AddingCompute Int
 
 
 type alias CoreDomain =
@@ -46,7 +55,7 @@ type alias Infra =
 type alias ClusterDomain =
     { name : String
     , login : Login
-    , compute : List Compute
+    , computeGroups : List PrimaryGroup
     }
 
 
@@ -54,8 +63,21 @@ type alias Login =
     Node
 
 
-type alias Compute =
-    Node
+type alias PrimaryGroup =
+    { name : String
+    , nodes : NodesSpecification
+    }
+
+
+type alias NodesSpecification =
+    { base : String
+    , startIndex : Int
+    , size : Int
+    , indexPadding : Int
+
+    -- XXX Maybe needed?
+    -- , overrides : List something
+    }
 
 
 type alias Node =
@@ -74,6 +96,7 @@ init =
                 }
             , clusters = []
             , exportedYaml = ""
+            , computeModal = Hidden
             }
     in
     initialModel ! [ convertToYamlCmd initialModel ]
@@ -86,8 +109,8 @@ init =
 type Msg
     = AddCluster
     | RemoveCluster Int
-    | AddCompute Int
-    | RemoveCompute Int
+    | StartAddingComputeGroup Int
+    | CancelAddingComputeGroup
     | AddInfra
     | RemoveInfra
     | NewConvertedYaml String
@@ -99,7 +122,6 @@ type NodeSpecifier
     = Gateway
     | Infra
     | Login Int
-    | Compute Int Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -133,7 +155,7 @@ updateInterfaceState msg model =
                     { name = nextClusterName model.clusters
                     , login =
                         { name = "login1" }
-                    , compute = []
+                    , computeGroups = []
                     }
             in
             { model | clusters = newClusters }
@@ -142,26 +164,6 @@ updateInterfaceState msg model =
             { model
                 | clusters = List.Extra.removeAt clusterIndex model.clusters
             }
-
-        AddCompute clusterIndex ->
-            let
-                addCompute currentCompute =
-                    List.concat
-                        [ currentCompute
-                        , [ { name =
-                                nextComputeNodeName currentCompute
-                            }
-                          ]
-                        ]
-            in
-            changeComputeForCluster model clusterIndex addCompute
-
-        RemoveCompute clusterIndex ->
-            let
-                removeLastComputeNode currentCompute =
-                    exceptLast currentCompute
-            in
-            changeComputeForCluster model clusterIndex removeLastComputeNode
 
         AddInfra ->
             changeInfra model <| Just { name = "infra" }
@@ -216,16 +218,6 @@ updateInterfaceState msg model =
                     in
                     { model | clusters = newClusters }
 
-                Compute clusterIndex computeIndex ->
-                    let
-                        changeClusterCompute =
-                            List.Extra.updateAt computeIndex
-                                (always newNode)
-                    in
-                    changeComputeForCluster model
-                        clusterIndex
-                        changeClusterCompute
-
         SetClusterName clusterIndex name ->
             let
                 newClusters =
@@ -236,6 +228,12 @@ updateInterfaceState msg model =
             in
             { model | clusters = newClusters }
 
+        StartAddingComputeGroup clusterIndex ->
+            { model | computeModal = AddingCompute clusterIndex }
+
+        CancelAddingComputeGroup ->
+            { model | computeModal = Hidden }
+
 
 convertToYamlCmd : Model -> Cmd Msg
 convertToYamlCmd =
@@ -245,15 +243,6 @@ convertToYamlCmd =
 nextClusterName : List ClusterDomain -> String
 nextClusterName clusters =
     "cluster" ++ nextIndex clusters
-
-
-nextComputeNodeName : List Compute -> String
-nextComputeNodeName nodes =
-    let
-        suffix =
-            String.padLeft 3 '0' <| nextIndex nodes
-    in
-    "node" ++ suffix
 
 
 nextIndex : List a -> String
@@ -273,22 +262,6 @@ changeInfra model infra =
             model.core
     in
     { model | core = newCore }
-
-
-changeComputeForCluster :
-    Model
-    -> Int
-    -> (List Compute -> List Compute)
-    -> Model
-changeComputeForCluster model clusterIndex changeCompute =
-    let
-        newClusters =
-            List.Extra.updateAt
-                clusterIndex
-                (\c -> { c | compute = changeCompute c.compute })
-                model.clusters
-    in
-    { model | clusters = newClusters }
 
 
 encodeModel : Model -> E.Value
@@ -324,13 +297,13 @@ encodeCluster cluster =
     let
         loginField =
             ( "login", encodeNode cluster.login )
-
-        computeField =
-            ( "compute"
-            , E.list <| List.map encodeNode cluster.compute
-            )
     in
-    E.object [ loginField, computeField ]
+    E.object
+        [ loginField
+
+        -- XXX handle encoding compute nodes in new format
+        -- , computeField
+        ]
 
 
 encodeNode : Node -> E.Value
@@ -375,6 +348,9 @@ view model =
                     [ text model.exportedYaml ]
                 ]
             ]
+
+        -- Must appear last so doesn't interfere with grid layout.
+        , computeModal model
         ]
 
 
@@ -408,39 +384,15 @@ viewCluster model clusterIndex cluster =
         color =
             clusterColor model clusterIndex
 
-        ( otherNodes, maybeLastNode ) =
-            ( exceptLast cluster.compute
-            , List.Extra.last cluster.compute
-            )
-
         viewClusterNode =
             viewNode color
-
-        viewLastNode =
-            let
-                lastNodeIndex =
-                    List.length cluster.compute - 1
-            in
-            maybeHtml maybeLastNode
-                (viewClusterNode
-                    (Compute clusterIndex lastNodeIndex)
-                    (Just <| RemoveCompute clusterIndex)
-                )
     in
     viewDomain color
-        (List.concat
-            [ [ nameInput color cluster (SetClusterName clusterIndex)
-              , removeButton <| RemoveCluster clusterIndex
-              , viewClusterNode (Login clusterIndex) Nothing cluster.login
-              ]
-            , List.indexedMap
-                (\i -> viewClusterNode (Compute clusterIndex i) Nothing)
-                otherNodes
-            , [ viewLastNode
-              , addComputeButton clusterIndex
-              ]
-            ]
-        )
+        [ nameInput color cluster (SetClusterName clusterIndex)
+        , removeButton <| RemoveCluster clusterIndex
+        , viewClusterNode (Login clusterIndex) Nothing cluster.login
+        , addComputeButton clusterIndex
+        ]
 
 
 clusterColor : Model -> Int -> Color
@@ -479,7 +431,7 @@ addInfraButton =
 
 addComputeButton : Int -> Html Msg
 addComputeButton clusterIndex =
-    addButton "compute" nodeStyles (AddCompute clusterIndex)
+    addButton "compute" nodeStyles (StartAddingComputeGroup clusterIndex)
 
 
 addClusterButton : Html Msg
@@ -555,9 +507,6 @@ nodeIcon nodeSpecifier =
                     , "Login node"
                     )
 
-                Compute _ _ ->
-                    ( Icons.settings, "Compute node" )
-
         iconHtml =
             Icons.withSize 15 icon
                 |> Icons.toHtml []
@@ -615,6 +564,55 @@ maybeHtml maybeItem itemToHtml =
 nothing : Html Msg
 nothing =
     text ""
+
+
+computeModal : Model -> Html Msg
+computeModal model =
+    let
+        ( visibility, header, body ) =
+            case model.computeModal of
+                Hidden ->
+                    hiddenModalTriplet
+
+                AddingCompute clusterIndex ->
+                    let
+                        maybeCluster =
+                            List.Extra.getAt clusterIndex model.clusters
+                    in
+                    case maybeCluster of
+                        Just cluster ->
+                            ( Modal.shown
+                            , "Add compute to " ++ cluster.name
+                            , addComputeGroupForm cluster |> toUnstyled
+                            )
+
+                        Nothing ->
+                            -- If we're trying to add compute to a cluster
+                            -- which isn't in the model, something must have
+                            -- gone wrong, so keep the modal hidden.
+                            hiddenModalTriplet
+
+        hiddenModalTriplet =
+            ( Modal.hidden, "", toUnstyled nothing )
+    in
+    Modal.config CancelAddingComputeGroup
+        |> Modal.hideOnBackdropClick True
+        |> Modal.h3 [] [ Html.text header ]
+        |> Modal.body [] [ body ]
+        |> Modal.footer []
+            [ Button.button
+                [ Button.outlineWarning
+                , Button.attrs [ Html.Events.onClick CancelAddingComputeGroup ]
+                ]
+                [ Html.text "Cancel" ]
+            ]
+        |> Modal.view visibility
+        |> Html.Styled.fromUnstyled
+
+
+addComputeGroupForm : ClusterDomain -> Html Msg
+addComputeGroupForm cluster =
+    p [] [ text "TODO actual form" ]
 
 
 
