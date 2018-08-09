@@ -59,7 +59,7 @@
     "webpack": "^3.0.0"
   },
   "scripts": {
-    "start": "PORT=3006 node scripts/customized-config start",
+    "start": "PORT=3007 node scripts/customized-config start",
     "build": "node scripts/customized-config build && NODE_ENV=production webpack --config config/webpack.server.config.js",
     "build:client": "node scripts/customized-config build",
     "build:server": "NODE_ENV=production webpack --config config/webpack.server.config.js",
