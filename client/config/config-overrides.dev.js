@@ -24,7 +24,10 @@ module.exports = function(config) {
     exclude: [/elm-stuff/, /node_modules/],
     use: {
       loader: 'elm-webpack-loader',
-      options: {cwd: path.resolve('./src/elm')},
+      options: {
+        debug: true,
+        cwd: path.resolve('./src/elm'),
+      },
     },
   });
 
