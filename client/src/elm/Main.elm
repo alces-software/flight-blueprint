@@ -16,6 +16,8 @@ import Html.Styled.Events exposing (onClick, onInput)
 import Json.Encode as E
 import List.Extra
 import Maybe.Extra
+import Node exposing (Node)
+import PrimaryGroup exposing (PrimaryGroup)
 import Svg
 import Svg.Attributes exposing (points, x1, x2, y1, y2)
 
@@ -78,28 +80,6 @@ type alias ClusterDomain =
 
 type alias Login =
     Node
-
-
-type alias PrimaryGroup =
-    { name : String
-    , nodes : NodesSpecification
-    }
-
-
-type alias NodesSpecification =
-    { base : String
-    , startIndex : Int
-    , size : Int
-    , indexPadding : Int
-
-    -- XXX Maybe needed?
-    -- , overrides : List something
-    }
-
-
-type alias Node =
-    { name : String
-    }
 
 
 init : ( Model, Cmd Msg )
