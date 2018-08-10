@@ -13,16 +13,14 @@ suite =
         [ describe "nodes"
             [ test "generates list of Nodes from PrimaryGroup.nodes" <|
                 let
-                    nodesSpec =
-                        { base = "node"
-                        , startIndex = 4
-                        , size = 3
-                        , indexPadding = 2
-                        }
-
                     group =
-                        { name = ""
-                        , nodes = nodesSpec
+                        { groupFixture
+                            | nodes =
+                                { nodesFixture
+                                    | startIndex = 4
+                                    , size = 3
+                                    , indexPadding = 2
+                                }
                         }
                 in
                 \_ ->
@@ -33,3 +31,19 @@ suite =
                         ]
             ]
         ]
+
+
+groupFixture : PrimaryGroup
+groupFixture =
+    { name = "nodes"
+    , nodes = nodesFixture
+    }
+
+
+nodesFixture : PrimaryGroup.NodesSpecification
+nodesFixture =
+    { base = "node"
+    , startIndex = 1
+    , size = 2
+    , indexPadding = 3
+    }
