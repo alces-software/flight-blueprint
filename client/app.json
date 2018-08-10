@@ -1,7 +1,7 @@
 {
-  "name": "flight-terminal-services-client",
-  "description": "The Flight Terminal Services Client",
-  "repository": "https://github.com/alces-software/flight-terminal-services-client",
+  "name": "flight-blueprint",
+  "description": "Flight Blueprint",
+  "repository": "https://github.com/alces-software/flight-blueprint",
   "scripts": {
     "dokku": {
       "predeploy": "yarn run build"
