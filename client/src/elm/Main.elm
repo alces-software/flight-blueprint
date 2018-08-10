@@ -102,13 +102,17 @@ init =
 
 initComputeForm : ComputeForm
 initComputeForm =
-    Form.View.idle
-        { name = Value.filled "nodes"
-        , base = Value.filled "node"
-        , startIndex = Value.filled 1
-        , size = Value.blank
-        , indexPadding = Value.filled 2
-        }
+    Form.View.idle initialComputeFormValues
+
+
+initialComputeFormValues : ComputeFormValues
+initialComputeFormValues =
+    { name = Value.filled "nodes"
+    , base = Value.filled "node"
+    , startIndex = Value.filled 1
+    , size = Value.blank
+    , indexPadding = Value.filled 2
+    }
 
 
 
@@ -699,7 +703,7 @@ computeGroupForm clusterIndex =
             Form.textField
                 { parser = Ok
                 , value = .name
-                , update = \value values -> { values | name = value }
+                , update = updateName
                 , attributes =
                     { label = "New group name"
                     , placeholder = ""
@@ -770,6 +774,42 @@ computeGroupForm clusterIndex =
         |> Form.append startIndexField
         |> Form.append sizeField
         |> Form.append indexPaddingField
+
+
+updateName : Value.Value String -> ComputeFormValues -> ComputeFormValues
+updateName newNameValue values =
+    let
+        ( newName, currentName, currentBase ) =
+            ( raw newNameValue
+            , raw values.name
+            , raw values.base
+            )
+
+        raw =
+            Value.raw >> Maybe.withDefault ""
+
+        newBase =
+            if shouldKeepCurrentBase then
+                currentBase
+            else
+                singularized newName
+
+        shouldKeepCurrentBase =
+            not <| currentBase == singularized currentName
+
+        singularized word =
+            if isPlural word then
+                String.dropRight 1 word
+            else
+                word
+
+        isPlural =
+            String.endsWith "s"
+    in
+    { values
+        | name = Value.filled newName
+        , base = Value.filled newBase
+    }
 
 
 
