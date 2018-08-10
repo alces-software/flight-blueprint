@@ -133,6 +133,8 @@ type NodeSpecifier
     = Gateway
     | Infra
     | Login Int
+      -- XXX Handle compute better
+    | Compute
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -228,6 +230,10 @@ updateInterfaceState msg model =
                             { cluster | login = newNode }
                     in
                     { model | clusters = newClusters }
+
+                Compute ->
+                    -- XXX Handle compute better
+                    model
 
         SetClusterName clusterIndex name ->
             let
@@ -390,7 +396,7 @@ view model =
         , div
             [ css [ Css.property "grid-column-start" "2" ] ]
             [ div
-                [ css <| boxStyles containerBoxBorderWidth black ]
+                [ css <| boxStyles containerBoxBorderWidth solid black ]
                 [ Html.Styled.pre []
                     [ text model.exportedYaml ]
                 ]
@@ -430,16 +436,30 @@ viewCluster model clusterIndex cluster =
     let
         color =
             clusterColor model clusterIndex
-
-        viewClusterNode =
-            viewNode color
     in
     viewDomain color
-        [ nameInput color cluster (SetClusterName clusterIndex)
-        , removeButton <| RemoveCluster clusterIndex
-        , viewClusterNode (Login clusterIndex) Nothing cluster.login
-        , addComputeButton clusterIndex
-        ]
+        (List.concat
+            [ [ nameInput color cluster (SetClusterName clusterIndex)
+              , removeButton <| RemoveCluster clusterIndex
+              , viewNode color (Login clusterIndex) Nothing cluster.login
+              ]
+            , List.map (viewPrimaryGroup color) cluster.computeGroups
+            , [ addComputeButton clusterIndex ]
+            ]
+        )
+
+
+viewPrimaryGroup : Color -> PrimaryGroup -> Html Msg
+viewPrimaryGroup color group =
+    let
+        nodes =
+            PrimaryGroup.nodes group
+    in
+    div
+        [ css <| groupStyles color ]
+        (text group.name
+            :: List.map (viewNode color Compute Nothing) nodes
+        )
 
 
 clusterColor : Model -> Int -> Color
@@ -553,6 +573,9 @@ nodeIcon nodeSpecifier =
                         ]
                     , "Login node"
                     )
+
+                Compute ->
+                    ( Icons.settings, "Compute node" )
 
         iconHtml =
             Icons.withSize 15 icon
@@ -756,28 +779,38 @@ computeGroupForm clusterIndex =
 domainStyles : Color -> List Style
 domainStyles color =
     List.concat
-        [ [ Css.width (px 200)
+        [ [ Css.width (px 300)
           , display inlineBlock
           , margin standardMargin
           ]
-        , boxStyles containerBoxBorderWidth color
+        , boxStyles containerBoxBorderWidth solid color
         ]
 
 
 nodeStyles : Color -> List Style
-nodeStyles domainColor =
+nodeStyles color =
+    innerBoxStyles solid color
+
+
+groupStyles : Color -> List Style
+groupStyles color =
+    innerBoxStyles dashed color
+
+
+innerBoxStyles : BorderStyle compatible -> Color -> List Style
+innerBoxStyles borderStyle boxColor =
     List.concat
         [ [ marginTop standardMargin ]
-        , boxStyles innerBoxBorderWidth domainColor
+        , boxStyles innerBoxBorderWidth borderStyle boxColor
         ]
 
 
-boxStyles : Float -> Color -> List Style
-boxStyles borderWidth boxColor =
+boxStyles : Float -> BorderStyle compatible -> Color -> List Style
+boxStyles borderWidth borderStyle boxColor =
     [ backgroundColor white
     , border (px borderWidth)
     , borderColor boxColor
-    , borderStyle solid
+    , Css.borderStyle borderStyle
     , color boxColor
     , minHeight (px 50)
     , padding (px 10)
