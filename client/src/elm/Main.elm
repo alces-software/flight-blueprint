@@ -4,6 +4,7 @@ import Bootstrap.Button as Button
 import Bootstrap.Modal as Modal
 import Css exposing (..)
 import Css.Colors exposing (..)
+import EveryDict exposing (EveryDict)
 import FeatherIcons as Icons
 import Form exposing (Form)
 import Form.Value as Value exposing (Value)
@@ -21,6 +22,7 @@ import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
 import Svg
 import Svg.Attributes exposing (points, x1, x2, y1, y2)
+import Uuid exposing (Uuid)
 
 
 ---- MODEL ----
@@ -29,6 +31,7 @@ import Svg.Attributes exposing (points, x1, x2, y1, y2)
 type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
+    , clusterPrimaryGroups : EveryDict Uuid PrimaryGroup
     , exportedYaml : String
     , randomSeed : Seed
     , computeModal : ComputeModal
@@ -76,7 +79,7 @@ type alias Infra =
 type alias ClusterDomain =
     { name : String
     , login : Login
-    , computeGroups : List PrimaryGroup
+    , computeGroupIds : List Uuid
     }
 
 
@@ -94,6 +97,7 @@ init initialRandomSeed =
                 , infra = Nothing
                 }
             , clusters = []
+            , clusterPrimaryGroups = EveryDict.empty
             , exportedYaml = ""
             , randomSeed = Random.Pcg.initialSeed initialRandomSeed
             , computeModal = Hidden
@@ -175,7 +179,7 @@ updateInterfaceState msg model =
                     { name = nextClusterName model.clusters
                     , login =
                         { name = "login1" }
-                    , computeGroups = []
+                    , computeGroupIds = []
                     }
             in
             { model | clusters = newClusters }
@@ -263,20 +267,29 @@ updateInterfaceState msg model =
 
         CreateComputeGroup clusterIndex name base startIndex size indexPadding ->
             let
+                currentCluster =
+                    List.Extra.getAt clusterIndex model.clusters
+
                 newClusters =
                     List.Extra.updateAt
                         clusterIndex
-                        addGroup
+                        addGroupId
                         model.clusters
 
-                addGroup cluster =
+                addGroupId cluster =
                     { cluster
-                        | computeGroups =
-                            List.concat
-                                [ cluster.computeGroups
-                                , [ newGroup ]
-                                ]
+                        | computeGroupIds =
+                            newGroupId :: cluster.computeGroupIds
                     }
+
+                ( newGroupId, newSeed ) =
+                    Random.Pcg.step Uuid.uuidGenerator model.randomSeed
+
+                newGroups =
+                    EveryDict.insert
+                        newGroupId
+                        newGroup
+                        model.clusterPrimaryGroups
 
                 newGroup =
                     { name = name
@@ -290,6 +303,8 @@ updateInterfaceState msg model =
             in
             { model
                 | clusters = newClusters
+                , clusterPrimaryGroups = newGroups
+                , randomSeed = newSeed
                 , computeModal = Hidden
                 , computeForm = initComputeForm
             }
@@ -450,23 +465,32 @@ viewCluster model clusterIndex cluster =
               , removeButton <| RemoveCluster clusterIndex
               , viewNode color (Login clusterIndex) Nothing cluster.login
               ]
-            , List.map (viewPrimaryGroup color) cluster.computeGroups
+            , List.map (viewPrimaryGroup model color) cluster.computeGroupIds
             , [ addComputeButton clusterIndex ]
             ]
         )
 
 
-viewPrimaryGroup : Color -> PrimaryGroup -> Html Msg
-viewPrimaryGroup color group =
+viewPrimaryGroup : Model -> Color -> Uuid -> Html Msg
+viewPrimaryGroup model color groupId =
     let
-        nodes =
-            PrimaryGroup.nodes group
+        maybeGroup =
+            EveryDict.get groupId model.clusterPrimaryGroups
     in
-    div
-        [ css <| groupStyles color ]
-        (text group.name
-            :: List.map (viewNode color Compute Nothing) nodes
-        )
+    case maybeGroup of
+        Just group ->
+            let
+                nodes =
+                    PrimaryGroup.nodes group
+            in
+            div
+                [ css <| groupStyles color ]
+                (text group.name
+                    :: List.map (viewNode color Compute Nothing) nodes
+                )
+
+        Nothing ->
+            nothing
 
 
 clusterColor : Model -> Int -> Color
