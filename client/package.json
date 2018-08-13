@@ -70,7 +70,8 @@
     "test": "node scripts/customized-config test --env=jsdom",
     "eject": "react-scripts eject",
     "start:server": "APPROOT=$(pwd) NODE_ENV=development nodemon --watch src --watch server server/index.js",
-    "serve": "APPROOT=$(pwd) node build/server/server.js"
+    "serve": "APPROOT=$(pwd) node build/server/server.js",
+    "elm-package-install": "scripts/elm-package-install"
   },
   "engines": {
     "node": ">=8.x.x"
