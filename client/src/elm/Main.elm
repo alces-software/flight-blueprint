@@ -133,6 +133,7 @@ type Msg
     | CancelAddingComputeGroup
     | ComputeGroupFormChanged ComputeForm
     | CreateComputeGroup Int String String Int Int Int
+    | RemoveComputeGroup Uuid
     | AddInfra
     | RemoveInfra
     | NewConvertedYaml String
@@ -309,6 +310,19 @@ updateInterfaceState msg model =
                 , computeForm = initComputeForm
             }
 
+        RemoveComputeGroup groupId ->
+            let
+                -- Only delete the group itself, and not any possible
+                -- references to this elsewhere. This makes things simple and
+                -- should be fine so long as we always handle 'the group being
+                -- referenced but not existing' case the same as the 'group not
+                -- being referenced at all' case. XXX See if this causes
+                -- problems and if I still think the same in future.
+                newGroups =
+                    EveryDict.remove groupId model.clusterPrimaryGroups
+            in
+            { model | clusterPrimaryGroups = newGroups }
+
 
 convertToYamlCmd : Model -> Cmd Msg
 convertToYamlCmd =
@@ -482,12 +496,16 @@ viewPrimaryGroup model color groupId =
             let
                 nodes =
                     PrimaryGroup.nodes group
+
+                children =
+                    List.concat
+                        [ [ text group.name
+                          , removeButton <| RemoveComputeGroup groupId
+                          ]
+                        , List.map (viewNode color Compute Nothing) nodes
+                        ]
             in
-            div
-                [ css <| groupStyles color ]
-                (text group.name
-                    :: List.map (viewNode color Compute Nothing) nodes
-                )
+            div [ css <| groupStyles color ] children
 
         Nothing ->
             nothing
