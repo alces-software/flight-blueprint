@@ -18,6 +18,7 @@ import List.Extra
 import Maybe.Extra
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
+import Random.Pcg exposing (Seed)
 import Svg
 import Svg.Attributes exposing (points, x1, x2, y1, y2)
 
@@ -29,6 +30,7 @@ type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
     , exportedYaml : String
+    , randomSeed : Seed
     , computeModal : ComputeModal
     , computeForm : ComputeForm
     }
@@ -82,8 +84,8 @@ type alias Login =
     Node
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Int -> ( Model, Cmd Msg )
+init initialRandomSeed =
     let
         initialModel =
             { core =
@@ -93,6 +95,7 @@ init =
                 }
             , clusters = []
             , exportedYaml = ""
+            , randomSeed = Random.Pcg.initialSeed initialRandomSeed
             , computeModal = Hidden
             , computeForm = initComputeForm
             }
@@ -913,9 +916,9 @@ subscriptions model =
 ---- PROGRAM ----
 
 
-main : Program Never Model Msg
+main : Program Int Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { view = view >> toUnstyled
         , init = init
         , update = update

@@ -13,7 +13,16 @@ const ElmAppComponent = (props) => {
     ports.convertToYaml.subscribe(convertToYaml);
   };
 
-  return <ReactElmComponent ports={setupPorts} src={ElmApp} />;
+  // App currently just requires a single Int to be passed via flags, to use as
+  // initial random seed.
+  const initialRandomSeed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+  return (
+    <ReactElmComponent
+      flags={initialRandomSeed}
+      ports={setupPorts}
+      src={ElmApp}
+    />
+  );
 };
 
 export default ElmAppComponent;
