@@ -4,6 +4,8 @@ import Bootstrap.Button as Button
 import Bootstrap.Form
 import Bootstrap.Form.Input
 import Bootstrap.Modal as Modal
+import ComputeForm.Model exposing (..)
+import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
 import EveryDict exposing (EveryDict)
@@ -22,6 +24,8 @@ import Html.Styled.Events exposing (onClick, onInput)
 import Json.Encode as E
 import List.Extra
 import Maybe.Extra
+import Model exposing (ClusterDomain, CoreDomain, Model)
+import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
@@ -31,54 +35,9 @@ import Uuid exposing (Uuid)
 ---- MODEL ----
 
 
-type alias Model =
-    { core : CoreDomain
-    , clusters : List ClusterDomain
-    , clusterPrimaryGroups : EveryDict Uuid PrimaryGroup
-    , exportedYaml : String
-    , randomSeed : Seed
-    , computeModal : ComputeModal
-    , computeForm : ComputeForm
-    }
-
-
-type ComputeModal
-    = Hidden
-    | AddingCompute Int
-
-
-type alias ComputeForm =
-    Form () PrimaryGroup
-
-
-type alias CoreDomain =
-    { gateway : Gateway
-    , infra : Maybe Infra
-    }
-
-
 coreName : String
 coreName =
     "core"
-
-
-type alias Gateway =
-    Node
-
-
-type alias Infra =
-    Node
-
-
-type alias ClusterDomain =
-    { name : String
-    , login : Login
-    , computeGroupIds : List Uuid
-    }
-
-
-type alias Login =
-    Node
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -140,28 +99,6 @@ computeFormValidation =
 
 
 ---- UPDATE ----
-
-
-type Msg
-    = AddCluster
-    | RemoveCluster Int
-    | StartAddingComputeGroup Int
-    | CancelAddingComputeGroup
-    | ComputeFormMsg Int Form.Msg
-    | RemoveComputeGroup Uuid
-    | AddInfra
-    | RemoveInfra
-    | NewConvertedYaml String
-    | SetNodeName NodeSpecifier String
-    | SetClusterName Int String
-
-
-type NodeSpecifier
-    = Gateway
-    | Infra
-    | Login Int
-      -- XXX Handle compute better
-    | Compute
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -401,7 +338,7 @@ nextIndex items =
         |> toString
 
 
-changeInfra : Model -> Maybe Infra -> Model
+changeInfra : Model -> Maybe Node -> Model
 changeInfra model infra =
     let
         newCore =
@@ -499,7 +436,8 @@ view model =
             ]
 
         -- Must appear last so doesn't interfere with grid layout.
-        , computeModal model
+        , ComputeForm.View.viewFormModal model
+            |> Html.Styled.fromUnstyled
         ]
 
 
@@ -733,247 +671,6 @@ maybeHtml maybeItem itemToHtml =
 nothing : Html msg
 nothing =
     text ""
-
-
-computeModal : Model -> Html Msg
-computeModal model =
-    let
-        ( visibility, header, body ) =
-            case model.computeModal of
-                Hidden ->
-                    hiddenModalTriplet
-
-                AddingCompute clusterIndex ->
-                    let
-                        maybeCluster =
-                            List.Extra.getAt clusterIndex model.clusters
-                    in
-                    case maybeCluster of
-                        Just cluster ->
-                            ( Modal.shown
-                            , "Add compute to " ++ cluster.name
-                            , viewComputeGroupForm model.computeForm clusterIndex
-                            )
-
-                        Nothing ->
-                            -- If we're trying to add compute to a cluster
-                            -- which isn't in the model, something must have
-                            -- gone wrong, so keep the modal hidden.
-                            hiddenModalTriplet
-
-        hiddenModalTriplet =
-            ( Modal.hidden, "", toUnstyled nothing )
-    in
-    Modal.config CancelAddingComputeGroup
-        |> Modal.hideOnBackdropClick True
-        |> Modal.h3 [] [ Html.text header ]
-        |> Modal.body [] [ body ]
-        |> Modal.footer []
-            [ Button.button
-                [ Button.outlineWarning
-                , Button.attrs [ Html.Events.onClick CancelAddingComputeGroup ]
-                ]
-                [ Html.text "Cancel" ]
-            ]
-        |> Modal.view visibility
-        |> Html.Styled.fromUnstyled
-
-
-viewComputeGroupForm : ComputeForm -> Int -> Html.Html Msg
-viewComputeGroupForm computeForm clusterIndex =
-    let
-        formInput_ =
-            formInput computeForm
-                >> Html.map (ComputeFormMsg clusterIndex)
-    in
-    Bootstrap.Form.form []
-        [ formInput_
-            { label = "New group name"
-            , fieldIdentifier = "name"
-            , fieldType = Text
-            }
-        , formInput_
-            { label = "Base to use for generated node names"
-            , fieldIdentifier = "nodes.base"
-            , fieldType = Text
-            }
-        , formInput_
-            { label = "Index to start from when generating node names"
-            , fieldIdentifier = "nodes.startIndex"
-            , fieldType = Integer { min = Just 1, max = Nothing }
-            }
-        , formInput_
-            { label = "Number of nodes to generate"
-            , fieldIdentifier = "nodes.size"
-            , fieldType = Integer { min = Just 1, max = Nothing }
-            }
-        , formInput_
-            { label = "Padding to use for indices when generating nodes"
-            , fieldIdentifier = "nodes.indexPadding"
-            , fieldType = Integer { min = Just 0, max = Just 10 }
-            }
-
-        -- XXX Move this button to modal footer?
-        -- XXX Add reset button too?
-        , Button.button
-            [ Button.success
-            , Button.onClick <| ComputeFormMsg clusterIndex Form.Submit
-            ]
-            [ Html.text "Create" ]
-        ]
-
-
-type alias FieldConfig =
-    { label : String
-    , fieldIdentifier : String
-    , fieldType : FieldType
-    }
-
-
-type FieldType
-    = Text
-    | Integer { min : Maybe Int, max : Maybe Int }
-
-
-formInput : ComputeForm -> FieldConfig -> Html.Html Form.Msg
-formInput computeForm config =
-    let
-        field =
-            Form.getFieldAsString config.fieldIdentifier computeForm
-
-        ( errorAttr, errorElement ) =
-            -- XXX Currently valdidate and display errors on submit - better
-            -- than initially displaying fields as invalid. Consider if better
-            -- way to do this.
-            case field.liveError of
-                Just error ->
-                    ( Bootstrap.Form.Input.danger
-                    , Bootstrap.Form.invalidFeedback []
-                        [ Html.text <| errorMessage error ]
-                    )
-
-                Nothing ->
-                    ( Bootstrap.Form.Input.success, Html.text "" )
-
-        attrs =
-            List.concat
-                [ elmFormAttrs_
-                , additionalInputAttrs
-                ]
-
-        elmFormAttrs_ =
-            elmFormAttrs Field.String Form.Text field
-
-        additionalInputAttrs =
-            case config.fieldType of
-                Text ->
-                    [ Attrs.type_ "text" ]
-
-                Integer { min, max } ->
-                    Maybe.Extra.values
-                        [ Just <| Attrs.type_ "number"
-                        , Maybe.map (toString >> Attrs.min) min
-                        , Maybe.map (toString >> Attrs.max) max
-                        ]
-
-        inputId =
-            "computeForm" ++ config.fieldIdentifier
-    in
-    Bootstrap.Form.group []
-        [ Bootstrap.Form.label [ Attrs.for inputId ] [ Html.text config.label ]
-        , Bootstrap.Form.Input.text
-            [ Bootstrap.Form.Input.id inputId
-            , errorAttr
-            , Bootstrap.Form.Input.attrs attrs
-            ]
-        , errorElement
-        ]
-
-
-elmFormAttrs :
-    (String -> Field.FieldValue)
-    -> Form.InputType
-    -> Form.FieldState e String
-    -> List (Html.Attribute Form.Msg)
-elmFormAttrs toFieldValue inputType state =
-    -- This should correspond with the attributes set in
-    -- `https://github.com/etaque/elm-form/blob/3.0.0/src/Form/Input.elm#L32,L41`
-    -- but:
-    --
-    -- - without the `type_` (as independently setting this elsewhere);
-    --
-    -- - without the containing `input` (as will be used with an input created
-    -- using `Bootstrap.Form.Input`).
-    --
-    -- This allows us to use elements created using `elm-bootstrap`, but wired
-    -- up so they should Just Work with `elm-form`.
-    [ Attrs.defaultValue (state.value |> Maybe.withDefault "")
-    , Html.Events.onInput (toFieldValue >> Form.Input state.path inputType)
-    , Html.Events.onFocus (Form.Focus state.path)
-    , Html.Events.onBlur (Form.Blur state.path)
-    ]
-
-
-errorMessage : ErrorValue e -> String
-errorMessage errorValue =
-    let
-        mustBeLessThan i =
-            "Must be less than " ++ toString i ++ "."
-
-        mustBeGreaterThan i =
-            "Must be greater than " ++ toString i ++ "."
-    in
-    -- XXX Consider how to make error messages better when no value entered;
-    -- not helpful to tell user that the value they haven't entered should be
-    -- an integer.
-    case errorValue of
-        Empty ->
-            ""
-
-        InvalidString ->
-            "Must be a string."
-
-        InvalidEmail ->
-            "Not a valid email."
-
-        InvalidFormat ->
-            "Invalid format."
-
-        InvalidInt ->
-            "Must be an integer."
-
-        InvalidFloat ->
-            "Must be a number."
-
-        InvalidBool ->
-            "Must be a boolean value."
-
-        InvalidDate ->
-            "Must be a date."
-
-        SmallerIntThan i ->
-            mustBeLessThan i
-
-        GreaterIntThan i ->
-            mustBeGreaterThan i
-
-        SmallerFloatThan i ->
-            mustBeLessThan i
-
-        GreaterFloatThan i ->
-            mustBeGreaterThan i
-
-        ShorterStringThan i ->
-            "Must be shorter than " ++ toString i ++ " characters."
-
-        LongerStringThan i ->
-            "Must be longer than " ++ toString i ++ " characters."
-
-        NotIncludedIn ->
-            ""
-
-        CustomError e ->
-            toString e
 
 
 
