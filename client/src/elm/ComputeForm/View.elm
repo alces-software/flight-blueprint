@@ -2,6 +2,7 @@ module ComputeForm.View exposing (viewFormModal)
 
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
+import Bootstrap.Form.Fieldset as Fieldset
 import Bootstrap.Form.Input as Input
 import Bootstrap.Modal as Modal
 import ComputeForm.Model exposing (..)
@@ -75,27 +76,38 @@ viewComputeGroupForm computeForm clusterIndex =
             { label = "New group name"
             , fieldIdentifier = "name"
             , fieldType = Text
+            , help = "The name to use for this new group of compute nodes."
             }
-        , formInput_
-            { label = "Base to use for generated node names"
-            , fieldIdentifier = "nodes.base"
-            , fieldType = Text
-            }
-        , formInput_
-            { label = "Index to start from when generating node names"
-            , fieldIdentifier = "nodes.startIndex"
-            , fieldType = Integer { min = Just 1, max = Nothing }
-            }
-        , formInput_
-            { label = "Number of nodes to generate"
-            , fieldIdentifier = "nodes.size"
-            , fieldType = Integer { min = Just 1, max = Nothing }
-            }
-        , formInput_
-            { label = "Padding to use for indices when generating nodes"
-            , fieldIdentifier = "nodes.indexPadding"
-            , fieldType = Integer { min = Just 0, max = Just 10 }
-            }
+        , Fieldset.config
+            |> Fieldset.asGroup
+            |> Fieldset.legend [] [ text "Generate nodes in this group" ]
+            |> Fieldset.children
+                [ formInput_
+                    { label = "Base to use for generated node names"
+                    , fieldIdentifier = "nodes.base"
+                    , fieldType = Text
+                    , help = "E.g. 'node' to generate nodes like 'node01', 'node02' etc."
+                    }
+                , formInput_
+                    { label = "Index to start from when generating node names"
+                    , fieldIdentifier = "nodes.startIndex"
+                    , fieldType = Integer { min = Just 1, max = Nothing }
+                    , help = "E.g. '4' for a node like 'node04' to be the first generated."
+                    }
+                , formInput_
+                    { label = "Padding to use for indices when generating nodes"
+                    , fieldIdentifier = "nodes.indexPadding"
+                    , fieldType = Integer { min = Just 0, max = Just 10 }
+                    , help = "E.g. '2' will pad each index like 'node01', or 3 will pad each like 'node001'."
+                    }
+                , formInput_
+                    { label = "Number of nodes to generate"
+                    , fieldIdentifier = "nodes.size"
+                    , fieldType = Integer { min = Just 1, max = Nothing }
+                    , help = "E.g. '10' to generate 10 nodes in this group."
+                    }
+                ]
+            |> Fieldset.view
 
         -- XXX Move this button to modal footer?
         -- XXX Add reset button too?
@@ -111,6 +123,7 @@ type alias FieldConfig =
     { label : String
     , fieldIdentifier : String
     , fieldType : FieldType
+    , help : String
     }
 
 
@@ -170,6 +183,7 @@ formInput computeForm config =
             , errorAttr
             , Input.attrs attrs
             ]
+        , Form.help [] [ text config.help ]
         , errorElement
         ]
 
