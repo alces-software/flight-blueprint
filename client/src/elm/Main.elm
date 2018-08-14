@@ -20,8 +20,6 @@ import Maybe.Extra
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
-import Svg
-import Svg.Attributes exposing (points, x1, x2, y1, y2)
 import Uuid exposing (Uuid)
 
 
@@ -611,17 +609,7 @@ nodeIcon nodeSpecifier =
                     ( Icons.users, "Infra node" )
 
                 Login _ ->
-                    -- XXX Icon grabbed from
-                    -- https://1602.github.io/elm-feather-icons/ but not yet
-                    -- made it into https://github.com/1602/elm-feather-icons -
-                    -- can simplify this to `Icons.terminal` and possibly
-                    -- remove our `elm-lang/svg` dependency when it does.
-                    ( Icons.customIcon
-                        [ Svg.polyline [ points "4 17 10 11 4 5" ] []
-                        , Svg.line [ x1 "12", y1 "19", x2 "20", y2 "19" ] []
-                        ]
-                    , "Login node"
-                    )
+                    ( Icons.terminal, "Login node" )
 
                 Compute ->
                     ( Icons.settings, "Compute node" )
