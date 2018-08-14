@@ -1,6 +1,8 @@
 port module Main exposing (..)
 
 import Bootstrap.Button as Button
+import Bootstrap.Form
+import Bootstrap.Form.Input
 import Bootstrap.Modal as Modal
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -9,7 +11,7 @@ import FeatherIcons as Icons
 import Form exposing (Form)
 import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
-import Form.Input as Input
+import Form.Input
 import Form.Validate as V exposing (Validation)
 import Html
 import Html.Attributes as Attrs
@@ -751,8 +753,6 @@ computeModal model =
                             ( Modal.shown
                             , "Add compute to " ++ cluster.name
                             , viewComputeGroupForm model.computeForm clusterIndex
-                                |> toUnstyled
-                                |> Html.map (ComputeFormMsg clusterIndex)
                             )
 
                         Nothing ->
@@ -779,13 +779,14 @@ computeModal model =
         |> Html.Styled.fromUnstyled
 
 
-viewComputeGroupForm : ComputeForm -> Int -> Html Form.Msg
+viewComputeGroupForm : ComputeForm -> Int -> Html.Html Msg
 viewComputeGroupForm computeForm clusterIndex =
     let
         formInput_ =
             formInput computeForm
+                >> Html.map (ComputeFormMsg clusterIndex)
     in
-    div []
+    Bootstrap.Form.form []
         [ formInput_
             { label = "New group name"
             , fieldIdentifier = "name"
@@ -811,8 +812,14 @@ viewComputeGroupForm computeForm clusterIndex =
             , fieldIdentifier = "nodes.indexPadding"
             , fieldType = Integer { min = Just 0, max = Just 10 }
             }
-        , button [ onClick Form.Submit ] [ text "Create" ]
-        , Html.Styled.fromUnstyled <| Input.dumpErrors computeForm
+
+        -- XXX Move this button to modal footer?
+        -- XXX Add reset button too?
+        , Button.button
+            [ Button.success
+            , Button.onClick <| ComputeFormMsg clusterIndex Form.Submit
+            ]
+            [ Html.text "Create" ]
         ]
 
 
@@ -828,21 +835,34 @@ type FieldType
     | Integer { min : Maybe Int, max : Maybe Int }
 
 
-formInput : ComputeForm -> FieldConfig -> Html Form.Msg
+formInput : ComputeForm -> FieldConfig -> Html.Html Form.Msg
 formInput computeForm config =
     let
         field =
             Form.getFieldAsString config.fieldIdentifier computeForm
 
-        errorElement =
+        ( errorAttr, errorElement ) =
+            -- XXX Currently valdidate and display errors on submit - better
+            -- than initially displaying fields as invalid. Consider if better
+            -- way to do this.
             case field.liveError of
                 Just error ->
-                    div
-                        [ class "error" ]
-                        [ text <| errorMessage error ]
+                    ( Bootstrap.Form.Input.danger
+                    , Bootstrap.Form.invalidFeedback []
+                        [ Html.text <| errorMessage error ]
+                    )
 
                 Nothing ->
-                    nothing
+                    ( Bootstrap.Form.Input.success, Html.text "" )
+
+        attrs =
+            List.concat
+                [ elmFormAttrs_
+                , additionalInputAttrs
+                ]
+
+        elmFormAttrs_ =
+            elmFormAttrs Field.String Form.Text field
 
         additionalInputAttrs =
             case config.fieldType of
@@ -855,13 +875,43 @@ formInput computeForm config =
                         , Maybe.map (toString >> Attrs.min) min
                         , Maybe.map (toString >> Attrs.max) max
                         ]
+
+        inputId =
+            "computeForm" ++ config.fieldIdentifier
     in
-    div []
-        [ label [] [ text config.label ]
-        , Input.textInput field additionalInputAttrs
-            |> Html.Styled.fromUnstyled
+    Bootstrap.Form.group []
+        [ Bootstrap.Form.label [ Attrs.for inputId ] [ Html.text config.label ]
+        , Bootstrap.Form.Input.text
+            [ Bootstrap.Form.Input.id inputId
+            , errorAttr
+            , Bootstrap.Form.Input.attrs attrs
+            ]
         , errorElement
         ]
+
+
+elmFormAttrs :
+    (String -> Field.FieldValue)
+    -> Form.InputType
+    -> Form.FieldState e String
+    -> List (Html.Attribute Form.Msg)
+elmFormAttrs toFieldValue inputType state =
+    -- This should correspond with the attributes set in
+    -- `https://github.com/etaque/elm-form/blob/3.0.0/src/Form/Input.elm#L32,L41`
+    -- but:
+    --
+    -- - without the `type_` (as independently setting this elsewhere);
+    --
+    -- - without the containing `input` (as will be used with an input created
+    -- using `Bootstrap.Form.Input`).
+    --
+    -- This allows us to use elements created using `elm-bootstrap`, but wired
+    -- up so they should Just Work with `elm-form`.
+    [ Attrs.defaultValue (state.value |> Maybe.withDefault "")
+    , Html.Events.onInput (toFieldValue >> Form.Input state.path inputType)
+    , Html.Events.onFocus (Form.Focus state.path)
+    , Html.Events.onBlur (Form.Blur state.path)
+    ]
 
 
 errorMessage : ErrorValue e -> String
