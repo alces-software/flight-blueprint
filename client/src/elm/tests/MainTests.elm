@@ -5,7 +5,6 @@ import Form
 import Form.Field as Field
 import Fuzz exposing (Fuzzer, int, list, string)
 import Main
-import Node exposing (Node)
 import Test exposing (..)
 
 
