@@ -7,9 +7,12 @@ import Css.Colors exposing (..)
 import EveryDict exposing (EveryDict)
 import FeatherIcons as Icons
 import Form exposing (Form)
-import Form.Value as Value exposing (Value)
-import Form.View
+import Form.Error exposing (ErrorValue(..))
+import Form.Field as Field exposing (Field)
+import Form.Input as Input
+import Form.Validate as V exposing (Validation)
 import Html
+import Html.Attributes as Attrs
 import Html.Events
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
@@ -43,16 +46,7 @@ type ComputeModal
 
 
 type alias ComputeForm =
-    Form.View.Model ComputeFormValues
-
-
-type alias ComputeFormValues =
-    { name : Value.Value String
-    , base : Value.Value String
-    , startIndex : Value.Value Float
-    , size : Value.Value Float
-    , indexPadding : Value.Value Float
-    }
+    Form () PrimaryGroup
 
 
 type alias CoreDomain =
@@ -107,17 +101,39 @@ init initialRandomSeed =
 
 initComputeForm : ComputeForm
 initComputeForm =
-    Form.View.idle initialComputeFormValues
+    Form.initial initialComputeFormValues computeFormValidation
 
 
-initialComputeFormValues : ComputeFormValues
+initialComputeFormValues : List ( String, Field )
 initialComputeFormValues =
-    { name = Value.filled "nodes"
-    , base = Value.filled "node"
-    , startIndex = Value.filled 1
-    , size = Value.blank
-    , indexPadding = Value.filled 2
-    }
+    -- XXX Extract things in some way so don't need to duplicate field names in
+    -- different places (each field is in at least 3 currently).
+    [ ( "name", Field.string "nodes" )
+    , ( "nodes"
+      , Field.group
+            [ ( "base", Field.string "node" )
+            , ( "startIndex", Field.string "1" )
+            , ( "size", Field.string "" )
+            , ( "indexPadding", Field.string "2" )
+            ]
+      )
+    ]
+
+
+computeFormValidation : Validation () PrimaryGroup
+computeFormValidation =
+    -- XXX Do more thoroughly - validate integers within ranges defined in view
+    -- etc.
+    V.map2 PrimaryGroup
+        (V.field "name" V.string)
+        (V.field "nodes"
+            (V.map4 PrimaryGroup.NodesSpecification
+                (V.field "base" V.string)
+                (V.field "startIndex" V.int)
+                (V.field "size" V.int)
+                (V.field "indexPadding" V.int)
+            )
+        )
 
 
 
@@ -129,8 +145,7 @@ type Msg
     | RemoveCluster Int
     | StartAddingComputeGroup Int
     | CancelAddingComputeGroup
-    | ComputeGroupFormChanged ComputeForm
-    | CreateComputeGroup Int String String Int Int Int
+    | ComputeFormMsg Int Form.Msg
     | RemoveComputeGroup Uuid
     | AddInfra
     | RemoveInfra
@@ -261,52 +276,25 @@ updateInterfaceState msg model =
         CancelAddingComputeGroup ->
             { model | computeModal = Hidden }
 
-        ComputeGroupFormChanged newFormModel ->
-            { model | computeForm = newFormModel }
+        ComputeFormMsg clusterIndex formMsg ->
+            case ( formMsg, Form.getOutput model.computeForm ) of
+                ( Form.Submit, Just newGroup ) ->
+                    handleSuccessfulComputeFormSubmit model clusterIndex newGroup
 
-        CreateComputeGroup clusterIndex name base startIndex size indexPadding ->
-            let
-                currentCluster =
-                    List.Extra.getAt clusterIndex model.clusters
+                ( formMsg, _ ) ->
+                    let
+                        preUpdatedForm =
+                            case formMsg of
+                                Form.Input "name" _ (Field.String newName) ->
+                                    handleUpdatingComputeFormName newName model.computeForm
 
-                newClusters =
-                    List.Extra.updateAt
-                        clusterIndex
-                        addGroupId
-                        model.clusters
-
-                addGroupId cluster =
-                    { cluster
-                        | computeGroupIds =
-                            newGroupId :: cluster.computeGroupIds
+                                _ ->
+                                    model.computeForm
+                    in
+                    { model
+                        | computeForm =
+                            Form.update computeFormValidation formMsg preUpdatedForm
                     }
-
-                ( newGroupId, newSeed ) =
-                    Random.Pcg.step Uuid.uuidGenerator model.randomSeed
-
-                newGroups =
-                    EveryDict.insert
-                        newGroupId
-                        newGroup
-                        model.clusterPrimaryGroups
-
-                newGroup =
-                    { name = name
-                    , nodes =
-                        { base = base
-                        , startIndex = startIndex
-                        , size = size
-                        , indexPadding = indexPadding
-                        }
-                    }
-            in
-            { model
-                | clusters = newClusters
-                , clusterPrimaryGroups = newGroups
-                , randomSeed = newSeed
-                , computeModal = Hidden
-                , computeForm = initComputeForm
-            }
 
         RemoveComputeGroup groupId ->
             let
@@ -320,6 +308,78 @@ updateInterfaceState msg model =
                     EveryDict.remove groupId model.clusterPrimaryGroups
             in
             { model | clusterPrimaryGroups = newGroups }
+
+
+handleSuccessfulComputeFormSubmit : Model -> Int -> PrimaryGroup -> Model
+handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
+    let
+        currentCluster =
+            List.Extra.getAt clusterIndex model.clusters
+
+        newClusters =
+            List.Extra.updateAt
+                clusterIndex
+                addGroupId
+                model.clusters
+
+        addGroupId cluster =
+            { cluster
+                | computeGroupIds =
+                    newGroupId :: cluster.computeGroupIds
+            }
+
+        ( newGroupId, newSeed ) =
+            Random.Pcg.step Uuid.uuidGenerator model.randomSeed
+
+        newGroups =
+            EveryDict.insert
+                newGroupId
+                newGroup
+                model.clusterPrimaryGroups
+    in
+    { model
+        | clusters = newClusters
+        , clusterPrimaryGroups = newGroups
+        , randomSeed = newSeed
+        , computeModal = Hidden
+        , computeForm = initComputeForm
+    }
+
+
+handleUpdatingComputeFormName : String -> ComputeForm -> ComputeForm
+handleUpdatingComputeFormName newName computeForm =
+    let
+        ( currentName, currentBase ) =
+            ( value "name"
+            , value "nodes.base"
+            )
+
+        value =
+            flip Form.getFieldAsString computeForm
+                >> .value
+                >> Maybe.withDefault ""
+
+        newBase =
+            if shouldKeepCurrentBase then
+                currentBase
+            else
+                singularized newName
+
+        shouldKeepCurrentBase =
+            not <| currentBase == singularized currentName
+
+        singularized word =
+            if isPlural word then
+                String.dropRight 1 word
+            else
+                word
+
+        isPlural =
+            String.endsWith "s"
+    in
+    Form.update computeFormValidation
+        (Form.Input "nodes.base" Form.Text (Field.String newBase))
+        computeForm
 
 
 convertToYamlCmd : Model -> Cmd Msg
@@ -668,7 +728,7 @@ maybeHtml maybeItem itemToHtml =
             nothing
 
 
-nothing : Html Msg
+nothing : Html msg
 nothing =
     text ""
 
@@ -691,6 +751,8 @@ computeModal model =
                             ( Modal.shown
                             , "Add compute to " ++ cluster.name
                             , viewComputeGroupForm model.computeForm clusterIndex
+                                |> toUnstyled
+                                |> Html.map (ComputeFormMsg clusterIndex)
                             )
 
                         Nothing ->
@@ -717,132 +779,151 @@ computeModal model =
         |> Html.Styled.fromUnstyled
 
 
-viewComputeGroupForm : ComputeForm -> Int -> Html.Html Msg
-viewComputeGroupForm computeFormModel clusterIndex =
-    Form.View.asHtml
-        { onChange = ComputeGroupFormChanged
-        , action = "Create"
-        , loading = "Creating..."
-        , validation = Form.View.ValidateOnBlur
-        }
-        (computeGroupForm clusterIndex)
-        computeFormModel
-
-
-computeGroupForm : Int -> Form ComputeFormValues Msg
-computeGroupForm clusterIndex =
+viewComputeGroupForm : ComputeForm -> Int -> Html Form.Msg
+viewComputeGroupForm computeForm clusterIndex =
     let
-        nameField =
-            Form.textField
-                { parser = Ok
-                , value = .name
-                , update = updateName
-                , attributes =
-                    { label = "New group name"
-                    , placeholder = ""
-                    }
-                }
-
-        baseField =
-            Form.textField
-                { parser = Ok
-                , value = .base
-                , update = \value values -> { values | base = value }
-                , attributes =
-                    { label = "Base to use for generated node names"
-                    , placeholder = ""
-                    }
-                }
-
-        startIndexField =
-            Form.numberField
-                { parser = intParser
-                , value = .startIndex
-                , update = \value values -> { values | startIndex = value }
-                , attributes =
-                    { label = "Index to start from when generating node names"
-                    , placeholder = ""
-                    , max = Nothing
-                    , min = Just 1
-                    , step = 1
-                    }
-                }
-
-        sizeField =
-            Form.numberField
-                { parser = intParser
-                , value = .size
-                , update = \value values -> { values | size = value }
-                , attributes =
-                    { label = "Number of nodes to generate"
-                    , placeholder = ""
-                    , max = Nothing
-                    , min = Just 1
-                    , step = 1
-                    }
-                }
-
-        indexPaddingField =
-            Form.numberField
-                { parser = intParser
-                , value = .indexPadding
-                , update = \value values -> { values | indexPadding = value }
-                , attributes =
-                    { label = "Padding to use for indices when generating nodes"
-                    , placeholder = ""
-                    , max = Just 10
-                    , min = Just 0
-                    , step = 1
-                    }
-                }
-
-        intParser float =
-            toString float
-                |> String.toInt
-                |> Result.mapError (always "Must be an integer.")
+        formInput_ =
+            formInput computeForm
     in
-    Form.succeed (CreateComputeGroup clusterIndex)
-        |> Form.append nameField
-        |> Form.append baseField
-        |> Form.append startIndexField
-        |> Form.append sizeField
-        |> Form.append indexPaddingField
+    div []
+        [ formInput_
+            { label = "New group name"
+            , fieldIdentifier = "name"
+            , fieldType = Text
+            }
+        , formInput_
+            { label = "Base to use for generated node names"
+            , fieldIdentifier = "nodes.base"
+            , fieldType = Text
+            }
+        , formInput_
+            { label = "Index to start from when generating node names"
+            , fieldIdentifier = "nodes.startIndex"
+            , fieldType = Integer { min = Just 1, max = Nothing }
+            }
+        , formInput_
+            { label = "Number of nodes to generate"
+            , fieldIdentifier = "nodes.size"
+            , fieldType = Integer { min = Just 1, max = Nothing }
+            }
+        , formInput_
+            { label = "Padding to use for indices when generating nodes"
+            , fieldIdentifier = "nodes.indexPadding"
+            , fieldType = Integer { min = Just 0, max = Just 10 }
+            }
+        , button [ onClick Form.Submit ] [ text "Create" ]
+        , Html.Styled.fromUnstyled <| Input.dumpErrors computeForm
+        ]
 
 
-updateName : Value.Value String -> ComputeFormValues -> ComputeFormValues
-updateName newNameValue values =
-    let
-        ( newName, currentName, currentBase ) =
-            ( raw newNameValue
-            , raw values.name
-            , raw values.base
-            )
-
-        raw =
-            Value.raw >> Maybe.withDefault ""
-
-        newBase =
-            if shouldKeepCurrentBase then
-                currentBase
-            else
-                singularized newName
-
-        shouldKeepCurrentBase =
-            not <| currentBase == singularized currentName
-
-        singularized word =
-            if isPlural word then
-                String.dropRight 1 word
-            else
-                word
-
-        isPlural =
-            String.endsWith "s"
-    in
-    { values
-        | name = Value.filled newName
-        , base = Value.filled newBase
+type alias FieldConfig =
+    { label : String
+    , fieldIdentifier : String
+    , fieldType : FieldType
     }
+
+
+type FieldType
+    = Text
+    | Integer { min : Maybe Int, max : Maybe Int }
+
+
+formInput : ComputeForm -> FieldConfig -> Html Form.Msg
+formInput computeForm config =
+    let
+        field =
+            Form.getFieldAsString config.fieldIdentifier computeForm
+
+        errorElement =
+            case field.liveError of
+                Just error ->
+                    div
+                        [ class "error" ]
+                        [ text <| errorMessage error ]
+
+                Nothing ->
+                    nothing
+
+        additionalInputAttrs =
+            case config.fieldType of
+                Text ->
+                    [ Attrs.type_ "text" ]
+
+                Integer { min, max } ->
+                    Maybe.Extra.values
+                        [ Just <| Attrs.type_ "number"
+                        , Maybe.map (toString >> Attrs.min) min
+                        , Maybe.map (toString >> Attrs.max) max
+                        ]
+    in
+    div []
+        [ label [] [ text config.label ]
+        , Input.textInput field additionalInputAttrs
+            |> Html.Styled.fromUnstyled
+        , errorElement
+        ]
+
+
+errorMessage : ErrorValue e -> String
+errorMessage errorValue =
+    let
+        mustBeLessThan i =
+            "Must be less than " ++ toString i ++ "."
+
+        mustBeGreaterThan i =
+            "Must be greater than " ++ toString i ++ "."
+    in
+    -- XXX Consider how to make error messages better when no value entered;
+    -- not helpful to tell user that the value they haven't entered should be
+    -- an integer.
+    case errorValue of
+        Empty ->
+            ""
+
+        InvalidString ->
+            "Must be a string."
+
+        InvalidEmail ->
+            "Not a valid email."
+
+        InvalidFormat ->
+            "Invalid format."
+
+        InvalidInt ->
+            "Must be an integer."
+
+        InvalidFloat ->
+            "Must be a number."
+
+        InvalidBool ->
+            "Must be a boolean value."
+
+        InvalidDate ->
+            "Must be a date."
+
+        SmallerIntThan i ->
+            mustBeLessThan i
+
+        GreaterIntThan i ->
+            mustBeGreaterThan i
+
+        SmallerFloatThan i ->
+            mustBeLessThan i
+
+        GreaterFloatThan i ->
+            mustBeGreaterThan i
+
+        ShorterStringThan i ->
+            "Must be shorter than " ++ toString i ++ " characters."
+
+        LongerStringThan i ->
+            "Must be longer than " ++ toString i ++ " characters."
+
+        NotIncludedIn ->
+            ""
+
+        CustomError e ->
+            toString e
 
 
 

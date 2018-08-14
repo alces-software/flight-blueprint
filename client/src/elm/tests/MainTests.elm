@@ -1,7 +1,8 @@
 module MainTests exposing (..)
 
 import Expect exposing (Expectation)
-import Form.Value as Value
+import Form
+import Form.Field as Field
 import Fuzz exposing (Fuzzer, int, list, string)
 import Main
 import Node exposing (Node)
@@ -14,25 +15,34 @@ suite =
         [ let
             testUpdateName { originalName, originalBase, newName, expectedNewBase } =
                 let
-                    newNameValue =
-                        Value.filled newName
+                    initialComputeForm =
+                        Form.initial
+                            [ ( "name", Field.string originalName )
+                            , ( "nodes"
+                              , Field.group
+                                    [ ( "base", Field.string originalBase ) ]
+                              )
+                            ]
+                            Main.computeFormValidation
 
-                    values =
-                        { initialValues
-                            | name = Value.filled originalName
-                            , base = Value.filled originalBase
-                        }
+                    newComputeForm =
+                        Main.handleUpdatingComputeFormName newName initialComputeForm
 
-                    updatedValues =
-                        Main.updateName newNameValue values
+                    newBase =
+                        newValue "nodes.base"
+
+                    newValue =
+                        flip Form.getFieldAsString newComputeForm
+                            >> .value
+                            >> Maybe.withDefault ""
                 in
                 \_ ->
-                    Expect.equal
-                        ( updatedValues.name, updatedValues.base )
-                        ( newNameValue, Value.filled expectedNewBase )
+                    Expect.equal newBase expectedNewBase
           in
-          -- XXX Extract `Main.updateName` somewhere better.
-          describe "updateName"
+          -- XXX Extract `Main.handleUpdatingComputeFormName` somewhere better.
+          -- XXX Maybe testing too many implementation details here/above, and
+          -- should test at higher level - in `update`?
+          describe "handleUpdatingComputeFormName"
             [ test "it sets name and base to new name when current name and base the same" <|
                 testUpdateName
                     { originalName = "gpu"
