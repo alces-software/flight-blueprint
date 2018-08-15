@@ -2,6 +2,8 @@ const path = require('path');
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 
 module.exports = function(config) {
+  // console.log('config [kithbjze]:', config); // eslint-disable-line no-console
+  // throw 'wtf';
   // Use your own ESLint file
   config.module.rules[0].use[0].options.useEslintrc = true;
 

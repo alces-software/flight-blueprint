@@ -4,6 +4,7 @@ import Bootstrap.Button as Button
 import Bootstrap.Form
 import Bootstrap.Form.Input
 import Bootstrap.Modal as Modal
+import Canopy
 import ComputeForm.Model exposing (..)
 import ComputeForm.View
 import Css exposing (..)
@@ -23,6 +24,7 @@ import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
 import Json.Encode as E
 import List.Extra
+import List.Nonempty
 import Maybe.Extra
 import Model exposing (ClusterDomain, CoreDomain, Model)
 import Msg exposing (..)
@@ -133,6 +135,10 @@ updateInterfaceState msg model =
                     , login =
                         { name = "login1" }
                     , computeGroupIds = []
+                    , groupsTree =
+                        Canopy.leaf <|
+                            Model.SecondaryGroups <|
+                                List.Nonempty.fromElement "all"
                     }
             in
             { model | clusters = newClusters }

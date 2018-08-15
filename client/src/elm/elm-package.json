@@ -9,6 +9,7 @@
     "exposed-modules": [],
     "dependencies": {
         "1602/elm-feather": "2.3.0 <= v < 3.0.0",
+        "allo-media/canopy": "3.1.0 <= v < 4.0.0",
         "danyx23/elm-uuid": "2.1.1 <= v < 3.0.0",
         "eeue56/elm-all-dict": "2.0.1 <= v < 3.0.0",
         "elm-community/list-extra": "7.1.0 <= v < 8.0.0",
@@ -16,6 +17,7 @@
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
         "etaque/elm-form": "3.0.0 <= v < 4.0.0",
+        "mgold/elm-nonempty-list": "3.1.0 <= v < 4.0.0",
         "mgold/elm-random-pcg": "5.0.2 <= v < 6.0.0",
         "rtfeldman/elm-css": "14.0.0 <= v < 15.0.0",
         "rundis/elm-bootstrap": "4.1.0 <= v < 5.0.0"
