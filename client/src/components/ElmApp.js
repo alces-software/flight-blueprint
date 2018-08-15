@@ -13,9 +13,10 @@ const ElmAppComponent = (props) => {
     ports.convertToYaml.subscribe(convertToYaml);
   };
 
-  // App currently just requires a single Int to be passed via flags, to use as
-  // initial random seed.
-  const initialRandomSeed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+  // App currently just requires a single 32-bit Int to be passed via flags, to
+  // use as initial random seed (see
+  // http://package.elm-lang.org/packages/mgold/elm-random-pcg/5.0.2/Random-Pcg#initialSeed).
+  const initialRandomSeed = Math.floor(Math.random() * 0xFFFFFFFF);
   return (
     <ReactElmComponent
       flags={initialRandomSeed}
