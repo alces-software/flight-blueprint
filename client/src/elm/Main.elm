@@ -1,6 +1,6 @@
 port module Main exposing (..)
 
-import ComputeForm.Model exposing (..)
+import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -8,7 +8,6 @@ import EveryDict exposing (EveryDict)
 import FeatherIcons as Icons
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
-import Form.Validate as V exposing (Validation)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
@@ -46,47 +45,10 @@ init initialRandomSeed =
             , exportedYaml = ""
             , randomSeed = Random.Pcg.initialSeed initialRandomSeed
             , computeModal = Hidden
-            , computeForm = initComputeForm
+            , computeForm = ComputeForm.Model.init
             }
     in
     initialModel ! [ convertToYamlCmd initialModel ]
-
-
-initComputeForm : ComputeForm
-initComputeForm =
-    Form.initial initialComputeFormValues computeFormValidation
-
-
-initialComputeFormValues : List ( String, Field )
-initialComputeFormValues =
-    -- XXX Extract things in some way so don't need to duplicate field names in
-    -- different places (each field is in at least 3 currently).
-    [ ( "name", Field.string "nodes" )
-    , ( "nodes"
-      , Field.group
-            [ ( "base", Field.string "node" )
-            , ( "startIndex", Field.string "1" )
-            , ( "size", Field.string "" )
-            , ( "indexPadding", Field.string "2" )
-            ]
-      )
-    ]
-
-
-computeFormValidation : Validation () PrimaryGroup
-computeFormValidation =
-    -- XXX Do more thoroughly - validate integers within ranges defined in view
-    -- etc.
-    V.map2 PrimaryGroup
-        (V.field "name" V.string)
-        (V.field "nodes"
-            (V.map4 PrimaryGroup.NodesSpecification
-                (V.field "base" V.string)
-                (V.field "startIndex" V.int)
-                (V.field "size" V.int)
-                (V.field "indexPadding" V.int)
-            )
-        )
 
 
 
@@ -224,7 +186,10 @@ updateInterfaceState msg model =
                     in
                     { model
                         | computeForm =
-                            Form.update computeFormValidation formMsg preUpdatedForm
+                            Form.update
+                                ComputeForm.Model.validation
+                                formMsg
+                                preUpdatedForm
                     }
 
         RemoveComputeGroup groupId ->
@@ -273,7 +238,7 @@ handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
         , clusterPrimaryGroups = newGroups
         , randomSeed = newSeed
         , computeModal = Hidden
-        , computeForm = initComputeForm
+        , computeForm = ComputeForm.Model.init
     }
 
 
@@ -308,7 +273,7 @@ handleUpdatingComputeFormName newName computeForm =
         isPlural =
             String.endsWith "s"
     in
-    Form.update computeFormValidation
+    Form.update ComputeForm.Model.validation
         (Form.Input "nodes.base" Form.Text (Field.String newBase))
         computeForm
 

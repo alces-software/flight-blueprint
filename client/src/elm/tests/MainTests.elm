@@ -1,5 +1,6 @@
 module MainTests exposing (..)
 
+import ComputeForm.Model
 import Expect exposing (Expectation)
 import Form
 import Form.Field as Field
@@ -22,7 +23,7 @@ suite =
                                     [ ( "base", Field.string originalBase ) ]
                               )
                             ]
-                            Main.computeFormValidation
+                            ComputeForm.Model.validation
 
                     newComputeForm =
                         Main.handleUpdatingComputeFormName newName initialComputeForm
