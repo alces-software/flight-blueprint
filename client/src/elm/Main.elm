@@ -1,4 +1,4 @@
-port module Main exposing (..)
+module Main exposing (..)
 
 import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import ComputeForm.View
@@ -12,11 +12,11 @@ import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
-import Json.Encode as E
 import List.Extra
 import Model exposing (ClusterDomain, CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
+import Ports
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
 import Uuid exposing (Uuid)
@@ -279,7 +279,7 @@ handleUpdatingComputeFormName newName computeForm =
 
 convertToYamlCmd : Model -> Cmd Msg
 convertToYamlCmd =
-    Model.encode >> convertToYaml
+    Model.encode >> Ports.convertToYaml
 
 
 nextClusterName : List ClusterDomain -> String
@@ -649,22 +649,12 @@ innerBoxBorderWidth =
 
 
 
----- PORTS ----
-
-
-port convertToYaml : E.Value -> Cmd msg
-
-
-port convertedYaml : (String -> msg) -> Sub msg
-
-
-
 ---- SUBSCRIPTIONS ----
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    convertedYaml NewConvertedYaml
+    Ports.convertedYaml NewConvertedYaml
 
 
 
