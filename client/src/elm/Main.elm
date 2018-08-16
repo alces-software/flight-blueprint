@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
+import ComputeForm.Update
 import EveryDict exposing (EveryDict)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
@@ -11,9 +12,6 @@ import Model exposing (ClusterDomain, CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import Ports
-import PrimaryGroup exposing (PrimaryGroup)
-import Random.Pcg exposing (Seed)
-import Uuid exposing (Uuid)
 import View
 
 
@@ -137,14 +135,19 @@ updateInterfaceState msg model =
         ComputeFormMsg clusterIndex formMsg ->
             case ( formMsg, Form.getOutput model.computeForm ) of
                 ( Form.Submit, Just newGroup ) ->
-                    handleSuccessfulComputeFormSubmit model clusterIndex newGroup
+                    ComputeForm.Update.handleSuccessfulComputeFormSubmit
+                        model
+                        clusterIndex
+                        newGroup
 
                 ( formMsg, _ ) ->
                     let
                         preUpdatedForm =
                             case formMsg of
                                 Form.Input "name" _ (Field.String newName) ->
-                                    handleUpdatingComputeFormName newName model.computeForm
+                                    ComputeForm.Update.handleUpdatingComputeFormName
+                                        newName
+                                        model.computeForm
 
                                 _ ->
                                     model.computeForm
@@ -169,78 +172,6 @@ updateInterfaceState msg model =
                     EveryDict.remove groupId model.clusterPrimaryGroups
             in
             { model | clusterPrimaryGroups = newGroups }
-
-
-handleSuccessfulComputeFormSubmit : Model -> Int -> PrimaryGroup -> Model
-handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
-    let
-        currentCluster =
-            List.Extra.getAt clusterIndex model.clusters
-
-        newClusters =
-            List.Extra.updateAt
-                clusterIndex
-                addGroupId
-                model.clusters
-
-        addGroupId cluster =
-            { cluster
-                | computeGroupIds =
-                    newGroupId :: cluster.computeGroupIds
-            }
-
-        ( newGroupId, newSeed ) =
-            Random.Pcg.step Uuid.uuidGenerator model.randomSeed
-
-        newGroups =
-            EveryDict.insert
-                newGroupId
-                newGroup
-                model.clusterPrimaryGroups
-    in
-    { model
-        | clusters = newClusters
-        , clusterPrimaryGroups = newGroups
-        , randomSeed = newSeed
-        , computeModal = Hidden
-        , computeForm = ComputeForm.Model.init
-    }
-
-
-handleUpdatingComputeFormName : String -> ComputeForm -> ComputeForm
-handleUpdatingComputeFormName newName computeForm =
-    let
-        ( currentName, currentBase ) =
-            ( value "name"
-            , value "nodes.base"
-            )
-
-        value =
-            flip Form.getFieldAsString computeForm
-                >> .value
-                >> Maybe.withDefault ""
-
-        newBase =
-            if shouldKeepCurrentBase then
-                currentBase
-            else
-                singularized newName
-
-        shouldKeepCurrentBase =
-            not <| currentBase == singularized currentName
-
-        singularized word =
-            if isPlural word then
-                String.dropRight 1 word
-            else
-                word
-
-        isPlural =
-            String.endsWith "s"
-    in
-    Form.update ComputeForm.Model.validation
-        (Form.Input "nodes.base" Form.Text (Field.String newBase))
-        computeForm
 
 
 nextClusterName : List ClusterDomain -> String

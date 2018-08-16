@@ -1,17 +1,17 @@
-module MainTests exposing (..)
+module ComputeForm.UpdateTests exposing (..)
 
 import ComputeForm.Model
+import ComputeForm.Update
 import Expect exposing (Expectation)
 import Form
 import Form.Field as Field
 import Fuzz exposing (Fuzzer, int, list, string)
-import Main
 import Test exposing (..)
 
 
 suite : Test
 suite =
-    describe "Main module"
+    describe "ComputeForm.Update module"
         [ let
             testUpdateName { originalName, originalBase, newName, expectedNewBase } =
                 let
@@ -26,7 +26,7 @@ suite =
                             ComputeForm.Model.validation
 
                     newComputeForm =
-                        Main.handleUpdatingComputeFormName newName initialComputeForm
+                        ComputeForm.Update.handleUpdatingComputeFormName newName initialComputeForm
 
                     newBase =
                         newValue "nodes.base"
@@ -39,7 +39,6 @@ suite =
                 \_ ->
                     Expect.equal newBase expectedNewBase
           in
-          -- XXX Extract `Main.handleUpdatingComputeFormName` somewhere better.
           -- XXX Maybe testing too many implementation details here/above, and
           -- should test at higher level - in `update`?
           describe "handleUpdatingComputeFormName"
