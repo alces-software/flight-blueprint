@@ -1,6 +1,11 @@
 const path = require('path');
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 
+// Ensure output always coloured; needed as overriding `process.stdout.isTTY`
+// in `client/scripts/customized-config.js`.
+const chalk = require('chalk');
+chalk.enabled = true;
+
 module.exports = function(config) {
   // Use your own ESLint file
   config.module.rules[0].use[0].options.useEslintrc = true;

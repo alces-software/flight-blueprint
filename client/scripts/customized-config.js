@@ -19,8 +19,7 @@ var proxyquire = require('proxyquire');
 // is false and therefore
 // https://github.com/facebook/create-react-app/blob/69c3d4b04c233ba9fb9d16691056bd09076177b1/packages/react-scripts/scripts/start.js#L115,L117
 // does not run, so console is not cleared and can see useful `elm-make`
-// output. Has side effect of meaning output is not coloured but not a big
-// deal.
+// output.
 process.stdout.isTTY = false;
 
 switch (process.argv[2]) {
