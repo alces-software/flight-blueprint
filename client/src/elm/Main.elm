@@ -20,6 +20,7 @@ import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
+import Set
 import Uuid exposing (Uuid)
 
 
@@ -363,8 +364,11 @@ encodeCluster model cluster =
 encodePrimaryGroup : PrimaryGroup -> E.Value
 encodePrimaryGroup group =
     E.object
-        [ -- XXX Not handling secondary groups yet.
-          ( "secondaryGroups", E.list [] )
+        [ ( "secondaryGroups"
+          , Set.toList group.secondaryGroups
+                |> List.map E.string
+                |> E.list
+          )
         , ( "meta", encodeNodesSpecification group.nodes )
         , ( "nodes"
           , PrimaryGroup.nodes group

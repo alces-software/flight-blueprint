@@ -4,6 +4,7 @@ import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
+import Set
 import Test exposing (..)
 
 
@@ -37,6 +38,7 @@ groupFixture : PrimaryGroup
 groupFixture =
     { name = "nodes"
     , nodes = nodesFixture
+    , secondaryGroups = Set.empty
     }
 
 

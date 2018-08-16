@@ -10,6 +10,7 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import PrimaryGroup exposing (PrimaryGroup)
+import Set exposing (Set)
 
 
 type alias ComputeForm =
@@ -46,7 +47,7 @@ validation : Validation () PrimaryGroup
 validation =
     -- XXX Do more thoroughly - validate integers within ranges defined in view
     -- etc.
-    map2 PrimaryGroup
+    map3 PrimaryGroup
         (field "name" string)
         (field "nodes"
             (map4 PrimaryGroup.NodesSpecification
@@ -56,3 +57,9 @@ validation =
                 (field "indexPadding" int)
             )
         )
+        (succeed defaultSecondaryGroups)
+
+
+defaultSecondaryGroups : Set String
+defaultSecondaryGroups =
+    Set.fromList [ "all", "nodes" ]
