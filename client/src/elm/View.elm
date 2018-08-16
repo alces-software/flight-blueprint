@@ -1,5 +1,6 @@
 module View exposing (view)
 
+import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -9,7 +10,7 @@ import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
 import List.Extra
-import Model exposing (ClusterDomain, CoreDomain, Model)
+import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)

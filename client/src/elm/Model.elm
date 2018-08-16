@@ -1,13 +1,13 @@
 module Model
     exposing
-        ( ClusterDomain
-        , CoreDomain
+        ( CoreDomain
         , Model
         , convertToYamlCmd
         , coreName
         , init
         )
 
+import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import EveryDict exposing (EveryDict)
 import Json.Encode as E
@@ -35,13 +35,6 @@ type alias Model =
 type alias CoreDomain =
     { gateway : Node
     , infra : Maybe Node
-    }
-
-
-type alias ClusterDomain =
-    { name : String
-    , login : Node
-    , computeGroupIds : List Uuid
     }
 
 

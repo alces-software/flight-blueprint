@@ -1,12 +1,13 @@
 module Update exposing (update)
 
+import ClusterDomain
 import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import ComputeForm.Update
 import EveryDict exposing (EveryDict)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import List.Extra
-import Model exposing (ClusterDomain, CoreDomain, Model)
+import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
 
@@ -36,14 +37,10 @@ updateInterfaceState msg model =
         AddCluster ->
             let
                 newClusters =
-                    List.concat [ model.clusters, [ newCluster ] ]
-
-                newCluster =
-                    { name = nextClusterName model.clusters
-                    , login =
-                        { name = "login1" }
-                    , computeGroupIds = []
-                    }
+                    List.concat
+                        [ model.clusters
+                        , [ ClusterDomain.nextCluster model.clusters ]
+                        ]
             in
             { model | clusters = newClusters }
 
@@ -165,18 +162,6 @@ updateInterfaceState msg model =
                     EveryDict.remove groupId model.clusterPrimaryGroups
             in
             { model | clusterPrimaryGroups = newGroups }
-
-
-nextClusterName : List ClusterDomain -> String
-nextClusterName clusters =
-    "cluster" ++ nextIndex clusters
-
-
-nextIndex : List a -> String
-nextIndex items =
-    List.length items
-        + 1
-        |> toString
 
 
 changeInfra : Model -> Maybe Node -> Model
