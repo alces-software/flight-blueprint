@@ -1,10 +1,20 @@
-module Model exposing (ClusterDomain, CoreDomain, Model, encode)
+module Model
+    exposing
+        ( ClusterDomain
+        , CoreDomain
+        , Model
+        , convertToYamlCmd
+        , coreName
+        , init
+        )
 
-import ComputeForm.Model exposing (ComputeForm, ComputeModal)
+import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import EveryDict exposing (EveryDict)
 import Json.Encode as E
 import Maybe.Extra
+import Msg exposing (..)
 import Node exposing (Node)
+import Ports
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
 import Set
@@ -33,6 +43,31 @@ type alias ClusterDomain =
     , login : Node
     , computeGroupIds : List Uuid
     }
+
+
+init : Int -> ( Model, Cmd Msg )
+init initialRandomSeed =
+    let
+        initialModel =
+            { core =
+                { gateway =
+                    { name = "gateway" }
+                , infra = Nothing
+                }
+            , clusters = []
+            , clusterPrimaryGroups = EveryDict.empty
+            , exportedYaml = ""
+            , randomSeed = Random.Pcg.initialSeed initialRandomSeed
+            , computeModal = Hidden
+            , computeForm = ComputeForm.Model.init
+            }
+    in
+    initialModel ! [ convertToYamlCmd initialModel ]
+
+
+convertToYamlCmd : Model -> Cmd Msg
+convertToYamlCmd =
+    encode >> Ports.convertToYaml
 
 
 encode : Model -> E.Value
@@ -121,3 +156,8 @@ encodeNodesSpecification nodesSpec =
 encodeNode : Node -> E.Value
 encodeNode node =
     E.string node.name
+
+
+coreName : String
+coreName =
+    "core"

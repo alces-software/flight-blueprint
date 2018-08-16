@@ -22,35 +22,6 @@ import Random.Pcg exposing (Seed)
 import Uuid exposing (Uuid)
 
 
----- MODEL ----
-
-
-coreName : String
-coreName =
-    "core"
-
-
-init : Int -> ( Model, Cmd Msg )
-init initialRandomSeed =
-    let
-        initialModel =
-            { core =
-                { gateway =
-                    { name = "gateway" }
-                , infra = Nothing
-                }
-            , clusters = []
-            , clusterPrimaryGroups = EveryDict.empty
-            , exportedYaml = ""
-            , randomSeed = Random.Pcg.initialSeed initialRandomSeed
-            , computeModal = Hidden
-            , computeForm = ComputeForm.Model.init
-            }
-    in
-    initialModel ! [ convertToYamlCmd initialModel ]
-
-
-
 ---- UPDATE ----
 
 
@@ -68,7 +39,7 @@ update msg model =
                     Cmd.none
 
                 _ ->
-                    convertToYamlCmd newModel
+                    Model.convertToYamlCmd newModel
     in
     newModel ! [ convertYamlCmd ]
 
@@ -277,11 +248,6 @@ handleUpdatingComputeFormName newName computeForm =
         computeForm
 
 
-convertToYamlCmd : Model -> Cmd Msg
-convertToYamlCmd =
-    Model.encode >> Ports.convertToYaml
-
-
 nextClusterName : List ClusterDomain -> String
 nextClusterName clusters =
     "cluster" ++ nextIndex clusters
@@ -368,7 +334,7 @@ viewCore core =
         [ -- XXX If decide we want to allow changing `core` name then move this
           -- from `viewCluster` into `viewDomain`, and remove name as just text
           -- here.
-          text coreName
+          text Model.coreName
         , viewNode coreColor Gateway Nothing core.gateway
         , infraNodeOrButton
         ]
@@ -665,7 +631,7 @@ main : Program Int Model Msg
 main =
     Html.programWithFlags
         { view = view >> toUnstyled
-        , init = init
+        , init = Model.init
         , update = update
         , subscriptions = subscriptions
         }
