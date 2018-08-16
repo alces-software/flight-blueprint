@@ -9,7 +9,6 @@ import ComputeForm.Model exposing (..)
 import Form as ElmForm exposing (Form)
 import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
-import Form.Input
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -17,7 +16,6 @@ import List.Extra
 import Maybe.Extra
 import Model exposing (Model)
 import Msg exposing (..)
-import PrimaryGroup exposing (PrimaryGroup)
 import Utils
 
 

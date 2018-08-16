@@ -1,9 +1,5 @@
 port module Main exposing (..)
 
-import Bootstrap.Button as Button
-import Bootstrap.Form
-import Bootstrap.Form.Input
-import Bootstrap.Modal as Modal
 import ComputeForm.Model exposing (..)
 import ComputeForm.View
 import Css exposing (..)
@@ -11,13 +7,9 @@ import Css.Colors exposing (..)
 import EveryDict exposing (EveryDict)
 import FeatherIcons as Icons
 import Form exposing (Form)
-import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
-import Form.Input
 import Form.Validate as V exposing (Validation)
 import Html
-import Html.Attributes as Attrs
-import Html.Events
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
