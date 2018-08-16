@@ -1,10 +1,13 @@
-module Model exposing (..)
+module Model exposing (ClusterDomain, CoreDomain, Model, encode)
 
 import ComputeForm.Model exposing (ComputeForm, ComputeModal)
 import EveryDict exposing (EveryDict)
+import Json.Encode as E
+import Maybe.Extra
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg exposing (Seed)
+import Set
 import Uuid exposing (Uuid)
 
 
@@ -30,3 +33,91 @@ type alias ClusterDomain =
     , login : Node
     , computeGroupIds : List Uuid
     }
+
+
+encode : Model -> E.Value
+encode model =
+    let
+        coreField =
+            ( "core", encodeCore model.core )
+
+        clusterFields =
+            List.map
+                (\c -> ( c.name, encodeCluster model c ))
+                model.clusters
+    in
+    E.object (coreField :: clusterFields)
+
+
+encodeCore : CoreDomain -> E.Value
+encodeCore core =
+    let
+        coreFields =
+            Maybe.Extra.values
+                [ Just <| ( "gateway", encodeNode core.gateway )
+                , Maybe.map
+                    (\i -> ( "infra", encodeNode i ))
+                    core.infra
+                ]
+    in
+    E.object coreFields
+
+
+encodeCluster : Model -> ClusterDomain -> E.Value
+encodeCluster model cluster =
+    let
+        loginField =
+            ( "login", encodeNode cluster.login )
+
+        computeField =
+            ( "compute", E.object computeGroupFields )
+
+        computeGroupFields =
+            List.map
+                (\g -> ( g.name, encodePrimaryGroup g ))
+                groups
+
+        groups =
+            cluster.computeGroupIds
+                |> List.map (flip EveryDict.get model.clusterPrimaryGroups)
+                |> Maybe.Extra.values
+    in
+    E.object
+        [ loginField
+        , computeField
+        ]
+
+
+encodePrimaryGroup : PrimaryGroup -> E.Value
+encodePrimaryGroup group =
+    E.object
+        [ ( "secondaryGroups"
+          , Set.toList group.secondaryGroups
+                |> List.map E.string
+                |> E.list
+          )
+        , ( "meta", encodeNodesSpecification group.nodes )
+        , ( "nodes"
+          , PrimaryGroup.nodes group
+                |> List.map encodeNode
+                |> E.list
+          )
+        ]
+
+
+encodeNodesSpecification : PrimaryGroup.NodesSpecification -> E.Value
+encodeNodesSpecification nodesSpec =
+    E.object
+        [ ( "base", E.string nodesSpec.base )
+        , ( "size", E.int nodesSpec.size )
+        , ( "startIndex", E.int nodesSpec.startIndex )
+        , ( "indexPadding", E.int nodesSpec.indexPadding )
+
+        -- XXX Not handling overrides yet.
+        , ( "overrides", E.object [] )
+        ]
+
+
+encodeNode : Node -> E.Value
+encodeNode node =
+    E.string node.name
