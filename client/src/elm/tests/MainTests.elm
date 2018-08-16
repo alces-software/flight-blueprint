@@ -65,7 +65,3 @@ suite =
                     }
             ]
         ]
-
-
-initialValues =
-    Main.initialComputeFormValues
