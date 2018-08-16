@@ -649,18 +649,6 @@ innerBoxBorderWidth =
 
 
 
----- UTILS ----
-
-
-exceptLast : List a -> List a
-exceptLast list =
-    List.reverse list
-        |> List.tail
-        |> Maybe.withDefault []
-        |> List.reverse
-
-
-
 ---- PORTS ----
 
 
