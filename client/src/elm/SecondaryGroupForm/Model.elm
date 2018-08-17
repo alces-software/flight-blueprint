@@ -1,4 +1,9 @@
-module SecondaryGroupForm.Model exposing (SecondaryGroupForm(..), init)
+module SecondaryGroupForm.Model
+    exposing
+        ( NameForm
+        , SecondaryGroupForm(..)
+        , init
+        )
 
 import EverySet exposing (EverySet)
 import Form exposing (Form)
@@ -7,14 +12,16 @@ import Form.Validate exposing (..)
 import Uuid exposing (Uuid)
 
 
-type
-    SecondaryGroupForm
-    -- XXX Give `Form () String` alias and use in different places?
-    = ShowingNameForm (Form () String)
+type SecondaryGroupForm
+    = ShowingNameForm NameForm
     | SelectingGroups String (EverySet Uuid)
 
 
-init : Form () String
+type alias NameForm =
+    Form () String
+
+
+init : NameForm
 init =
     Form.initial initialValues validation
 
