@@ -200,7 +200,7 @@ removeButton removeMsg =
     in
     button
         [ css styles, onClick removeMsg ]
-        [ text "x" ]
+        [ viewIcon Icons.x ]
 
 
 viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
