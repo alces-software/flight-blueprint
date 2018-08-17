@@ -1,6 +1,8 @@
 module View exposing (view)
 
+import Bootstrap.Modal as Modal
 import ClusterDomain exposing (ClusterDomain)
+import ComputeForm.Model
 import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -10,10 +12,12 @@ import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
 import List.Extra
+import ModalForm
 import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
+import Utils
 import Uuid exposing (Uuid)
 
 
@@ -52,9 +56,41 @@ view model =
             ]
 
         -- Must appear last so doesn't interfere with grid layout.
-        , ComputeForm.View.viewFormModal model
-            |> Html.Styled.fromUnstyled
+        , viewModal model
         ]
+
+
+viewModal : Model -> Html Msg
+viewModal model =
+    let
+        ( visibility, header, body ) =
+            case model.computeModal of
+                ComputeForm.Model.Hidden ->
+                    hiddenModalTriplet
+
+                ComputeForm.Model.AddingCompute clusterIndex ->
+                    let
+                        maybeCluster =
+                            List.Extra.getAt clusterIndex model.clusters
+                    in
+                    case maybeCluster of
+                        Just cluster ->
+                            ( Modal.shown
+                            , "Add compute to " ++ cluster.name
+                            , ComputeForm.View.view model.computeForm clusterIndex
+                            )
+
+                        Nothing ->
+                            -- If we're trying to add compute to a cluster
+                            -- which isn't in the model, something must have
+                            -- gone wrong, so keep the modal hidden.
+                            hiddenModalTriplet
+
+        hiddenModalTriplet =
+            ( Modal.hidden, "", Utils.nothing )
+    in
+    ModalForm.view visibility header body CancelAddingComputeGroup
+        |> Html.Styled.fromUnstyled
 
 
 viewCore : CoreDomain -> Html Msg
