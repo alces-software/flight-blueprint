@@ -16,6 +16,8 @@ import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
+import SecondaryGroupForm.Model
+import SecondaryGroupForm.View
 import Utils
 import Uuid exposing (Uuid)
 
@@ -86,8 +88,31 @@ viewModal model =
                             hiddenModalTriplet
 
                 Model.SecondaryGroupForm clusterIndex form ->
-                    -- XXX Handle properly
-                    hiddenModalTriplet
+                    case form of
+                        SecondaryGroupForm.Model.ShowingNameForm form ->
+                            -- XXX DRY up with ComputeForm branch.
+                            let
+                                maybeCluster =
+                                    List.Extra.getAt clusterIndex model.clusters
+                            in
+                            case maybeCluster of
+                                Just cluster ->
+                                    ( Modal.shown
+                                    , "Create secondary group for " ++ cluster.name
+                                    , SecondaryGroupForm.View.viewForm form
+                                    )
+
+                                Nothing ->
+                                    -- If we're trying to create secondary
+                                    -- group for a cluster which isn't in the
+                                    -- model, something must have gone wrong,
+                                    -- so keep the modal hidden.
+                                    hiddenModalTriplet
+
+                        SecondaryGroupForm.Model.SelectingGroups _ _ ->
+                            -- We're at the group selection stage, so do not
+                            -- show the modal.
+                            hiddenModalTriplet
 
         hiddenModalTriplet =
             ( Modal.hidden, "", Utils.nothing )
