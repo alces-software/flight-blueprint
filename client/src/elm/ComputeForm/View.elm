@@ -10,8 +10,8 @@ import ModalForm exposing (FieldType(..))
 import Msg exposing (..)
 
 
-view : ComputeForm -> Int -> Html Msg
-view computeForm clusterIndex =
+view : ComputeForm -> Html Msg
+view computeForm =
     let
         formInput =
             ModalForm.input computeForm

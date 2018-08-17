@@ -76,7 +76,7 @@ viewModal model =
                         Just cluster ->
                             ( Modal.shown
                             , "Add compute to " ++ cluster.name
-                            , ComputeForm.View.view form clusterIndex
+                            , ComputeForm.View.view form
                             )
 
                         Nothing ->
