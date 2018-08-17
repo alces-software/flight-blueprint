@@ -5,7 +5,7 @@ import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
 import EveryDict exposing (EveryDict)
-import FeatherIcons as Icons
+import FeatherIcons as Icons exposing (Icon)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
@@ -229,11 +229,6 @@ nodeIcon nodeSpecifier =
 
                 Compute ->
                     ( Icons.settings, "Compute node" )
-
-        iconHtml =
-            Icons.withSize 15 icon
-                |> Icons.toHtml []
-                |> Html.Styled.fromUnstyled
     in
     div
         [ css
@@ -242,7 +237,7 @@ nodeIcon nodeSpecifier =
             ]
         , title titleText
         ]
-        [ iconHtml ]
+        [ viewIcon icon ]
 
 
 nameInput : Color -> { a | name : String } -> (String -> Msg) -> Html Msg
@@ -287,6 +282,13 @@ maybeHtml maybeItem itemToHtml =
 nothing : Html msg
 nothing =
     text ""
+
+
+viewIcon : Icon -> Html msg
+viewIcon =
+    Icons.withSize 15
+        >> Icons.toHtml []
+        >> Html.Styled.fromUnstyled
 
 
 
