@@ -187,8 +187,45 @@ updateInterfaceState msg model =
             }
 
         SecondaryGroupFormMsg formMsg ->
-            -- XXX Actually handle this
-            model
+            -- XXX Make this less nested.
+            case model.displayedForm of
+                Model.SecondaryGroupForm clusterIndex form ->
+                    case form of
+                        SecondaryGroupForm.Model.ShowingNameForm nameForm ->
+                            case ( formMsg, Form.getOutput nameForm ) of
+                                ( Form.Submit, Just groupName ) ->
+                                    { model
+                                        | displayedForm =
+                                            Model.SecondaryGroupForm
+                                                clusterIndex
+                                                (SecondaryGroupForm.Model.SelectingGroups
+                                                    groupName
+                                                    EverySet.empty
+                                                )
+                                    }
+
+                                ( formMsg, _ ) ->
+                                    let
+                                        newNameForm =
+                                            Form.update SecondaryGroupForm.Model.validation
+                                                formMsg
+                                                nameForm
+                                    in
+                                    { model
+                                        | displayedForm =
+                                            Model.SecondaryGroupForm
+                                                clusterIndex
+                                                (SecondaryGroupForm.Model.ShowingNameForm newNameForm)
+                                    }
+
+                        SecondaryGroupForm.Model.SelectingGroups _ _ ->
+                            -- Do nothing if we're in the group selection
+                            -- stage.
+                            model
+
+                _ ->
+                    -- Do nothing if any other form displayed.
+                    model
 
         CancelCreatingSecondaryGroup ->
             { model | displayedForm = Model.NoForm }

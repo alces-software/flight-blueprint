@@ -3,6 +3,7 @@ module SecondaryGroupForm.Model
         ( NameForm
         , SecondaryGroupForm(..)
         , init
+        , validation
         )
 
 import EverySet exposing (EverySet)
