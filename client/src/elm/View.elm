@@ -3,9 +3,11 @@ module View exposing (view)
 import Bootstrap.Modal as Modal
 import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.View
+import Count
 import Css exposing (..)
 import Css.Colors exposing (..)
 import EveryDict exposing (EveryDict)
+import EverySet exposing (EverySet)
 import FeatherIcons as Icons exposing (Icon)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
@@ -44,6 +46,7 @@ view model =
             (List.concat
                 [ [ viewCore model.core ]
                 , List.indexedMap (viewCluster model) model.clusters
+                    |> List.concat
                 , [ addClusterButton ]
                 ]
             )
@@ -59,6 +62,27 @@ view model =
         -- Must appear last so doesn't interfere with grid layout.
         , viewModal model
         ]
+
+
+type alias Layers =
+    { normal : Style
+    , overlay : Style
+    , focusedCluster : Style
+    }
+
+
+layers : Layers
+layers =
+    let
+        shiftValue zIndexValue =
+            -- Multiply values sufficiently so that they show in front of
+            -- Flight product/brand bars, subtracting one from first value so
+            -- the 'normal' layer is at `z-index: 0`.
+            (zIndexValue - 1) * 1500
+    in
+    Count.mapTo3
+        (\zIndexValue -> zIndex (int <| shiftValue zIndexValue))
+        Layers
 
 
 viewModal : Model -> Html Msg
@@ -136,6 +160,7 @@ viewCore core =
                     addInfraButton
     in
     viewDomain coreColor
+        []
         [ -- XXX If decide we want to allow changing `core` name then move this
           -- from `viewCluster` into `viewDomain`, and remove name as just text
           -- here.
@@ -145,13 +170,34 @@ viewCore core =
         ]
 
 
-viewCluster : Model -> Int -> ClusterDomain -> Html Msg
+viewCluster : Model -> Int -> ClusterDomain -> List (Html Msg)
 viewCluster model clusterIndex cluster =
     let
         color =
             clusterColor model clusterIndex
+
+        additionalStyles =
+            if isFocusedCluster then
+                [ layers.focusedCluster
+                , position relative
+                , opacity (int 1)
+                ]
+            else
+                []
+
+        isFocusedCluster =
+            case overlayData of
+                Just ( focusedCluster, _, _ ) ->
+                    cluster == focusedCluster
+
+                Nothing ->
+                    False
+
+        overlayData =
+            secondaryGroupSelectionOverlayData model
     in
-    viewDomain color
+    [ viewDomain color
+        additionalStyles
         (List.concat
             [ [ startGroupingButton color clusterIndex
               , nameInput color cluster (SetClusterName clusterIndex)
@@ -162,6 +208,47 @@ viewCluster model clusterIndex cluster =
             , [ addComputeButton clusterIndex ]
             ]
         )
+    , if isFocusedCluster then
+        maybeHtml overlayData secondaryGroupSelectionOverlay
+      else
+        nothing
+    ]
+
+
+secondaryGroupSelectionOverlayData : Model -> Maybe ( ClusterDomain, String, EverySet Uuid )
+secondaryGroupSelectionOverlayData model =
+    case model.displayedForm of
+        Model.SecondaryGroupForm clusterIndex form ->
+            case ( List.Extra.getAt clusterIndex model.clusters, form ) of
+                ( Just cluster, SecondaryGroupForm.Model.SelectingGroups secondaryGroupName members ) ->
+                    Just ( cluster, secondaryGroupName, members )
+
+                _ ->
+                    Nothing
+
+        _ ->
+            Nothing
+
+
+secondaryGroupSelectionOverlay : ( ClusterDomain, String, EverySet Uuid ) -> Html Msg
+secondaryGroupSelectionOverlay ( cluster, secondaryGroupName, members ) =
+    div
+        [ css
+            [ -- Similar styling to Bootstrap modals, so transition from
+              -- naming secondary group to selecting members is fairly
+              -- seamless.
+              position fixed
+            , top zero
+            , bottom zero
+            , left zero
+            , right zero
+            , layers.overlay
+            , backgroundColor (hex "000")
+            , opacity (num 0.5)
+            ]
+        ]
+        [-- XXX Add cancel button here
+        ]
 
 
 startGroupingButton : Color -> Int -> Html Msg
@@ -352,11 +439,16 @@ nameInput color { name } inputMsg =
         []
 
 
-viewDomain : Color -> List (Html Msg) -> Html Msg
-viewDomain color children =
-    div
-        [ css <| domainStyles color ]
-        children
+viewDomain : Color -> List Style -> List (Html Msg) -> Html Msg
+viewDomain color additionalStyles children =
+    let
+        styles =
+            List.concat
+                [ domainStyles color
+                , additionalStyles
+                ]
+    in
+    div [ css styles ] children
 
 
 maybeHtml : Maybe a -> (a -> Html Msg) -> Html Msg
