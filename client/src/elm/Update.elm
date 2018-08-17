@@ -4,12 +4,15 @@ import ClusterDomain
 import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
 import ComputeForm.Update
 import EveryDict exposing (EveryDict)
+import EverySet exposing (EverySet)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import List.Extra
 import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
+import SecondaryGroupForm.Model
+import Uuid exposing (Uuid)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -163,6 +166,31 @@ updateInterfaceState msg model =
             in
             { model | clusterPrimaryGroups = newGroups }
 
+        StartCreatingSecondaryGroup clusterIndex ->
+            { model
+                | secondaryGroupForm =
+                    SecondaryGroupForm.Model.ShowingNameForm
+                        clusterIndex
+                        SecondaryGroupForm.Model.init
+            }
+
+        SecondaryGroupFormMsg clusterIndex formMsg ->
+            -- XXX Actually handle this
+            model
+
+        CancelCreatingSecondaryGroup ->
+            { model | secondaryGroupForm = SecondaryGroupForm.Model.Hidden }
+
+        AddGroupToSecondaryGroup groupId ->
+            changeSecondaryGroupMembers model (EverySet.insert groupId)
+
+        RemoveGroupFromSecondaryGroup groupId ->
+            changeSecondaryGroupMembers model (EverySet.remove groupId)
+
+        CreateSecondaryGroup ->
+            -- XXX Actually handle this
+            model
+
 
 changeInfra : Model -> Maybe Node -> Model
 changeInfra model infra =
@@ -174,3 +202,22 @@ changeInfra model infra =
             model.core
     in
     { model | core = newCore }
+
+
+changeSecondaryGroupMembers : Model -> (EverySet Uuid -> EverySet Uuid) -> Model
+changeSecondaryGroupMembers model changeMembers =
+    case model.secondaryGroupForm of
+        SecondaryGroupForm.Model.Hidden ->
+            model
+
+        SecondaryGroupForm.Model.ShowingNameForm _ _ ->
+            model
+
+        SecondaryGroupForm.Model.SelectingGroups clusterId groupName groupIds ->
+            { model
+                | secondaryGroupForm =
+                    SecondaryGroupForm.Model.SelectingGroups
+                        clusterId
+                        groupName
+                        (changeMembers groupIds)
+            }

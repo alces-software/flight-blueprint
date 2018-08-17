@@ -8,15 +8,16 @@ module Model
         )
 
 import ClusterDomain exposing (ClusterDomain)
-import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
+import ComputeForm.Model exposing (ComputeForm, ComputeModal)
 import EveryDict exposing (EveryDict)
 import Json.Encode as E
 import Maybe.Extra
 import Msg exposing (..)
 import Node exposing (Node)
 import Ports
-import PrimaryGroup exposing (PrimaryGroup)
+import PrimaryGroup exposing (..)
 import Random.Pcg exposing (Seed)
+import SecondaryGroupForm.Model exposing (SecondaryGroupForm)
 import Set
 import Uuid exposing (Uuid)
 
@@ -29,6 +30,7 @@ type alias Model =
     , randomSeed : Seed
     , computeModal : ComputeModal
     , computeForm : ComputeForm
+    , secondaryGroupForm : SecondaryGroupForm
     }
 
 
@@ -51,8 +53,15 @@ init initialRandomSeed =
             , clusterPrimaryGroups = EveryDict.empty
             , exportedYaml = ""
             , randomSeed = Random.Pcg.initialSeed initialRandomSeed
-            , computeModal = Hidden
+
+            -- XXX Collapse two parts of ComputeForm state together as with
+            -- SecondaryGroupForm? Although current structure does allow filled
+            -- in fields to be retained if close and reopen form elsewhere (or
+            -- in same cluster), which is useful - consider if could retain
+            -- this in different way?
+            , computeModal = ComputeForm.Model.Hidden
             , computeForm = ComputeForm.Model.init
+            , secondaryGroupForm = SecondaryGroupForm.Model.Hidden
             }
     in
     initialModel ! [ convertToYamlCmd initialModel ]
