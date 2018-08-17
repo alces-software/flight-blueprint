@@ -128,7 +128,7 @@ updateInterfaceState msg model =
         CancelAddingComputeGroup ->
             { model | displayedForm = Model.NoForm }
 
-        ComputeFormMsg clusterIndex formMsg ->
+        ComputeFormMsg formMsg ->
             -- XXX Make this less nested.
             case model.displayedForm of
                 Model.ComputeForm clusterIndex form ->
@@ -186,7 +186,7 @@ updateInterfaceState msg model =
                         (SecondaryGroupForm.Model.ShowingNameForm SecondaryGroupForm.Model.init)
             }
 
-        SecondaryGroupFormMsg clusterIndex formMsg ->
+        SecondaryGroupFormMsg formMsg ->
             -- XXX Actually handle this
             model
 

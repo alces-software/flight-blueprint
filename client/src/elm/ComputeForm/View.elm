@@ -15,7 +15,7 @@ view computeForm clusterIndex =
     let
         formInput =
             ModalForm.input computeForm
-                >> Html.map (ComputeFormMsg clusterIndex)
+                >> Html.map ComputeFormMsg
     in
     Form.form []
         [ formInput
@@ -59,7 +59,7 @@ view computeForm clusterIndex =
         -- XXX Add reset button too?
         , Button.button
             [ Button.success
-            , Button.onClick <| ComputeFormMsg clusterIndex ElmForm.Submit
+            , Button.onClick <| ComputeFormMsg ElmForm.Submit
             ]
             [ text "Create" ]
         ]
