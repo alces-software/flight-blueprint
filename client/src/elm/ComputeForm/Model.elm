@@ -1,10 +1,4 @@
-module ComputeForm.Model
-    exposing
-        ( ComputeForm
-        , ComputeModal(..)
-        , init
-        , validation
-        )
+module ComputeForm.Model exposing (ComputeForm, init, validation)
 
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
@@ -15,11 +9,6 @@ import Set exposing (Set)
 
 type alias ComputeForm =
     Form () PrimaryGroup
-
-
-type ComputeModal
-    = Hidden
-    | AddingCompute Int
 
 
 init : ComputeForm

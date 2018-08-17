@@ -21,6 +21,7 @@ type Msg
       -- XXX Extract sub-msg type for secondary group messages?
     | StartCreatingSecondaryGroup Int
     | SecondaryGroupFormMsg Int Form.Msg
+      -- XXX Can modal cancel methods be collapsed together?
     | CancelCreatingSecondaryGroup
     | AddGroupToSecondaryGroup Uuid
     | RemoveGroupFromSecondaryGroup Uuid

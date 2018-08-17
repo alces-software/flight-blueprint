@@ -1,7 +1,7 @@
 module Update exposing (update)
 
 import ClusterDomain
-import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
+import ComputeForm.Model exposing (ComputeForm)
 import ComputeForm.Update
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
@@ -120,38 +120,50 @@ updateInterfaceState msg model =
             { model | clusters = newClusters }
 
         StartAddingComputeGroup clusterIndex ->
-            { model | computeModal = AddingCompute clusterIndex }
+            { model
+                | displayedForm =
+                    Model.ComputeForm clusterIndex ComputeForm.Model.init
+            }
 
         CancelAddingComputeGroup ->
-            { model | computeModal = Hidden }
+            { model | displayedForm = Model.NoForm }
 
         ComputeFormMsg clusterIndex formMsg ->
-            case ( formMsg, Form.getOutput model.computeForm ) of
-                ( Form.Submit, Just newGroup ) ->
-                    ComputeForm.Update.handleSuccessfulComputeFormSubmit
-                        model
-                        clusterIndex
-                        newGroup
+            -- XXX Make this less nested.
+            case model.displayedForm of
+                Model.ComputeForm clusterIndex form ->
+                    case ( formMsg, Form.getOutput form ) of
+                        ( Form.Submit, Just newGroup ) ->
+                            ComputeForm.Update.handleSuccessfulComputeFormSubmit
+                                model
+                                clusterIndex
+                                newGroup
 
-                ( formMsg, _ ) ->
-                    let
-                        preUpdatedForm =
-                            case formMsg of
-                                Form.Input "name" _ (Field.String newName) ->
-                                    ComputeForm.Update.handleUpdatingComputeFormName
-                                        newName
-                                        model.computeForm
+                        ( formMsg, _ ) ->
+                            let
+                                preUpdatedForm =
+                                    case formMsg of
+                                        Form.Input "name" _ (Field.String newName) ->
+                                            ComputeForm.Update.handleUpdatingComputeFormName
+                                                newName
+                                                form
 
-                                _ ->
-                                    model.computeForm
-                    in
-                    { model
-                        | computeForm =
-                            Form.update
-                                ComputeForm.Model.validation
-                                formMsg
-                                preUpdatedForm
-                    }
+                                        _ ->
+                                            form
+
+                                newForm =
+                                    Form.update
+                                        ComputeForm.Model.validation
+                                        formMsg
+                                        preUpdatedForm
+                            in
+                            { model
+                                | displayedForm = Model.ComputeForm clusterIndex newForm
+                            }
+
+                _ ->
+                    -- Do nothing if any other form displayed.
+                    model
 
         RemoveComputeGroup groupId ->
             let
@@ -168,10 +180,10 @@ updateInterfaceState msg model =
 
         StartCreatingSecondaryGroup clusterIndex ->
             { model
-                | secondaryGroupForm =
-                    SecondaryGroupForm.Model.ShowingNameForm
+                | displayedForm =
+                    Model.SecondaryGroupForm
                         clusterIndex
-                        SecondaryGroupForm.Model.init
+                        (SecondaryGroupForm.Model.ShowingNameForm SecondaryGroupForm.Model.init)
             }
 
         SecondaryGroupFormMsg clusterIndex formMsg ->
@@ -179,7 +191,7 @@ updateInterfaceState msg model =
             model
 
         CancelCreatingSecondaryGroup ->
-            { model | secondaryGroupForm = SecondaryGroupForm.Model.Hidden }
+            { model | displayedForm = Model.NoForm }
 
         AddGroupToSecondaryGroup groupId ->
             changeSecondaryGroupMembers model (EverySet.insert groupId)
@@ -206,18 +218,23 @@ changeInfra model infra =
 
 changeSecondaryGroupMembers : Model -> (EverySet Uuid -> EverySet Uuid) -> Model
 changeSecondaryGroupMembers model changeMembers =
-    case model.secondaryGroupForm of
-        SecondaryGroupForm.Model.Hidden ->
-            model
+    case model.displayedForm of
+        Model.SecondaryGroupForm clusterId form ->
+            let
+                newForm =
+                    case form of
+                        SecondaryGroupForm.Model.ShowingNameForm _ ->
+                            form
 
-        SecondaryGroupForm.Model.ShowingNameForm _ _ ->
-            model
-
-        SecondaryGroupForm.Model.SelectingGroups clusterId groupName groupIds ->
+                        SecondaryGroupForm.Model.SelectingGroups groupName groupIds ->
+                            SecondaryGroupForm.Model.SelectingGroups
+                                groupName
+                                (changeMembers groupIds)
+            in
             { model
-                | secondaryGroupForm =
-                    SecondaryGroupForm.Model.SelectingGroups
-                        clusterId
-                        groupName
-                        (changeMembers groupIds)
+                | displayedForm = Model.SecondaryGroupForm clusterId newForm
             }
+
+        _ ->
+            -- Do nothing if any other form displayed.
+            model

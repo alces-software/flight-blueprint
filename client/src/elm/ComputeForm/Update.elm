@@ -4,7 +4,7 @@ module ComputeForm.Update
         , handleUpdatingComputeFormName
         )
 
-import ComputeForm.Model exposing (ComputeForm, ComputeModal(..))
+import ComputeForm.Model exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
@@ -50,8 +50,7 @@ handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
         | clusters = newClusters
         , clusterPrimaryGroups = newGroups
         , randomSeed = newSeed
-        , computeModal = Hidden
-        , computeForm = ComputeForm.Model.init
+        , displayedForm = Model.NoForm
     }
 
 

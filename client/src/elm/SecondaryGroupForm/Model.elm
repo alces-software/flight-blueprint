@@ -7,11 +7,11 @@ import Form.Validate exposing (..)
 import Uuid exposing (Uuid)
 
 
-type SecondaryGroupForm
-    = Hidden
-      -- XXX Give `Form () String` alias and use in different places?
-    | ShowingNameForm Int (Form () String)
-    | SelectingGroups Int String (EverySet Uuid)
+type
+    SecondaryGroupForm
+    -- XXX Give `Form () String` alias and use in different places?
+    = ShowingNameForm (Form () String)
+    | SelectingGroups String (EverySet Uuid)
 
 
 init : Form () String

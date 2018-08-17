@@ -2,7 +2,6 @@ module View exposing (view)
 
 import Bootstrap.Modal as Modal
 import ClusterDomain exposing (ClusterDomain)
-import ComputeForm.Model
 import ComputeForm.View
 import Css exposing (..)
 import Css.Colors exposing (..)
@@ -64,11 +63,11 @@ viewModal : Model -> Html Msg
 viewModal model =
     let
         ( visibility, header, body ) =
-            case model.computeModal of
-                ComputeForm.Model.Hidden ->
+            case model.displayedForm of
+                Model.NoForm ->
                     hiddenModalTriplet
 
-                ComputeForm.Model.AddingCompute clusterIndex ->
+                Model.ComputeForm clusterIndex form ->
                     let
                         maybeCluster =
                             List.Extra.getAt clusterIndex model.clusters
@@ -77,7 +76,7 @@ viewModal model =
                         Just cluster ->
                             ( Modal.shown
                             , "Add compute to " ++ cluster.name
-                            , ComputeForm.View.view model.computeForm clusterIndex
+                            , ComputeForm.View.view form clusterIndex
                             )
 
                         Nothing ->
@@ -85,6 +84,10 @@ viewModal model =
                             -- which isn't in the model, something must have
                             -- gone wrong, so keep the modal hidden.
                             hiddenModalTriplet
+
+                Model.SecondaryGroupForm clusterIndex form ->
+                    -- XXX Handle properly
+                    hiddenModalTriplet
 
         hiddenModalTriplet =
             ( Modal.hidden, "", Utils.nothing )
