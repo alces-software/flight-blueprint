@@ -19,7 +19,6 @@ type Msg
     | SetNodeName NodeSpecifier String
     | SetClusterName Int String
       -- XXX Extract sub-msg type for secondary group messages?
-      -- XXX Display button on cluster with `Icons.grid` for this?
     | StartCreatingSecondaryGroup Int
     | SecondaryGroupFormMsg Int Form.Msg
     | CancelCreatingSecondaryGroup

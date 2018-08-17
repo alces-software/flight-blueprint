@@ -89,7 +89,8 @@ viewCluster model clusterIndex cluster =
     in
     viewDomain color
         (List.concat
-            [ [ nameInput color cluster (SetClusterName clusterIndex)
+            [ [ startGroupingButton color clusterIndex
+              , nameInput color cluster (SetClusterName clusterIndex)
               , removeButton <| RemoveCluster clusterIndex
               , viewNode color (Login clusterIndex) Nothing cluster.login
               ]
@@ -97,6 +98,20 @@ viewCluster model clusterIndex cluster =
             , [ addComputeButton clusterIndex ]
             ]
         )
+
+
+startGroupingButton : Color -> Int -> Html Msg
+startGroupingButton color clusterIndex =
+    let
+        titleText =
+            "Create secondary group to organize compute in this cluster"
+    in
+    iconButton
+        color
+        Icons.grid
+        [ title titleText ]
+        [ marginRight (px 8) ]
+        (StartCreatingSecondaryGroup clusterIndex)
 
 
 viewPrimaryGroup : Model -> Color -> Uuid -> Html Msg
@@ -187,20 +202,31 @@ addButton itemToAdd colorToStyles addMsg =
 
 removeButton : Msg -> Html Msg
 removeButton removeMsg =
+    iconButton red Icons.x [] [ float right ] removeMsg
+
+
+iconButton : Color -> Icon -> List (Attribute Msg) -> List Style -> Msg -> Html Msg
+iconButton iconColor icon additionalAttrs additionalStyles msg =
     let
         styles =
-            [ backgroundColor white
-            , border unset
-            , buttonFontSize
-            , color red
-            , float right
-            , padding unset
-            , verticalAlign top
-            ]
+            List.concat
+                [ [ backgroundColor white
+                  , border unset
+                  , buttonFontSize
+                  , color iconColor
+                  , padding unset
+                  , verticalAlign top
+                  ]
+                , additionalStyles
+                ]
+
+        attrs =
+            List.concat
+                [ [ css styles, onClick msg ]
+                , additionalAttrs
+                ]
     in
-    button
-        [ css styles, onClick removeMsg ]
-        [ viewIcon Icons.x ]
+    button attrs [ viewIcon icon ]
 
 
 viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
