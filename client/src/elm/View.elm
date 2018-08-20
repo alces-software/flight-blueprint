@@ -348,9 +348,8 @@ viewPrimaryGroup model clusterIsFocused color groupId =
     let
         maybeGroup =
             EveryDict.get groupId model.clusterPrimaryGroups
-    in
-    case maybeGroup of
-        Just group ->
+
+        view group =
             let
                 nodes =
                     PrimaryGroup.nodes group
@@ -358,15 +357,17 @@ viewPrimaryGroup model clusterIsFocused color groupId =
                 children =
                     List.concat
                         [ [ text group.name
-                          , removeButton clusterIsFocused <| RemoveComputeGroup groupId
+                          , removeButton clusterIsFocused <|
+                                RemoveComputeGroup groupId
                           ]
-                        , List.map (viewNode clusterIsFocused color Compute Nothing) nodes
+                        , List.map
+                            (viewNode clusterIsFocused color Compute Nothing)
+                            nodes
                         ]
             in
             div [ css <| groupStyles color ] children
-
-        Nothing ->
-            nothing
+    in
+    maybeHtml maybeGroup view
 
 
 clusterColor : Model -> Int -> Color
