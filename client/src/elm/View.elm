@@ -6,6 +6,7 @@ import ComputeForm.View
 import Count
 import Css exposing (..)
 import Css.Colors exposing (..)
+import Css.Transitions as Transitions
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import FeatherIcons as Icons exposing (Icon)
@@ -261,22 +262,69 @@ secondaryGroupSelectionOverlayData model =
 
 secondaryGroupSelectionOverlay : ( ClusterDomain, String, EverySet Uuid ) -> Html Msg
 secondaryGroupSelectionOverlay ( cluster, secondaryGroupName, members ) =
+    let
+        opacityLayer =
+            div
+                [ css
+                    [ -- Similar styling to Bootstrap modals, so transition from
+                      -- naming secondary group to selecting members is fairly
+                      -- seamless.
+                      position fixed
+                    , Css.width (pct 100)
+                    , Css.height (pct 100)
+                    , backgroundColor (hex "000")
+                    , opacity (num 0.5)
+                    ]
+                ]
+                []
+    in
     div
         [ css
-            [ -- Similar styling to Bootstrap modals, so transition from
-              -- naming secondary group to selecting members is fairly
-              -- seamless.
-              position fixed
+            [ position fixed
             , top zero
             , bottom zero
             , left zero
             , right zero
             , layers.overlay
-            , backgroundColor (hex "000")
-            , opacity (num 0.5)
             ]
         ]
-        [-- XXX Add cancel button here
+        [ opacityLayer
+        , secondaryGroupSelectionCancelButton
+        ]
+
+
+secondaryGroupSelectionCancelButton : Html Msg
+secondaryGroupSelectionCancelButton =
+    let
+        hoverStyles =
+            [ opacity (num 1) ]
+
+        activeStyles =
+            [ opacity (num 0.9) ]
+    in
+    button
+        [ onClick CancelCreatingSecondaryGroup
+        , title "Cancel creating this secondary group"
+        , css
+            [ position fixed
+            , top (pct 40)
+            , right (px 150)
+            , buttonFontSize
+            , borderRadius (pct 20)
+            , padding (px 10)
+            , lineHeight (Css.em 1)
+            , backgroundColor white
+            , border (px 1)
+            , borderStyle solid
+            , borderColor black
+            , opacity (num 0.8)
+            , hover hoverStyles
+            , focus hoverStyles
+            , active activeStyles
+            ]
+        ]
+        [ viewIcon 30 Icons.x
+        , div [] [ text "CANCEL" ]
         ]
 
 
@@ -433,7 +481,7 @@ iconButton disabled iconColor icon titleText additionalStyles msg =
             else
                 ( [], [ onClick msg, title titleText ] )
     in
-    button attrs [ viewIcon icon ]
+    button attrs [ viewRegularIcon icon ]
 
 
 viewNode : Bool -> Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
@@ -470,7 +518,7 @@ nodeIcon nodeSpecifier =
             ]
         , title titleText
         ]
-        [ viewIcon icon ]
+        [ viewRegularIcon icon ]
 
 
 nameInput : Bool -> Color -> { a | name : String } -> (String -> Msg) -> Html Msg
@@ -525,9 +573,14 @@ nothing =
     text ""
 
 
-viewIcon : Icon -> Html msg
-viewIcon =
-    Icons.withSize 15
+viewRegularIcon : Icon -> Html msg
+viewRegularIcon =
+    viewIcon 15
+
+
+viewIcon : Float -> Icon -> Html msg
+viewIcon size =
+    Icons.withSize size
         >> Icons.toHtml []
         >> Html.Styled.fromUnstyled
 
