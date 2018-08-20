@@ -10,7 +10,7 @@ import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import FeatherIcons as Icons exposing (Icon)
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (..)
+import Html.Styled.Attributes as Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
 import List.Extra
 import ModalForm
@@ -154,7 +154,7 @@ viewCore core =
         infraNodeOrButton =
             case core.infra of
                 Just infra ->
-                    viewNode coreColor Infra (Just RemoveInfra) infra
+                    viewNode False coreColor Infra (Just RemoveInfra) infra
 
                 Nothing ->
                     addInfraButton
@@ -165,7 +165,7 @@ viewCore core =
           -- from `viewCluster` into `viewDomain`, and remove name as just text
           -- here.
           text Model.coreName
-        , viewNode coreColor Gateway Nothing core.gateway
+        , viewNode False coreColor Gateway Nothing core.gateway
         , infraNodeOrButton
         ]
 
@@ -199,13 +199,24 @@ viewCluster model clusterIndex cluster =
     [ viewDomain color
         additionalStyles
         (List.concat
-            [ [ startGroupingButton color clusterIndex
-              , nameInput color cluster (SetClusterName clusterIndex)
-              , removeButton <| RemoveCluster clusterIndex
-              , viewNode color (Login clusterIndex) Nothing cluster.login
+            [ [ startGroupingButton isFocusedCluster color clusterIndex
+              , nameInput
+                    isFocusedCluster
+                    color
+                    cluster
+                    (SetClusterName clusterIndex)
+              , removeButton isFocusedCluster <| RemoveCluster clusterIndex
+              , viewNode
+                    isFocusedCluster
+                    color
+                    (Login clusterIndex)
+                    Nothing
+                    cluster.login
               ]
-            , List.map (viewPrimaryGroup model color) cluster.computeGroupIds
-            , [ addComputeButton clusterIndex ]
+            , List.map
+                (viewPrimaryGroup model isFocusedCluster color)
+                cluster.computeGroupIds
+            , [ addComputeButton isFocusedCluster clusterIndex ]
             ]
         )
     , if isFocusedCluster then
@@ -251,22 +262,26 @@ secondaryGroupSelectionOverlay ( cluster, secondaryGroupName, members ) =
         ]
 
 
-startGroupingButton : Color -> Int -> Html Msg
-startGroupingButton color clusterIndex =
+startGroupingButton : Bool -> Color -> Int -> Html Msg
+startGroupingButton disabled color clusterIndex =
     let
-        titleText =
-            "Create secondary group to organize compute in this cluster"
+        attrs =
+            if disabled then
+                []
+            else
+                [ title "Create secondary group to organize compute in this cluster" ]
     in
     iconButton
+        disabled
         color
         Icons.grid
-        [ title titleText ]
+        attrs
         [ marginRight (px 8) ]
         (StartCreatingSecondaryGroup clusterIndex)
 
 
-viewPrimaryGroup : Model -> Color -> Uuid -> Html Msg
-viewPrimaryGroup model color groupId =
+viewPrimaryGroup : Model -> Bool -> Color -> Uuid -> Html Msg
+viewPrimaryGroup model clusterIsFocused color groupId =
     let
         maybeGroup =
             EveryDict.get groupId model.clusterPrimaryGroups
@@ -280,9 +295,9 @@ viewPrimaryGroup model color groupId =
                 children =
                     List.concat
                         [ [ text group.name
-                          , removeButton <| RemoveComputeGroup groupId
+                          , removeButton clusterIsFocused <| RemoveComputeGroup groupId
                           ]
-                        , List.map (viewNode color Compute Nothing) nodes
+                        , List.map (viewNode clusterIsFocused color Compute Nothing) nodes
                         ]
             in
             div [ css <| groupStyles color ] children
@@ -322,42 +337,57 @@ clusterColor model clusterIndex =
 
 addInfraButton : Html Msg
 addInfraButton =
-    addButton "infra" nodeStyles AddInfra
+    addButton False "infra" nodeStyles AddInfra
 
 
-addComputeButton : Int -> Html Msg
-addComputeButton clusterIndex =
-    addButton "compute" nodeStyles (StartAddingComputeGroup clusterIndex)
+addComputeButton : Bool -> Int -> Html Msg
+addComputeButton disabled clusterIndex =
+    addButton disabled "compute" nodeStyles (StartAddingComputeGroup clusterIndex)
 
 
 addClusterButton : Html Msg
 addClusterButton =
-    addButton "cluster" domainStyles AddCluster
+    addButton False "cluster" domainStyles AddCluster
 
 
-addButton : String -> (Color -> List Style) -> Msg -> Html Msg
-addButton itemToAdd colorToStyles addMsg =
+addButton : Bool -> String -> (Color -> List Style) -> Msg -> Html Msg
+addButton disabled itemToAdd colorToStyles addMsg =
     let
+        attrs =
+            css styles :: conditionalAttrs
+
         styles =
             List.concat
                 [ [ buttonFontSize
                   , Css.width (pct 100)
                   ]
                 , colorToStyles green
+                , conditionalStyles
                 ]
+
+        ( conditionalAttrs, conditionalStyles ) =
+            if disabled then
+                ( [ Attributes.disabled True ], [ cursor Css.default ] )
+            else
+                ( [ onClick addMsg ], [] )
     in
-    button
-        [ css styles, onClick addMsg ]
-        [ text <| "+" ++ itemToAdd ]
+    button attrs [ text <| "+" ++ itemToAdd ]
 
 
-removeButton : Msg -> Html Msg
-removeButton removeMsg =
-    iconButton red Icons.x [] [ float right ] removeMsg
+removeButton : Bool -> Msg -> Html Msg
+removeButton disabled removeMsg =
+    iconButton disabled red Icons.x [] [ float right ] removeMsg
 
 
-iconButton : Color -> Icon -> List (Attribute Msg) -> List Style -> Msg -> Html Msg
-iconButton iconColor icon additionalAttrs additionalStyles msg =
+iconButton :
+    Bool
+    -> Color
+    -> Icon
+    -> List (Attribute Msg)
+    -> List Style
+    -> Msg
+    -> Html Msg
+iconButton disabled iconColor icon additionalAttrs additionalStyles msg =
     let
         styles =
             List.concat
@@ -368,25 +398,37 @@ iconButton iconColor icon additionalAttrs additionalStyles msg =
                   , padding unset
                   , verticalAlign top
                   ]
+                , conditionalStyles
                 , additionalStyles
                 ]
 
         attrs =
             List.concat
-                [ [ css styles, onClick msg ]
+                [ [ css styles ]
+                , conditionalAttrs
                 , additionalAttrs
                 ]
+
+        ( conditionalStyles, conditionalAttrs ) =
+            if disabled then
+                ( [ cursor Css.default
+                  , important <| outline none
+                  ]
+                , []
+                )
+            else
+                ( [], [ onClick msg ] )
     in
     button attrs [ viewIcon icon ]
 
 
-viewNode : Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
-viewNode color nodeSpecifier removeMsg node =
+viewNode : Bool -> Color -> NodeSpecifier -> Maybe Msg -> Node -> Html Msg
+viewNode actionsDisabled color nodeSpecifier removeMsg node =
     div
         [ css <| nodeStyles color ]
         [ nodeIcon nodeSpecifier
-        , nameInput color node (SetNodeName nodeSpecifier)
-        , maybeHtml removeMsg removeButton
+        , nameInput actionsDisabled color node (SetNodeName nodeSpecifier)
+        , maybeHtml removeMsg (removeButton actionsDisabled)
         ]
 
 
@@ -417,11 +459,12 @@ nodeIcon nodeSpecifier =
         [ viewIcon icon ]
 
 
-nameInput : Color -> { a | name : String } -> (String -> Msg) -> Html Msg
-nameInput color { name } inputMsg =
+nameInput : Bool -> Color -> { a | name : String } -> (String -> Msg) -> Html Msg
+nameInput disabled color { name } inputMsg =
     input
         [ value name
         , onInput inputMsg
+        , Attributes.disabled disabled
         , css
             -- Reset input styles to look like regular text (adapted from
             -- https://stackoverflow.com/a/38830702/2620402).
@@ -434,6 +477,7 @@ nameInput color { name } inputMsg =
             -- Do not set width to 100% to allow space for remove buttons.
             , Css.width (pct 80)
             , Css.color color
+            , backgroundColor white
             ]
         ]
         []
