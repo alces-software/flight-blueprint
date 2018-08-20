@@ -492,6 +492,7 @@ nameInput disabled color { name } inputMsg =
             , Css.width (pct 80)
             , Css.color color
             , backgroundColor white
+            , cursor Css.text_
             ]
         ]
         []
