@@ -283,17 +283,14 @@ secondaryGroupSelectionOverlay ( cluster, secondaryGroupName, members ) =
 startGroupingButton : Bool -> Color -> Int -> Html Msg
 startGroupingButton disabled color clusterIndex =
     let
-        attrs =
-            if disabled then
-                []
-            else
-                [ title "Create secondary group to organize compute in this cluster" ]
+        titleText =
+            "Create secondary group to organize compute in this cluster"
     in
     iconButton
         disabled
         color
         Icons.grid
-        attrs
+        titleText
         [ marginRight (px 8) ]
         (StartCreatingSecondaryGroup clusterIndex)
 
@@ -394,18 +391,18 @@ addButton disabled itemToAdd colorToStyles addMsg =
 
 removeButton : Bool -> Msg -> Html Msg
 removeButton disabled removeMsg =
-    iconButton disabled red Icons.x [] [ float right ] removeMsg
+    iconButton disabled red Icons.x "" [ float right ] removeMsg
 
 
 iconButton :
     Bool
     -> Color
     -> Icon
-    -> List (Attribute Msg)
+    -> String
     -> List Style
     -> Msg
     -> Html Msg
-iconButton disabled iconColor icon additionalAttrs additionalStyles msg =
+iconButton disabled iconColor icon titleText additionalStyles msg =
     let
         styles =
             List.concat
@@ -424,7 +421,6 @@ iconButton disabled iconColor icon additionalAttrs additionalStyles msg =
             List.concat
                 [ [ css styles ]
                 , conditionalAttrs
-                , additionalAttrs
                 ]
 
         ( conditionalStyles, conditionalAttrs ) =
@@ -435,7 +431,7 @@ iconButton disabled iconColor icon additionalAttrs additionalStyles msg =
                 , []
                 )
             else
-                ( [], [ onClick msg ] )
+                ( [], [ onClick msg, title titleText ] )
     in
     button attrs [ viewIcon icon ]
 
