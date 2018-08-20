@@ -195,28 +195,46 @@ viewCluster model clusterIndex cluster =
 
         overlayData =
             secondaryGroupSelectionOverlayData model
+
+        startGroupingButton_ =
+            startGroupingButton isFocusedCluster color clusterIndex
+
+        clusterNameInput =
+            nameInput
+                isFocusedCluster
+                color
+                cluster
+                (SetClusterName clusterIndex)
+
+        removeClusterButton =
+            removeButton isFocusedCluster <| RemoveCluster clusterIndex
+
+        loginNode =
+            viewNode
+                isFocusedCluster
+                color
+                (Login clusterIndex)
+                Nothing
+                cluster.login
+
+        primaryGroups =
+            List.map
+                (viewPrimaryGroup model isFocusedCluster color)
+                cluster.computeGroupIds
+
+        addComputeButton_ =
+            addComputeButton isFocusedCluster clusterIndex
     in
     [ viewDomain color
         additionalStyles
         (List.concat
-            [ [ startGroupingButton isFocusedCluster color clusterIndex
-              , nameInput
-                    isFocusedCluster
-                    color
-                    cluster
-                    (SetClusterName clusterIndex)
-              , removeButton isFocusedCluster <| RemoveCluster clusterIndex
-              , viewNode
-                    isFocusedCluster
-                    color
-                    (Login clusterIndex)
-                    Nothing
-                    cluster.login
+            [ [ startGroupingButton_
+              , clusterNameInput
+              , removeClusterButton
+              , loginNode
               ]
-            , List.map
-                (viewPrimaryGroup model isFocusedCluster color)
-                cluster.computeGroupIds
-            , [ addComputeButton isFocusedCluster clusterIndex ]
+            , primaryGroups
+            , [ addComputeButton_ ]
             ]
         )
     , if isFocusedCluster then
