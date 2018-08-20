@@ -6,11 +6,13 @@ module Model
         , convertToYamlCmd
         , coreName
         , init
+        , selectedSecondaryGroupMembers
         )
 
 import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.Model exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
+import EverySet exposing (EverySet)
 import Json.Encode as E
 import Maybe.Extra
 import Msg exposing (..)
@@ -160,3 +162,24 @@ encodeNode node =
 coreName : String
 coreName =
     "core"
+
+
+{-|
+
+    Gives currently selected groups if in group selection stage of secondary
+    groups form, otherwise nothing.
+
+-}
+selectedSecondaryGroupMembers : Model -> Maybe (EverySet Uuid)
+selectedSecondaryGroupMembers model =
+    case model.displayedForm of
+        SecondaryGroupForm _ form ->
+            case form of
+                SecondaryGroupForm.Model.ShowingNameForm _ ->
+                    Nothing
+
+                SecondaryGroupForm.Model.SelectingGroups _ groupIds ->
+                    Just groupIds
+
+        _ ->
+            Nothing

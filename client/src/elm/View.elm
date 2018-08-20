@@ -364,8 +364,52 @@ viewPrimaryGroup model clusterIsFocused color groupId =
                             (viewNode clusterIsFocused color Compute Nothing)
                             nodes
                         ]
+
+                attrs =
+                    css styles :: selectableAttrs
+
+                styles =
+                    List.concat
+                        [ groupStyles color
+                        , [ Transitions.transition
+                                [ Transitions.background3 150 0 Transitions.easeIn
+                                , Transitions.opacity3 150 0 Transitions.easeIn
+                                ]
+                          ]
+                        , selectableStyles
+                        ]
+
+                ( selectableAttrs, selectableStyles ) =
+                    case Model.selectedSecondaryGroupMembers model of
+                        Just groupIds ->
+                            if EverySet.member groupId groupIds then
+                                ( [ onClick <| RemoveGroupFromSecondaryGroup groupId
+                                  , title "Remove group from secondary group"
+                                  ]
+                                , [ -- Color chosen to match
+                                    -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L50.
+                                    backgroundColor (rgba 39 148 216 0.5)
+                                  , cursor pointer
+                                  , hover [ opacity (num 0.8) ]
+                                  ]
+                                )
+                            else
+                                ( [ onClick <| AddGroupToSecondaryGroup groupId
+                                  , title "Add group to secondary group"
+                                  ]
+                                , [ cursor pointer
+                                  , hover
+                                        [ -- Color chosen to match
+                                          -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L60.
+                                          backgroundColor (hex "acf4e6")
+                                        ]
+                                  ]
+                                )
+
+                        Nothing ->
+                            ( [], [] )
             in
-            div [ css <| groupStyles color ] children
+            div attrs children
     in
     maybeHtml maybeGroup view
 
@@ -455,7 +499,7 @@ iconButton disabled iconColor icon titleText additionalStyles msg =
     let
         styles =
             List.concat
-                [ [ backgroundColor white
+                [ [ backgroundColor transparent
                   , border unset
                   , buttonFontSize
                   , color iconColor
