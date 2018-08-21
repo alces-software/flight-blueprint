@@ -1,6 +1,7 @@
 module PrimaryGroupTests exposing (..)
 
 import Expect exposing (Expectation)
+import Fixtures exposing (groupFixture, nodesFixture)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
@@ -32,20 +33,3 @@ suite =
                         ]
             ]
         ]
-
-
-groupFixture : PrimaryGroup
-groupFixture =
-    { name = "nodes"
-    , nodes = nodesFixture
-    , secondaryGroups = Set.empty
-    }
-
-
-nodesFixture : PrimaryGroup.NodesSpecification
-nodesFixture =
-    { base = "node"
-    , startIndex = 1
-    , size = 2
-    , indexPadding = 3
-    }
