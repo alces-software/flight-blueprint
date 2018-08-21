@@ -11,6 +11,7 @@ import List.Extra
 import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
 import Node exposing (Node)
+import Random.Pcg
 import SecondaryGroupForm.Model
 import Uuid exposing (Uuid)
 
@@ -120,9 +121,16 @@ updateInterfaceState msg model =
             { model | clusters = newClusters }
 
         StartAddingComputeGroup clusterIndex ->
+            let
+                ( newGroupId, newSeed ) =
+                    Random.Pcg.step Uuid.uuidGenerator model.randomSeed
+            in
             { model
                 | displayedForm =
-                    Model.ComputeForm clusterIndex ComputeForm.Model.init
+                    Model.ComputeForm
+                        clusterIndex
+                        (ComputeForm.Model.init newGroupId)
+                , randomSeed = newSeed
             }
 
         CancelAddingComputeGroup ->
@@ -145,20 +153,25 @@ updateInterfaceState msg model =
                                     case formMsg of
                                         Form.Input "name" _ (Field.String newName) ->
                                             ComputeForm.Update.handleUpdatingComputeFormName
+                                                newGroupId
                                                 newName
                                                 form
 
                                         _ ->
                                             form
 
+                                ( newGroupId, newSeed ) =
+                                    Random.Pcg.step Uuid.uuidGenerator model.randomSeed
+
                                 newForm =
                                     Form.update
-                                        ComputeForm.Model.validation
+                                        (ComputeForm.Model.validation newGroupId)
                                         formMsg
                                         preUpdatedForm
                             in
                             { model
                                 | displayedForm = Model.ComputeForm clusterIndex newForm
+                                , randomSeed = newSeed
                             }
 
                 _ ->

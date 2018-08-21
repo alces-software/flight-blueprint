@@ -5,15 +5,17 @@ import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import PrimaryGroup exposing (PrimaryGroup)
 import Set exposing (Set)
+import Uuid exposing (Uuid)
 
 
 type alias ComputeForm =
     Form () PrimaryGroup
 
 
-init : ComputeForm
-init =
-    Form.initial initialValues validation
+init : Uuid -> ComputeForm
+init newGroupId =
+    validation newGroupId
+        |> Form.initial initialValues
 
 
 initialValues : List ( String, Field )
@@ -32,11 +34,12 @@ initialValues =
     ]
 
 
-validation : Validation () PrimaryGroup
-validation =
+validation : Uuid -> Validation () PrimaryGroup
+validation newGroupId =
     -- XXX Do more thoroughly - validate integers within ranges defined in view
     -- etc.
-    map3 PrimaryGroup
+    map4 PrimaryGroup
+        (succeed newGroupId)
         (field "name" string)
         (field "nodes"
             (map4 PrimaryGroup.NodesSpecification

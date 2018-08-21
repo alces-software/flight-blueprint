@@ -2,10 +2,12 @@ module PrimaryGroup exposing (..)
 
 import Node exposing (Node)
 import Set exposing (Set)
+import Uuid exposing (Uuid)
 
 
 type alias PrimaryGroup =
-    { name : String
+    { id : Uuid
+    , name : String
     , nodes : NodesSpecification
     , secondaryGroups : Set String
     }

@@ -3,10 +3,13 @@ module ComputeForm.UpdateTests exposing (..)
 import ComputeForm.Model
 import ComputeForm.Update
 import Expect exposing (Expectation)
+import Fixtures
 import Form
 import Form.Field as Field
 import Fuzz exposing (Fuzzer, int, list, string)
+import Random.Pcg
 import Test exposing (..)
+import Uuid
 
 
 suite : Test
@@ -23,10 +26,13 @@ suite =
                                     [ ( "base", Field.string originalBase ) ]
                               )
                             ]
-                            ComputeForm.Model.validation
+                            (ComputeForm.Model.validation Fixtures.uuidFixture)
 
                     newComputeForm =
-                        ComputeForm.Update.handleUpdatingComputeFormName newName initialComputeForm
+                        ComputeForm.Update.handleUpdatingComputeFormName
+                            Fixtures.uuidFixture
+                            newName
+                            initialComputeForm
 
                     newBase =
                         newValue "nodes.base"

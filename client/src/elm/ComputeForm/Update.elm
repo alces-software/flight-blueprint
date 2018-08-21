@@ -11,7 +11,6 @@ import Form.Field as Field exposing (Field)
 import List.Extra
 import Model exposing (Model)
 import PrimaryGroup exposing (PrimaryGroup)
-import Random.Pcg exposing (Seed)
 import Uuid exposing (Uuid)
 
 
@@ -34,28 +33,24 @@ handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
         addGroupId cluster =
             { cluster
                 | computeGroupIds =
-                    newGroupId :: cluster.computeGroupIds
+                    newGroup.id :: cluster.computeGroupIds
             }
-
-        ( newGroupId, newSeed ) =
-            Random.Pcg.step Uuid.uuidGenerator model.randomSeed
 
         newGroups =
             EveryDict.insert
-                newGroupId
+                newGroup.id
                 newGroup
                 model.clusterPrimaryGroups
     in
     { model
         | clusters = newClusters
         , clusterPrimaryGroups = newGroups
-        , randomSeed = newSeed
         , displayedForm = Model.NoForm
     }
 
 
-handleUpdatingComputeFormName : String -> ComputeForm -> ComputeForm
-handleUpdatingComputeFormName newName computeForm =
+handleUpdatingComputeFormName : Uuid -> String -> ComputeForm -> ComputeForm
+handleUpdatingComputeFormName newGroupId newName computeForm =
     let
         ( currentName, currentBase ) =
             ( value "name"
@@ -84,7 +79,10 @@ handleUpdatingComputeFormName newName computeForm =
 
         isPlural =
             String.endsWith "s"
+
+        validation =
+            ComputeForm.Model.validation newGroupId
     in
-    Form.update ComputeForm.Model.validation
+    Form.update validation
         (Form.Input "nodes.base" Form.Text (Field.String newBase))
         computeForm
