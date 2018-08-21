@@ -1,0 +1,42 @@
+module SecondaryGroupForm.Update exposing (handleSecondaryGroupCreate)
+
+import EveryDict exposing (EveryDict)
+import EverySet exposing (EverySet)
+import Maybe.Extra
+import Model exposing (Model)
+import PrimaryGroup exposing (PrimaryGroup)
+import Uuid exposing (Uuid)
+
+
+handleSecondaryGroupCreate : Model -> Int -> String -> EverySet Uuid -> Model
+handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds =
+    let
+        memberGroups : List PrimaryGroup
+        memberGroups =
+            EverySet.map
+                (flip EveryDict.get model.clusterPrimaryGroups)
+                memberGroupIds
+                |> EverySet.toList
+                |> Maybe.Extra.values
+
+        newGroups : EveryDict Uuid PrimaryGroup
+        newGroups =
+            List.foldl
+                updateGroupWithSecondaryGroup
+                model.clusterPrimaryGroups
+                memberGroups
+
+        updateGroupWithSecondaryGroup :
+            PrimaryGroup
+            -> EveryDict Uuid PrimaryGroup
+            -> EveryDict Uuid PrimaryGroup
+        updateGroupWithSecondaryGroup group groups =
+            EveryDict.insert
+                group.id
+                (PrimaryGroup.addSecondaryGroup secondaryGroupName group)
+                groups
+    in
+    { model
+        | clusterPrimaryGroups = newGroups
+        , displayedForm = Model.NoForm
+    }

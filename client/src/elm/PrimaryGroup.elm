@@ -38,3 +38,11 @@ nodes group =
     in
     List.range startIndex endIndex
         |> List.map (toString >> padIndex >> (++) base >> Node)
+
+
+addSecondaryGroup : String -> PrimaryGroup -> PrimaryGroup
+addSecondaryGroup secondaryGroup group =
+    { group
+        | secondaryGroups =
+            Set.insert secondaryGroup group.secondaryGroups
+    }

@@ -13,6 +13,7 @@ import Msg exposing (..)
 import Node exposing (Node)
 import Random.Pcg
 import SecondaryGroupForm.Model
+import SecondaryGroupForm.Update
 import Uuid exposing (Uuid)
 
 
@@ -250,8 +251,23 @@ updateInterfaceState msg model =
             changeSecondaryGroupMembers model (EverySet.remove groupId)
 
         CreateSecondaryGroup ->
-            -- XXX Actually handle this
-            model
+            case model.displayedForm of
+                Model.SecondaryGroupForm clusterIndex form ->
+                    case form of
+                        SecondaryGroupForm.Model.ShowingNameForm _ ->
+                            -- Do nothing if we're in the name form stage.
+                            model
+
+                        SecondaryGroupForm.Model.SelectingGroups secondaryGroupName memberGroupIds ->
+                            SecondaryGroupForm.Update.handleSecondaryGroupCreate
+                                model
+                                clusterIndex
+                                secondaryGroupName
+                                memberGroupIds
+
+                _ ->
+                    -- Do nothing if any other form displayed.
+                    model
 
 
 changeInfra : Model -> Maybe Node -> Model
