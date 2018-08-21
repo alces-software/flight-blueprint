@@ -503,15 +503,15 @@ addButton disabled itemToAdd colorToStyles addMsg =
                 [ [ buttonFontSize
                   , Css.width (pct 100)
                   ]
-                , colorToStyles green
+                , colorToStyles color
                 , conditionalStyles
                 ]
 
-        ( conditionalAttrs, conditionalStyles ) =
+        ( color, conditionalAttrs, conditionalStyles ) =
             if disabled then
-                ( [ Attributes.disabled True ], [ cursor Css.default ] )
+                ( gray, [ Attributes.disabled True ], [ cursor Css.default ] )
             else
-                ( [ onClick addMsg ], [] )
+                ( green, [ onClick addMsg ], [] )
     in
     button attrs [ text <| "+" ++ itemToAdd ]
 
@@ -530,13 +530,14 @@ iconButton :
     -> Msg
     -> Html Msg
 iconButton disabled iconColor icon titleText additionalStyles msg =
+    -- XXX Some common aspects between this and addButton - DRY up?
     let
         styles =
             List.concat
                 [ [ backgroundColor transparent
                   , border unset
                   , buttonFontSize
-                  , color iconColor
+                  , color buttonColor
                   , padding unset
                   , verticalAlign top
                   ]
@@ -550,15 +551,16 @@ iconButton disabled iconColor icon titleText additionalStyles msg =
                 , conditionalAttrs
                 ]
 
-        ( conditionalStyles, conditionalAttrs ) =
+        ( buttonColor, conditionalStyles, conditionalAttrs ) =
             if disabled then
-                ( [ cursor Css.default
+                ( gray
+                , [ cursor Css.default
                   , important <| outline none
                   ]
                 , []
                 )
             else
-                ( [], [ onClick msg, title titleText ] )
+                ( iconColor, [], [ onClick msg, title titleText ] )
     in
     button attrs [ viewRegularIcon icon ]
 
