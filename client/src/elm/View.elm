@@ -21,6 +21,7 @@ import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import SecondaryGroupForm.Model
 import SecondaryGroupForm.View
+import Set
 import Utils
 import Uuid exposing (Uuid)
 
@@ -361,14 +362,26 @@ viewPrimaryGroup model clusterIsFocused color groupId =
 
                 children =
                     List.concat
-                        [ [ text group.name
-                          , removeButton clusterIsFocused <|
-                                RemoveComputeGroup groupId
+                        [ [ div []
+                                [ text group.name
+                                , removeButton clusterIsFocused <|
+                                    RemoveComputeGroup groupId
+                                ]
+                          , secondaryGroupsList
                           ]
                         , List.map
                             (viewNode clusterIsFocused color Compute Nothing)
                             nodes
                         ]
+
+                secondaryGroupsList =
+                    Set.toList group.secondaryGroups
+                        |> String.join ", "
+                        |> text
+                        |> List.singleton
+                        |> Html.Styled.small
+                            [ title "Secondary groups for this compute group"
+                            ]
 
                 attrs =
                     css styles :: selectableAttrs
