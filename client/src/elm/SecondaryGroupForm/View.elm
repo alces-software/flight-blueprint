@@ -2,7 +2,6 @@ module SecondaryGroupForm.View exposing (viewForm)
 
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
-import Bootstrap.Form.Fieldset as Fieldset
 import Form as ElmForm exposing (Form)
 import Html exposing (..)
 import ModalForm exposing (FieldType(..))
