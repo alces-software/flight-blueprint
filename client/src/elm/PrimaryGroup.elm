@@ -1,5 +1,6 @@
 module PrimaryGroup exposing (..)
 
+import EveryDict exposing (EveryDict)
 import Node exposing (Node)
 import Set exposing (Set)
 import Uuid exposing (Uuid)
@@ -22,6 +23,10 @@ type alias NodesSpecification =
     -- XXX Maybe needed?
     -- , overrides : List something
     }
+
+
+type alias PrimaryGroupsDict =
+    EveryDict Uuid PrimaryGroup
 
 
 nodes : PrimaryGroup -> List Node

@@ -18,7 +18,7 @@ import Maybe.Extra
 import Msg exposing (..)
 import Node exposing (Node)
 import Ports
-import PrimaryGroup exposing (..)
+import PrimaryGroup exposing (PrimaryGroup, PrimaryGroupsDict)
 import Random.Pcg exposing (Seed)
 import SecondaryGroupForm.Model exposing (SecondaryGroupForm)
 import Set
@@ -28,7 +28,7 @@ import Uuid exposing (Uuid)
 type alias Model =
     { core : CoreDomain
     , clusters : List ClusterDomain
-    , clusterPrimaryGroups : EveryDict Uuid PrimaryGroup
+    , clusterPrimaryGroups : PrimaryGroupsDict
     , exportedYaml : String
     , randomSeed : Seed
     , displayedForm : DisplayedForm

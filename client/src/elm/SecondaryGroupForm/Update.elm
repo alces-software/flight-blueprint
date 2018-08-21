@@ -4,7 +4,7 @@ import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import Maybe.Extra
 import Model exposing (Model)
-import PrimaryGroup exposing (PrimaryGroup)
+import PrimaryGroup exposing (PrimaryGroup, PrimaryGroupsDict)
 import Uuid exposing (Uuid)
 
 
@@ -19,17 +19,14 @@ handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds 
                 |> EverySet.toList
                 |> Maybe.Extra.values
 
-        newGroups : EveryDict Uuid PrimaryGroup
+        newGroups : PrimaryGroupsDict
         newGroups =
             List.foldl
                 updateGroupWithSecondaryGroup
                 model.clusterPrimaryGroups
                 memberGroups
 
-        updateGroupWithSecondaryGroup :
-            PrimaryGroup
-            -> EveryDict Uuid PrimaryGroup
-            -> EveryDict Uuid PrimaryGroup
+        updateGroupWithSecondaryGroup : PrimaryGroup -> PrimaryGroupsDict -> PrimaryGroupsDict
         updateGroupWithSecondaryGroup group groups =
             EveryDict.insert
                 group.id
