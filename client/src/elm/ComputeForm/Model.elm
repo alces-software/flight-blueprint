@@ -22,10 +22,10 @@ initialValues : List ( String, Field )
 initialValues =
     -- XXX Extract things in some way so don't need to duplicate field names in
     -- different places (each field is in at least 3 currently).
-    [ ( "name", Field.string "nodes" )
+    [ ( "name", Field.string "mynodes" )
     , ( "nodes"
       , Field.group
-            [ ( "base", Field.string "node" )
+            [ ( "base", Field.string "mynode" )
             , ( "startIndex", Field.string "1" )
             , ( "size", Field.string "" )
             , ( "indexPadding", Field.string "2" )
