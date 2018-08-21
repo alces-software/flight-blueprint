@@ -235,7 +235,12 @@ viewCluster model clusterIndex cluster =
               , loginNode
               ]
             , primaryGroups
-            , [ addComputeButton_ ]
+            , [ addComputeButton_
+              , if isFocusedCluster then
+                    createSecondaryGroupButton model
+                else
+                    nothing
+              ]
             ]
         )
     , if isFocusedCluster then
@@ -458,6 +463,35 @@ addClusterButton =
     addButton False "cluster" domainStyles AddCluster
 
 
+createSecondaryGroupButton : Model -> Html Msg
+createSecondaryGroupButton model =
+    let
+        colorToStyles color =
+            List.concat
+                [ domainStyles color
+                , [ -- Absolutely positioned relative to the cluster this group
+                    -- is being added for.
+                    position absolute
+                  , top zero
+                  , right (px 0 |-| (domainBoxWidth |+| standardMargin))
+                  , margin zero
+                  ]
+                ]
+
+        groupCurrentlyEmpty =
+            case Model.selectedSecondaryGroupMembers model of
+                Just members ->
+                    EverySet.isEmpty members
+
+                Nothing ->
+                    True
+    in
+    addButton groupCurrentlyEmpty
+        "secondary group"
+        colorToStyles
+        CreateSecondaryGroup
+
+
 addButton : Bool -> String -> (Color -> List Style) -> Msg -> Html Msg
 addButton disabled itemToAdd colorToStyles addMsg =
     let
@@ -637,12 +671,17 @@ viewIcon size =
 domainStyles : Color -> List Style
 domainStyles color =
     List.concat
-        [ [ Css.width (px 300)
+        [ [ Css.width domainBoxWidth
           , display inlineBlock
           , margin standardMargin
           ]
         , boxStyles containerBoxBorderWidth solid color
         ]
+
+
+domainBoxWidth : Px
+domainBoxWidth =
+    px 300
 
 
 nodeStyles : Color -> List Style
