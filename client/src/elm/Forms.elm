@@ -26,7 +26,7 @@ type alias FieldConfig =
 
 type FieldType
     = Identifier
-    | Integer { min : Maybe Int, max : Maybe Int }
+    | Integer Validations.IntBounds
 
 
 type FieldName
@@ -78,9 +78,8 @@ validateInt fieldName =
                 Identifier ->
                     default
 
-                Integer _ ->
-                    -- XXX Actually validate using min and max
-                    int
+                Integer bounds ->
+                    Validations.validateInteger bounds
 
         default =
             int
