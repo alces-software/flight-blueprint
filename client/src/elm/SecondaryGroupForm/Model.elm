@@ -10,6 +10,7 @@ import EverySet exposing (EverySet)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
+import Forms exposing (FieldName(..))
 import Uuid exposing (Uuid)
 import Validations
 
@@ -35,6 +36,4 @@ initialValues =
 
 validation : Validation Validations.CustomError String
 validation =
-    -- XXX Extract things in some way so don't need to duplicate field names in
-    -- different places.
-    field "name" Validations.validateIdentifier
+    Forms.validateText SecondaryGroupFormName

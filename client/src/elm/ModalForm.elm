@@ -1,4 +1,4 @@
-module ModalForm exposing (FieldType(..), input, view)
+module ModalForm exposing (FieldConfig, FieldType(..), input, view)
 
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
@@ -44,8 +44,15 @@ view visibility header body cancelMsg =
         |> Modal.view visibility
 
 
-input : Form Validations.CustomError result -> FieldConfig -> Html ElmForm.Msg
-input form config =
+input : Form Validations.CustomError result -> Maybe FieldConfig -> Html ElmForm.Msg
+input form maybeConfig =
+    -- XXX Have this take FieldName rather than config
+    -- Render input for config, if config is not Nothing.
+    Utils.maybeHtml maybeConfig (inputWithConfig form)
+
+
+inputWithConfig : Form Validations.CustomError result -> FieldConfig -> Html ElmForm.Msg
+inputWithConfig form config =
     let
         field =
             ElmForm.getFieldAsString config.fieldIdentifier form

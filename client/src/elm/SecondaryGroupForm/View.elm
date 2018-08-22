@@ -3,8 +3,9 @@ module SecondaryGroupForm.View exposing (viewForm)
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
 import Form as ElmForm exposing (Form)
+import Forms exposing (FieldName(..))
 import Html exposing (..)
-import ModalForm exposing (FieldType(..))
+import ModalForm
 import Msg exposing (..)
 import SecondaryGroupForm.Model exposing (..)
 
@@ -17,12 +18,7 @@ viewForm form =
                 >> Html.map SecondaryGroupFormMsg
     in
     Form.form []
-        [ formInput
-            { label = "Secondary group name"
-            , fieldIdentifier = "name"
-            , fieldType = Text
-            , help = "The name to use for this secondary group."
-            }
+        [ formInput <| Forms.configFor SecondaryGroupFormName
 
         -- XXX Move this button to modal footer?
         , Button.button

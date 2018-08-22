@@ -3,6 +3,7 @@ module ComputeForm.Model exposing (ComputeForm, init, validation)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
+import Forms exposing (..)
 import PrimaryGroup exposing (PrimaryGroup)
 import Set exposing (Set)
 import Uuid exposing (Uuid)
@@ -23,13 +24,13 @@ initialValues : List ( String, Field )
 initialValues =
     -- XXX Extract things in some way so don't need to duplicate field names in
     -- different places (each field is in at least 3 currently).
-    [ ( "name", Field.string "mynodes" )
+    [ ( shortIdentifier ComputeFormName, Field.string "mynodes" )
     , ( "nodes"
       , Field.group
-            [ ( "base", Field.string "mynode" )
-            , ( "startIndex", Field.string "1" )
-            , ( "size", Field.string "" )
-            , ( "indexPadding", Field.string "2" )
+            [ ( shortIdentifier ComputeFormNodesBase, Field.string "mynode" )
+            , ( shortIdentifier ComputeFormNodesStartIndex, Field.string "1" )
+            , ( shortIdentifier ComputeFormNodesSize, Field.string "" )
+            , ( shortIdentifier ComputeFormNodesIndexPadding, Field.string "2" )
             ]
       )
     ]
@@ -37,17 +38,15 @@ initialValues =
 
 validation : Uuid -> Validation Validations.CustomError PrimaryGroup
 validation newGroupId =
-    -- XXX Do more thoroughly - validate integers within ranges defined in view
-    -- etc.
     map4 PrimaryGroup
         (succeed newGroupId)
-        (field "name" Validations.validateIdentifier)
+        (validateText ComputeFormName)
         (field "nodes"
             (map4 PrimaryGroup.NodesSpecification
-                (field "base" Validations.validateIdentifier)
-                (field "startIndex" int)
-                (field "size" int)
-                (field "indexPadding" int)
+                (validateText ComputeFormNodesBase)
+                (validateInt ComputeFormNodesStartIndex)
+                (validateInt ComputeFormNodesSize)
+                (validateInt ComputeFormNodesIndexPadding)
             )
         )
         (succeed defaultSecondaryGroups)
