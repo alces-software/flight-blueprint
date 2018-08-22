@@ -1,6 +1,8 @@
 module Forms
     exposing
-        ( FieldName(..)
+        ( FieldConfig
+        , FieldName(..)
+        , FieldType(..)
         , configFor
         , shortIdentifier
         , validateInt
@@ -11,11 +13,23 @@ import EveryDict exposing (EveryDict)
 import Form.Validate exposing (..)
 import List.Extra
 import Maybe.Extra
-import ModalForm exposing (FieldConfig)
 import Validations
 
 
 -- XXX Move Validations, stuff from ModalForm in here?
+
+
+type alias FieldConfig =
+    { label : String
+    , fieldIdentifier : String
+    , fieldType : FieldType
+    , help : String
+    }
+
+
+type FieldType
+    = Text
+    | Integer { min : Maybe Int, max : Maybe Int }
 
 
 type FieldName
@@ -48,10 +62,10 @@ validateText fieldName =
         validateType fieldType =
             case fieldType of
                 -- XXX Rename Text to Identifier since now specific to this
-                ModalForm.Text ->
+                Text ->
                     Validations.validateIdentifier
 
-                ModalForm.Integer _ ->
+                Integer _ ->
                     default
 
         default =
@@ -65,10 +79,10 @@ validateInt fieldName =
     let
         validateType fieldType =
             case fieldType of
-                ModalForm.Text ->
+                Text ->
                     default
 
-                ModalForm.Integer _ ->
+                Integer _ ->
                     -- XXX Actually validate using min and max
                     int
 
@@ -79,7 +93,7 @@ validateInt fieldName =
 
 
 createValidate :
-    (ModalForm.FieldType -> Validation Validations.CustomError resultType)
+    (FieldType -> Validation Validations.CustomError resultType)
     -> Validation Validations.CustomError resultType
     -> FieldName
     -> Validation Validations.CustomError resultType
@@ -115,42 +129,42 @@ fieldConfigs =
         [ ( ComputeFormName
           , { label = "New group name"
             , fieldIdentifier = "name"
-            , fieldType = ModalForm.Text
+            , fieldType = Text
             , help = "The name to use for this new group of compute nodes."
             }
           )
         , ( ComputeFormNodesBase
           , { label = "Base to use for generated node names"
             , fieldIdentifier = "nodes.base"
-            , fieldType = ModalForm.Text
+            , fieldType = Text
             , help = "E.g. 'node' to generate nodes like 'node01', 'node02' etc."
             }
           )
         , ( ComputeFormNodesStartIndex
           , { label = "Index to start from when generating node names"
             , fieldIdentifier = "nodes.startIndex"
-            , fieldType = ModalForm.Integer { min = Just 1, max = Nothing }
+            , fieldType = Integer { min = Just 1, max = Nothing }
             , help = "E.g. '4' for a node like 'node04' to be the first generated."
             }
           )
         , ( ComputeFormNodesIndexPadding
           , { label = "Padding to use for indices when generating nodes"
             , fieldIdentifier = "nodes.indexPadding"
-            , fieldType = ModalForm.Integer { min = Just 0, max = Just 10 }
+            , fieldType = Integer { min = Just 0, max = Just 10 }
             , help = "E.g. '2' will pad each index like 'node01', or 3 will pad each like 'node001'."
             }
           )
         , ( ComputeFormNodesSize
           , { label = "Number of nodes to generate"
             , fieldIdentifier = "nodes.size"
-            , fieldType = ModalForm.Integer { min = Just 1, max = Nothing }
+            , fieldType = Integer { min = Just 1, max = Nothing }
             , help = "E.g. '10' to generate 10 nodes in this group."
             }
           )
         , ( SecondaryGroupFormName
           , { label = "Secondary group name"
             , fieldIdentifier = "name"
-            , fieldType = ModalForm.Text
+            , fieldType = Text
             , help = "The name to use for this secondary group."
             }
           )

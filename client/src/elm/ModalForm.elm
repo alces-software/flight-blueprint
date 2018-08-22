@@ -1,4 +1,4 @@
-module ModalForm exposing (FieldConfig, FieldType(..), input, view)
+module ModalForm exposing (input, view)
 
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
@@ -7,25 +7,13 @@ import Bootstrap.Modal as Modal
 import Form as ElmForm exposing (Form)
 import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
+import Forms exposing (FieldConfig, FieldType(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Maybe.Extra
 import Utils
 import Validations exposing (CustomError(..))
-
-
-type alias FieldConfig =
-    { label : String
-    , fieldIdentifier : String
-    , fieldType : FieldType
-    , help : String
-    }
-
-
-type FieldType
-    = Text
-    | Integer { min : Maybe Int, max : Maybe Int }
 
 
 view : Modal.Visibility -> String -> Html msg -> msg -> Html msg
