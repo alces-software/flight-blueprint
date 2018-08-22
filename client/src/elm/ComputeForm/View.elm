@@ -19,15 +19,15 @@ view computeForm =
                 >> Html.map ComputeFormMsg
     in
     Form.form []
-        [ formInput <| Forms.configFor ComputeFormName
+        [ formInput ComputeFormName
         , Fieldset.config
             |> Fieldset.asGroup
             |> Fieldset.legend [] [ text "Generate nodes in this group" ]
             |> Fieldset.children
-                [ formInput <| Forms.configFor ComputeFormNodesBase
-                , formInput <| Forms.configFor ComputeFormNodesStartIndex
-                , formInput <| Forms.configFor ComputeFormNodesIndexPadding
-                , formInput <| Forms.configFor ComputeFormNodesSize
+                [ formInput ComputeFormNodesBase
+                , formInput ComputeFormNodesStartIndex
+                , formInput ComputeFormNodesIndexPadding
+                , formInput ComputeFormNodesSize
                 ]
             |> Fieldset.view
 

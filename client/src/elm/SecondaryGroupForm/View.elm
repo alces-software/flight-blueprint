@@ -18,7 +18,7 @@ viewForm form =
                 >> Html.map SecondaryGroupFormMsg
     in
     Form.form []
-        [ formInput <| Forms.configFor SecondaryGroupFormName
+        [ formInput SecondaryGroupFormName
 
         -- XXX Move this button to modal footer?
         , Button.button

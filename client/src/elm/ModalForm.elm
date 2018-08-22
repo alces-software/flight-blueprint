@@ -7,7 +7,7 @@ import Bootstrap.Modal as Modal
 import Form as ElmForm exposing (Form)
 import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
-import Forms exposing (FieldConfig, FieldType(..))
+import Forms exposing (FieldConfig, FieldName, FieldType(..))
 import Forms.Validations as Validations exposing (CustomError(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -32,11 +32,12 @@ view visibility header body cancelMsg =
         |> Modal.view visibility
 
 
-input : Form Validations.CustomError result -> Maybe FieldConfig -> Html ElmForm.Msg
-input form maybeConfig =
-    -- XXX Have this take FieldName rather than config
+input : Form Validations.CustomError result -> FieldName -> Html ElmForm.Msg
+input form fieldName =
     -- Render input for config, if config is not Nothing.
-    Utils.maybeHtml maybeConfig (inputWithConfig form)
+    Utils.maybeHtml
+        (Forms.configFor fieldName)
+        (inputWithConfig form)
 
 
 inputWithConfig : Form Validations.CustomError result -> FieldConfig -> Html ElmForm.Msg
