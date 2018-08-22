@@ -25,7 +25,7 @@ type alias FieldConfig =
 
 
 type FieldType
-    = Text
+    = Identifier
     | Integer { min : Maybe Int, max : Maybe Int }
 
 
@@ -58,8 +58,7 @@ validateText fieldName =
     let
         validateType fieldType =
             case fieldType of
-                -- XXX Rename Text to Identifier since now specific to this
-                Text ->
+                Identifier ->
                     Validations.validateIdentifier
 
                 Integer _ ->
@@ -76,7 +75,7 @@ validateInt fieldName =
     let
         validateType fieldType =
             case fieldType of
-                Text ->
+                Identifier ->
                     default
 
                 Integer _ ->
@@ -126,14 +125,14 @@ fieldConfigs =
         [ ( ComputeFormName
           , { label = "New group name"
             , fieldIdentifier = "name"
-            , fieldType = Text
+            , fieldType = Identifier
             , help = "The name to use for this new group of compute nodes."
             }
           )
         , ( ComputeFormNodesBase
           , { label = "Base to use for generated node names"
             , fieldIdentifier = "nodes.base"
-            , fieldType = Text
+            , fieldType = Identifier
             , help = "E.g. 'node' to generate nodes like 'node01', 'node02' etc."
             }
           )
@@ -161,7 +160,7 @@ fieldConfigs =
         , ( SecondaryGroupFormName
           , { label = "Secondary group name"
             , fieldIdentifier = "name"
-            , fieldType = Text
+            , fieldType = Identifier
             , help = "The name to use for this secondary group."
             }
           )

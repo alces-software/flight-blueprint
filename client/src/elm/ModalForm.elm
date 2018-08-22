@@ -70,7 +70,7 @@ inputWithConfig form config =
 
         additionalInputAttrs =
             case config.fieldType of
-                Text ->
+                Identifier ->
                     [ type_ "text" ]
 
                 Integer { min, max } ->
