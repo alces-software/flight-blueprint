@@ -4,10 +4,10 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import Forms exposing (..)
+import Forms.Validations as Validations
 import PrimaryGroup exposing (PrimaryGroup)
 import Set exposing (Set)
 import Uuid exposing (Uuid)
-import Validations
 
 
 type alias ComputeForm =

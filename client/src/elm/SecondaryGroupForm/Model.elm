@@ -11,8 +11,8 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import Forms exposing (FieldName(..))
+import Forms.Validations as Validations
 import Uuid exposing (Uuid)
-import Validations
 
 
 type SecondaryGroupForm

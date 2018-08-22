@@ -1,4 +1,4 @@
-module Validations exposing (CustomError(..), validateIdentifier)
+module Forms.Validations exposing (CustomError(..), validateIdentifier)
 
 import Form.Validate exposing (..)
 import Regex

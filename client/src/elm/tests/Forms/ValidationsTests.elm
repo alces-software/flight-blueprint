@@ -1,12 +1,12 @@
-module ValidationsTests exposing (..)
+module Forms.ValidationsTests exposing (..)
 
 import Expect exposing (Expectation)
 import Form.Error exposing (..)
 import Form.Test exposing (..)
 import Form.Test.ValidationExpectation exposing (ValidationExpectation(..))
 import Form.Validate exposing (..)
+import Forms.Validations as Validations
 import Test exposing (..)
-import Validations
 
 
 suite : Test

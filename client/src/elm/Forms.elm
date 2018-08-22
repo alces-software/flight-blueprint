@@ -11,12 +11,9 @@ module Forms
 
 import EveryDict exposing (EveryDict)
 import Form.Validate exposing (..)
+import Forms.Validations as Validations
 import List.Extra
 import Maybe.Extra
-import Validations
-
-
--- XXX Move Validations, stuff from ModalForm in here?
 
 
 type alias FieldConfig =

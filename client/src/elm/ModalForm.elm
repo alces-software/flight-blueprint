@@ -8,12 +8,12 @@ import Form as ElmForm exposing (Form)
 import Form.Error exposing (ErrorValue(..))
 import Form.Field as Field exposing (Field)
 import Forms exposing (FieldConfig, FieldType(..))
+import Forms.Validations as Validations exposing (CustomError(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Maybe.Extra
 import Utils
-import Validations exposing (CustomError(..))
 
 
 view : Modal.Visibility -> String -> Html msg -> msg -> Html msg
