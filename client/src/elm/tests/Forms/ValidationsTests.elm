@@ -12,22 +12,8 @@ import Test exposing (..)
 suite : Test
 suite =
     describe "Validations module"
-        [ Form.Test.describeValidation "validateIdentifier"
-            Validations.validateIdentifier
-            [ ( "myGroup3", Valid )
-            , ( "group#$^%"
-              , Invalid <| CustomError Validations.InvalidIdentifierCharacters
-              )
-            , ( "foo bar"
-              , Invalid <| CustomError Validations.InvalidIdentifierCharacters
-              )
-            , ( "4group"
-              , Invalid <| CustomError Validations.InvalidIdentifierFirstCharacter
-              )
-            , ( "4group&*"
-              , Invalid <| CustomError Validations.InvalidIdentifierCharacters
-              )
-            ]
+        [ describe "validateIdentifier"
+            [ identifierValidationTests Validations.validateIdentifier ]
 
         -- XXX It would be nice to fuzz test these, but this seems
         -- non-trivial/non-obvious with the current elm-test and elm-form
@@ -57,4 +43,24 @@ suite =
             , ( "5", Valid )
             , ( "4", Invalid <| SmallerIntThan 5 )
             ]
+        ]
+
+
+identifierValidationTests : Validation Validations.CustomError a -> Test
+identifierValidationTests validation =
+    Form.Test.describeValidation "identifier validation"
+        validation
+        [ ( "myGroup3", Valid )
+        , ( "group#$^%"
+          , Invalid <| CustomError Validations.InvalidIdentifierCharacters
+          )
+        , ( "foo bar"
+          , Invalid <| CustomError Validations.InvalidIdentifierCharacters
+          )
+        , ( "4group"
+          , Invalid <| CustomError Validations.InvalidIdentifierFirstCharacter
+          )
+        , ( "4group&*"
+          , Invalid <| CustomError Validations.InvalidIdentifierCharacters
+          )
         ]
