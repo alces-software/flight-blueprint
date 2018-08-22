@@ -12,6 +12,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Maybe.Extra
 import Utils
+import Validations exposing (CustomError(..))
 
 
 type alias FieldConfig =
@@ -43,7 +44,7 @@ view visibility header body cancelMsg =
         |> Modal.view visibility
 
 
-input : Form () result -> FieldConfig -> Html ElmForm.Msg
+input : Form Validations.CustomError result -> FieldConfig -> Html ElmForm.Msg
 input form config =
     let
         field =
@@ -123,7 +124,7 @@ elmFormAttrs toFieldValue inputType state =
     ]
 
 
-errorMessage : ErrorValue e -> String
+errorMessage : ErrorValue Validations.CustomError -> String
 errorMessage errorValue =
     let
         mustBeLessThan i =
@@ -182,4 +183,14 @@ errorMessage errorValue =
             ""
 
         CustomError e ->
-            toString e
+            customErrorMessage e
+
+
+customErrorMessage : Validations.CustomError -> String
+customErrorMessage error =
+    case error of
+        InvalidIdentifierCharacters ->
+            "Can only contain the letters a-z, and numbers 0-9."
+
+        InvalidIdentifierFirstCharacter ->
+            "First character must be a letter."

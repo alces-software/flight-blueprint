@@ -6,10 +6,11 @@ import Form.Validate exposing (..)
 import PrimaryGroup exposing (PrimaryGroup)
 import Set exposing (Set)
 import Uuid exposing (Uuid)
+import Validations
 
 
 type alias ComputeForm =
-    Form () PrimaryGroup
+    Form Validations.CustomError PrimaryGroup
 
 
 init : Uuid -> ComputeForm
@@ -34,16 +35,16 @@ initialValues =
     ]
 
 
-validation : Uuid -> Validation () PrimaryGroup
+validation : Uuid -> Validation Validations.CustomError PrimaryGroup
 validation newGroupId =
     -- XXX Do more thoroughly - validate integers within ranges defined in view
     -- etc.
     map4 PrimaryGroup
         (succeed newGroupId)
-        (field "name" string)
+        (field "name" Validations.validateIdentifier)
         (field "nodes"
             (map4 PrimaryGroup.NodesSpecification
-                (field "base" string)
+                (field "base" Validations.validateIdentifier)
                 (field "startIndex" int)
                 (field "size" int)
                 (field "indexPadding" int)

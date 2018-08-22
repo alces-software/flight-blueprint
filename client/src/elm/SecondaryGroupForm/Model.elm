@@ -11,6 +11,7 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import Uuid exposing (Uuid)
+import Validations
 
 
 type SecondaryGroupForm
@@ -19,7 +20,7 @@ type SecondaryGroupForm
 
 
 type alias NameForm =
-    Form () String
+    Form Validations.CustomError String
 
 
 init : NameForm
@@ -32,10 +33,8 @@ initialValues =
     []
 
 
-validation : Validation () String
+validation : Validation Validations.CustomError String
 validation =
     -- XXX Extract things in some way so don't need to duplicate field names in
     -- different places.
-    -- XXX Validate this more thoroughly? What characters are invalid in group
-    -- names?
-    field "name" string
+    field "name" Validations.validateIdentifier
