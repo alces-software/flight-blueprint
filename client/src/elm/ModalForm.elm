@@ -47,7 +47,7 @@ inputWithConfig form config =
             ElmForm.getFieldAsString config.fieldIdentifier form
 
         ( errorAttr, errorElement ) =
-            -- XXX Currently valdidate and display errors on submit - better
+            -- XXX Currently validate and display errors on submit - better
             -- than initially displaying fields as invalid. Consider if better
             -- way to do this.
             case field.liveError of
