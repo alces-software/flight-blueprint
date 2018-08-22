@@ -158,22 +158,22 @@ errorMessage errorValue =
             "Must be a date."
 
         SmallerIntThan i ->
-            mustBeLessThan i
+            mustBeGreaterThan i
 
         GreaterIntThan i ->
-            mustBeGreaterThan i
-
-        SmallerFloatThan i ->
             mustBeLessThan i
 
-        GreaterFloatThan i ->
+        SmallerFloatThan i ->
             mustBeGreaterThan i
 
+        GreaterFloatThan i ->
+            mustBeLessThan i
+
         ShorterStringThan i ->
-            "Must be shorter than " ++ toString i ++ " characters."
+            "Must be longer than " ++ toString i ++ " characters."
 
         LongerStringThan i ->
-            "Must be longer than " ++ toString i ++ " characters."
+            "Must be shorter than " ++ toString i ++ " characters."
 
         NotIncludedIn ->
             ""
