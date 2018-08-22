@@ -18,30 +18,32 @@ suite =
         -- XXX It would be nice to fuzz test these, but this seems
         -- non-trivial/non-obvious with the current elm-test and elm-form
         -- testing APIs
-        , Form.Test.describeValidation "validateInteger with no bounds"
-            (Validations.validateInteger { min = Nothing, max = Nothing })
-            [ ( "10", Valid )
-            , ( "0", Valid )
-            , ( "-10", Valid )
-            ]
-        , Form.Test.describeValidation "validateInteger with just upper bound"
-            (Validations.validateInteger { min = Nothing, max = Just 5 })
-            [ ( "6", Invalid <| GreaterIntThan 5 )
-            , ( "5", Valid )
-            , ( "4", Valid )
-            ]
-        , Form.Test.describeValidation "validateInteger with just lower bound"
-            (Validations.validateInteger { min = Just 5, max = Nothing })
-            [ ( "6", Valid )
-            , ( "5", Valid )
-            , ( "4", Invalid <| SmallerIntThan 5 )
-            ]
-        , Form.Test.describeValidation "validateInteger with both bounds"
-            (Validations.validateInteger { min = Just 5, max = Just 6 })
-            [ ( "7", Invalid <| GreaterIntThan 6 )
-            , ( "6", Valid )
-            , ( "5", Valid )
-            , ( "4", Invalid <| SmallerIntThan 5 )
+        , describe "validateInteger"
+            [ Form.Test.describeValidation "with no bounds"
+                (Validations.validateInteger { min = Nothing, max = Nothing })
+                [ ( "10", Valid )
+                , ( "0", Valid )
+                , ( "-10", Valid )
+                ]
+            , Form.Test.describeValidation "with just upper bound"
+                (Validations.validateInteger { min = Nothing, max = Just 5 })
+                [ ( "6", Invalid <| GreaterIntThan 5 )
+                , ( "5", Valid )
+                , ( "4", Valid )
+                ]
+            , Form.Test.describeValidation "with just lower bound"
+                (Validations.validateInteger { min = Just 5, max = Nothing })
+                [ ( "6", Valid )
+                , ( "5", Valid )
+                , ( "4", Invalid <| SmallerIntThan 5 )
+                ]
+            , Form.Test.describeValidation "with both bounds"
+                (Validations.validateInteger { min = Just 5, max = Just 6 })
+                [ ( "7", Invalid <| GreaterIntThan 6 )
+                , ( "6", Valid )
+                , ( "5", Valid )
+                , ( "4", Invalid <| SmallerIntThan 5 )
+                ]
             ]
         ]
 
