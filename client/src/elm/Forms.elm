@@ -152,7 +152,7 @@ fieldConfigs =
         , ( ComputeFormNodesSize
           , { label = "Number of nodes to generate"
             , fieldIdentifier = "nodes.size"
-            , fieldType = Integer { min = Just 1, max = Nothing }
+            , fieldType = Integer { min = Just 1, max = Just 1000 }
             , help = "E.g. '10' to generate 10 nodes in this group."
             }
           )
