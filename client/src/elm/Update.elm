@@ -1,12 +1,12 @@
 module Update exposing (update)
 
 import ClusterDomain
-import ComputeForm.Model exposing (ComputeForm)
 import ComputeForm.Update
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
+import Forms
 import List.Extra
 import Model exposing (CoreDomain, Model)
 import Msg exposing (..)
@@ -130,7 +130,7 @@ updateInterfaceState msg model =
                 | displayedForm =
                     Model.ComputeForm
                         clusterIndex
-                        (ComputeForm.Model.init newGroupId)
+                        (Forms.initComputeForm newGroupId)
                 , randomSeed = newSeed
             }
 
@@ -166,7 +166,7 @@ updateInterfaceState msg model =
 
                                 newForm =
                                     Form.update
-                                        (ComputeForm.Model.validation newGroupId)
+                                        (Forms.computeFormValidation newGroupId)
                                         formMsg
                                         preUpdatedForm
                             in
@@ -197,7 +197,9 @@ updateInterfaceState msg model =
                 | displayedForm =
                     Model.SecondaryGroupForm
                         clusterIndex
-                        (SecondaryGroupForm.Model.ShowingNameForm SecondaryGroupForm.Model.init)
+                        (SecondaryGroupForm.Model.ShowingNameForm
+                            Forms.initSecondaryGroupNameForm
+                        )
             }
 
         SecondaryGroupFormMsg formMsg ->
@@ -221,7 +223,8 @@ updateInterfaceState msg model =
                                 ( formMsg, _ ) ->
                                     let
                                         newNameForm =
-                                            Form.update SecondaryGroupForm.Model.validation
+                                            Form.update
+                                                Forms.secondaryGroupNameFormValidation
                                                 formMsg
                                                 nameForm
                                     in

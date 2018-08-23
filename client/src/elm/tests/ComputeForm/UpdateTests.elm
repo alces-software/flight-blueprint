@@ -6,6 +6,7 @@ import Expect exposing (Expectation)
 import Fixtures
 import Form
 import Form.Field as Field
+import Forms
 import Fuzz exposing (Fuzzer, int, list, string)
 import Random.Pcg
 import Test exposing (..)
@@ -26,7 +27,7 @@ suite =
                                     [ ( "base", Field.string originalBase ) ]
                               )
                             ]
-                            (ComputeForm.Model.validation Fixtures.uuidFixture)
+                            (Forms.computeFormValidation Fixtures.uuidFixture)
 
                     newComputeForm =
                         ComputeForm.Update.handleUpdatingComputeFormName

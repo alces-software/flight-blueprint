@@ -3,17 +3,25 @@ module Forms
         ( FieldConfig
         , FieldName(..)
         , FieldType(..)
+        , computeFormValidation
         , configFor
-        , shortIdentifier
-        , validateInt
-        , validateText
+        , initComputeForm
+        , initSecondaryGroupNameForm
+        , secondaryGroupNameFormValidation
         )
 
+import ComputeForm.Model as ComputeForm exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
+import Form
+import Form.Field as Field exposing (Field)
 import Form.Validate exposing (..)
 import Forms.Validations as Validations
 import List.Extra
 import Maybe.Extra
+import PrimaryGroup exposing (PrimaryGroup)
+import SecondaryGroupForm.Model as SecondaryGroupForm exposing (NameForm)
+import Set exposing (Set)
+import Uuid exposing (Uuid)
 
 
 type alias FieldConfig =
@@ -36,6 +44,66 @@ type FieldName
     | ComputeFormNodesIndexPadding
     | ComputeFormNodesSize
     | SecondaryGroupFormName
+
+
+initComputeForm : Uuid -> ComputeForm
+initComputeForm newGroupId =
+    computeFormValidation newGroupId
+        |> Form.initial computeFormInitialValues
+
+
+computeFormInitialValues : List ( String, Field )
+computeFormInitialValues =
+    -- XXX Extract things in some way so don't need to duplicate field names in
+    -- different places (each field is in at least 3 currently).
+    [ ( shortIdentifier ComputeFormName, Field.string "mynodes" )
+    , ( "nodes"
+      , Field.group
+            [ ( shortIdentifier ComputeFormNodesBase, Field.string "mynode" )
+            , ( shortIdentifier ComputeFormNodesStartIndex, Field.string "1" )
+            , ( shortIdentifier ComputeFormNodesSize, Field.string "" )
+            , ( shortIdentifier ComputeFormNodesIndexPadding, Field.string "2" )
+            ]
+      )
+    ]
+
+
+computeFormValidation : Uuid -> Validation Validations.CustomError PrimaryGroup
+computeFormValidation newGroupId =
+    map4 PrimaryGroup
+        (succeed newGroupId)
+        (validateText ComputeFormName)
+        (field "nodes"
+            (map4 PrimaryGroup.NodesSpecification
+                (validateText ComputeFormNodesBase)
+                (validateInt ComputeFormNodesStartIndex)
+                (validateInt ComputeFormNodesSize)
+                (validateInt ComputeFormNodesIndexPadding)
+            )
+        )
+        (succeed defaultSecondaryGroups)
+
+
+defaultSecondaryGroups : Set String
+defaultSecondaryGroups =
+    Set.fromList [ "all", "nodes" ]
+
+
+initSecondaryGroupNameForm : NameForm
+initSecondaryGroupNameForm =
+    Form.initial
+        secondaryGroupNameFormInitialValues
+        secondaryGroupNameFormValidation
+
+
+secondaryGroupNameFormInitialValues : List ( String, Field )
+secondaryGroupNameFormInitialValues =
+    []
+
+
+secondaryGroupNameFormValidation : Validation Validations.CustomError String
+secondaryGroupNameFormValidation =
+    validateText SecondaryGroupFormName
 
 
 

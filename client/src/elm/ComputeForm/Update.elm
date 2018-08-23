@@ -8,6 +8,7 @@ import ComputeForm.Model exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
+import Forms
 import List.Extra
 import Model exposing (Model)
 import PrimaryGroup exposing (PrimaryGroup)
@@ -81,7 +82,7 @@ handleUpdatingComputeFormName newGroupId newName computeForm =
             String.endsWith "s"
 
         validation =
-            ComputeForm.Model.validation newGroupId
+            Forms.computeFormValidation newGroupId
     in
     Form.update validation
         (Form.Input "nodes.base" Form.Text (Field.String newBase))
