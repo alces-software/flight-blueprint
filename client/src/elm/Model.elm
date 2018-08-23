@@ -6,6 +6,7 @@ module Model
         , convertToYamlCmd
         , coreName
         , init
+        , primaryGroupsForCluster
         , selectedSecondaryGroupMembers
         )
 
@@ -14,6 +15,7 @@ import ComputeForm.Model exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import Json.Encode as E
+import List.Extra
 import Maybe.Extra
 import Msg exposing (..)
 import Node exposing (Node)
@@ -183,3 +185,21 @@ selectedSecondaryGroupMembers model =
 
         _ ->
             Nothing
+
+
+primaryGroupsForCluster : Model -> Int -> List PrimaryGroup
+primaryGroupsForCluster model clusterIndex =
+    let
+        groupsFor cluster =
+            List.map groupWithId cluster.computeGroupIds
+                |> Maybe.Extra.values
+
+        groupWithId =
+            flip EveryDict.get model.clusterPrimaryGroups
+    in
+    case List.Extra.getAt clusterIndex model.clusters of
+        Just cluster ->
+            groupsFor cluster
+
+        Nothing ->
+            []
