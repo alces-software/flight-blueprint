@@ -7,7 +7,6 @@ import Count
 import Css exposing (..)
 import Css.Colors exposing (..)
 import Css.Transitions as Transitions
-import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import FeatherIcons as Icons exposing (Icon)
 import Html.Styled exposing (..)
@@ -220,9 +219,8 @@ viewCluster model clusterIndex cluster =
                 cluster.login
 
         primaryGroups =
-            List.map
-                (viewPrimaryGroup model isFocusedCluster color)
-                cluster.computeGroupIds
+            Model.primaryGroupsForCluster model clusterIndex
+                |> List.map (viewPrimaryGroup model isFocusedCluster color)
 
         addComputeButton_ =
             addComputeButton isFocusedCluster clusterIndex
@@ -349,87 +347,80 @@ startGroupingButton disabled color clusterIndex =
         (StartCreatingSecondaryGroup clusterIndex)
 
 
-viewPrimaryGroup : Model -> Bool -> Color -> Uuid -> Html Msg
-viewPrimaryGroup model clusterIsFocused color groupId =
+viewPrimaryGroup : Model -> Bool -> Color -> PrimaryGroup -> Html Msg
+viewPrimaryGroup model clusterIsFocused color group =
     let
-        maybeGroup =
-            EveryDict.get groupId model.clusterPrimaryGroups
+        nodes =
+            PrimaryGroup.nodes group
 
-        view group =
-            let
-                nodes =
-                    PrimaryGroup.nodes group
-
-                children =
-                    List.concat
-                        [ [ div []
-                                [ text group.name
-                                , removeButton clusterIsFocused <|
-                                    RemoveComputeGroup groupId
-                                ]
-                          , secondaryGroupsList
-                          ]
-                        , List.map
-                            (viewNode clusterIsFocused color Compute Nothing)
-                            nodes
+        children =
+            List.concat
+                [ [ div []
+                        [ text group.name
+                        , removeButton clusterIsFocused <|
+                            RemoveComputeGroup group.id
                         ]
+                  , secondaryGroupsList
+                  ]
+                , List.map
+                    (viewNode clusterIsFocused color Compute Nothing)
+                    nodes
+                ]
 
-                secondaryGroupsList =
-                    Set.toList group.secondaryGroups
-                        |> String.join ", "
-                        |> text
-                        |> List.singleton
-                        |> Html.Styled.small
-                            [ title "Secondary groups for this compute group"
-                            ]
+        secondaryGroupsList =
+            Set.toList group.secondaryGroups
+                |> String.join ", "
+                |> text
+                |> List.singleton
+                |> Html.Styled.small
+                    [ title "Secondary groups for this compute group"
+                    ]
 
-                attrs =
-                    css styles :: selectableAttrs
+        attrs =
+            css styles :: selectableAttrs
 
-                styles =
-                    List.concat
-                        [ groupStyles color
-                        , [ Transitions.transition
-                                [ Transitions.background3 150 0 Transitions.easeIn
-                                , Transitions.opacity3 150 0 Transitions.easeIn
+        styles =
+            List.concat
+                [ groupStyles color
+                , [ Transitions.transition
+                        [ Transitions.background3 150 0 Transitions.easeIn
+                        , Transitions.opacity3 150 0 Transitions.easeIn
+                        ]
+                  ]
+                , selectableStyles
+                ]
+
+        ( selectableAttrs, selectableStyles ) =
+            case Model.selectedSecondaryGroupMembers model of
+                Just groupIds ->
+                    if EverySet.member group.id groupIds then
+                        ( [ onClick <| RemoveGroupFromSecondaryGroup group.id
+                          , title "Remove group from secondary group"
+                          ]
+                        , [ -- Color chosen to match
+                            -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L50.
+                            backgroundColor (rgba 39 148 216 0.5)
+                          , cursor pointer
+                          , hover [ opacity (num 0.8) ]
+                          ]
+                        )
+                    else
+                        ( [ onClick <| AddGroupToSecondaryGroup group.id
+                          , title "Add group to secondary group"
+                          ]
+                        , [ cursor pointer
+                          , hover
+                                [ -- Color chosen to match
+                                  -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L60.
+                                  backgroundColor (hex "acf4e6")
                                 ]
                           ]
-                        , selectableStyles
-                        ]
+                        )
 
-                ( selectableAttrs, selectableStyles ) =
-                    case Model.selectedSecondaryGroupMembers model of
-                        Just groupIds ->
-                            if EverySet.member groupId groupIds then
-                                ( [ onClick <| RemoveGroupFromSecondaryGroup groupId
-                                  , title "Remove group from secondary group"
-                                  ]
-                                , [ -- Color chosen to match
-                                    -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L50.
-                                    backgroundColor (rgba 39 148 216 0.5)
-                                  , cursor pointer
-                                  , hover [ opacity (num 0.8) ]
-                                  ]
-                                )
-                            else
-                                ( [ onClick <| AddGroupToSecondaryGroup groupId
-                                  , title "Add group to secondary group"
-                                  ]
-                                , [ cursor pointer
-                                  , hover
-                                        [ -- Color chosen to match
-                                          -- https://github.com/alces-software/alces-flight-center/blob/7c14c9e959fa0fce91e959ffa1073448b6768007/app/assets/stylesheets/cases.scss#L60.
-                                          backgroundColor (hex "acf4e6")
-                                        ]
-                                  ]
-                                )
-
-                        Nothing ->
-                            ( [], [] )
-            in
-            div attrs children
+                Nothing ->
+                    ( [], [] )
     in
-    maybeHtml maybeGroup view
+    div attrs children
 
 
 clusterColor : Model -> Int -> Color
