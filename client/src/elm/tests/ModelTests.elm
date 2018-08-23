@@ -2,7 +2,7 @@ module ModelTests exposing (..)
 
 import EveryDict
 import Expect exposing (Expectation)
-import Fixtures exposing (clusterFixture, groupFixture)
+import Fixtures exposing (clusterFixture, groupFixture, initialModelFixture)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Model
 import Test exposing (..)
@@ -13,15 +13,12 @@ suite =
     describe "Model module"
         [ let
             model =
-                { initialModel
+                { initialModelFixture
                     | clusters = [ cluster ]
                     , clusterPrimaryGroups =
                         EveryDict.fromList
                             [ ( primaryGroup.id, primaryGroup ) ]
                 }
-
-            initialModel =
-                Model.init 5 |> Tuple.first
 
             cluster =
                 { clusterFixture | computeGroupIds = [ primaryGroup.id ] }

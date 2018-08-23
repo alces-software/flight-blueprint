@@ -3,17 +3,24 @@ module Fixtures
         ( clusterFixture
         , fuzzGroup
         , groupFixture
+        , initialModelFixture
         , nodesFixture
         , uuidFixture
         )
 
 import ClusterDomain exposing (ClusterDomain)
 import Fuzz exposing (Fuzzer)
+import Model exposing (Model)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg
 import Set
 import Shrink
 import Uuid exposing (Uuid)
+
+
+initialModelFixture : Model
+initialModelFixture =
+    Model.init 5 |> Tuple.first
 
 
 uuidFixture : Uuid
