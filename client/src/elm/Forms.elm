@@ -54,8 +54,6 @@ initComputeForm newGroupId =
 
 computeFormInitialValues : List ( String, Field )
 computeFormInitialValues =
-    -- XXX Extract things in some way so don't need to duplicate field names in
-    -- different places (each field is in at least 3 currently).
     [ ( shortIdentifier ComputeFormName, Field.string "mynodes" )
     , ( "nodes"
       , Field.group
