@@ -8,6 +8,7 @@ module Model
         , groupWithId
         , init
         , primaryGroupsForCluster
+        , secondaryGroupsForCluster
         , selectedSecondaryGroupMembers
         )
 
@@ -188,12 +189,30 @@ selectedSecondaryGroupMembers model =
 
 primaryGroupsForCluster : Model -> Int -> List PrimaryGroup
 primaryGroupsForCluster model clusterIndex =
-    case List.Extra.getAt clusterIndex model.clusters of
+    case clusterAtIndex model clusterIndex of
         Just cluster ->
             groupsFor model cluster
 
         Nothing ->
             []
+
+
+secondaryGroupsForCluster : Model -> Int -> List String
+secondaryGroupsForCluster model clusterIndex =
+    case clusterAtIndex model clusterIndex of
+        Just cluster ->
+            groupsFor model cluster
+                |> List.map .secondaryGroups
+                |> List.foldl Set.union Set.empty
+                |> Set.toList
+
+        Nothing ->
+            []
+
+
+clusterAtIndex : Model -> Int -> Maybe ClusterDomain
+clusterAtIndex model index =
+    List.Extra.getAt index model.clusters
 
 
 groupsFor : Model -> ClusterDomain -> List PrimaryGroup
