@@ -5,6 +5,7 @@ module Model
         , Model
         , convertToYamlCmd
         , coreName
+        , groupWithId
         , init
         , primaryGroupsForCluster
         , selectedSecondaryGroupMembers
@@ -116,9 +117,7 @@ encodeCluster model cluster =
                 groups
 
         groups =
-            cluster.computeGroupIds
-                |> List.map (flip EveryDict.get model.clusterPrimaryGroups)
-                |> Maybe.Extra.values
+            groupsFor model cluster
     in
     E.object
         [ loginField
@@ -189,17 +188,20 @@ selectedSecondaryGroupMembers model =
 
 primaryGroupsForCluster : Model -> Int -> List PrimaryGroup
 primaryGroupsForCluster model clusterIndex =
-    let
-        groupsFor cluster =
-            List.map groupWithId cluster.computeGroupIds
-                |> Maybe.Extra.values
-
-        groupWithId =
-            flip EveryDict.get model.clusterPrimaryGroups
-    in
     case List.Extra.getAt clusterIndex model.clusters of
         Just cluster ->
-            groupsFor cluster
+            groupsFor model cluster
 
         Nothing ->
             []
+
+
+groupsFor : Model -> ClusterDomain -> List PrimaryGroup
+groupsFor model cluster =
+    List.map (groupWithId model) cluster.computeGroupIds
+        |> Maybe.Extra.values
+
+
+groupWithId : Model -> Uuid -> Maybe PrimaryGroup
+groupWithId model groupId =
+    EveryDict.get groupId model.clusterPrimaryGroups

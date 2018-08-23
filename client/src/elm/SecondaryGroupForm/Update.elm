@@ -13,9 +13,7 @@ handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds 
     let
         memberGroups : List PrimaryGroup
         memberGroups =
-            EverySet.map
-                (flip EveryDict.get model.clusterPrimaryGroups)
-                memberGroupIds
+            EverySet.map (Model.groupWithId model) memberGroupIds
                 |> EverySet.toList
                 |> Maybe.Extra.values
 
