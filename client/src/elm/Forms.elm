@@ -18,6 +18,7 @@ import Form.Validate exposing (..)
 import Forms.Validations as Validations
 import List.Extra
 import Maybe.Extra
+import Model exposing (Model)
 import PrimaryGroup exposing (PrimaryGroup)
 import SecondaryGroupForm.Model as SecondaryGroupForm exposing (NameForm)
 import Set exposing (Set)
@@ -34,6 +35,7 @@ type alias FieldConfig =
 
 type FieldType
     = Identifier
+    | GroupName
     | Integer Validations.IntBounds
 
 
@@ -46,9 +48,9 @@ type FieldName
     | SecondaryGroupFormName
 
 
-initComputeForm : Uuid -> ComputeForm
-initComputeForm newGroupId =
-    computeFormValidation newGroupId
+initComputeForm : Model -> Int -> Uuid -> ComputeForm
+initComputeForm model clusterIndex newGroupId =
+    computeFormValidation model clusterIndex newGroupId
         |> Form.initial computeFormInitialValues
 
 
@@ -66,14 +68,18 @@ computeFormInitialValues =
     ]
 
 
-computeFormValidation : Uuid -> Validation Validations.CustomError PrimaryGroup
-computeFormValidation newGroupId =
+computeFormValidation : Model -> Int -> Uuid -> Validation Validations.CustomError PrimaryGroup
+computeFormValidation model clusterIndex newGroupId =
+    let
+        validateText_ =
+            validateText model clusterIndex
+    in
     map4 PrimaryGroup
         (succeed newGroupId)
-        (validateText ComputeFormName)
+        (validateText_ ComputeFormName)
         (field "nodes"
             (map4 PrimaryGroup.NodesSpecification
-                (validateText ComputeFormNodesBase)
+                (validateText_ ComputeFormNodesBase)
                 (validateInt ComputeFormNodesStartIndex)
                 (validateInt ComputeFormNodesSize)
                 (validateInt ComputeFormNodesIndexPadding)
@@ -87,11 +93,11 @@ defaultSecondaryGroups =
     Set.fromList [ "all", "nodes" ]
 
 
-initSecondaryGroupNameForm : NameForm
-initSecondaryGroupNameForm =
+initSecondaryGroupNameForm : Model -> Int -> NameForm
+initSecondaryGroupNameForm model clusterIndex =
     Form.initial
         secondaryGroupNameFormInitialValues
-        secondaryGroupNameFormValidation
+        (secondaryGroupNameFormValidation model clusterIndex)
 
 
 secondaryGroupNameFormInitialValues : List ( String, Field )
@@ -99,9 +105,9 @@ secondaryGroupNameFormInitialValues =
     []
 
 
-secondaryGroupNameFormValidation : Validation Validations.CustomError String
-secondaryGroupNameFormValidation =
-    validateText SecondaryGroupFormName
+secondaryGroupNameFormValidation : Model -> Int -> Validation Validations.CustomError String
+secondaryGroupNameFormValidation model clusterIndex =
+    validateText model clusterIndex SecondaryGroupFormName
 
 
 
@@ -119,13 +125,25 @@ secondaryGroupNameFormValidation =
 -- more trouble than it's worth.
 
 
-validateText : FieldName -> Validation Validations.CustomError String
-validateText fieldName =
+validateText : Model -> Int -> FieldName -> Validation Validations.CustomError String
+validateText model clusterIndex fieldName =
     let
         validateType fieldType =
             case fieldType of
                 Identifier ->
                     Validations.validateIdentifier
+
+                GroupName ->
+                    let
+                        primaryGroups =
+                            Model.primaryGroupsForCluster model clusterIndex
+
+                        secondaryGroups =
+                            Model.secondaryGroupsForCluster model clusterIndex
+                    in
+                    Validations.validateGroupName
+                        primaryGroups
+                        secondaryGroups
 
                 Integer _ ->
                     default
@@ -142,6 +160,9 @@ validateInt fieldName =
         validateType fieldType =
             case fieldType of
                 Identifier ->
+                    default
+
+                GroupName ->
                     default
 
                 Integer bounds ->
@@ -190,7 +211,7 @@ fieldConfigs =
         [ ( ComputeFormName
           , { label = "New group name"
             , fieldIdentifier = "name"
-            , fieldType = Identifier
+            , fieldType = GroupName
             , help = "The name to use for this new group of compute nodes."
             }
           )
@@ -225,7 +246,7 @@ fieldConfigs =
         , ( SecondaryGroupFormName
           , { label = "Secondary group name"
             , fieldIdentifier = "name"
-            , fieldType = Identifier
+            , fieldType = GroupName
             , help = "The name to use for this secondary group."
             }
           )

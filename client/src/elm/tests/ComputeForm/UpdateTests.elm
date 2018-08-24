@@ -27,13 +27,25 @@ suite =
                                     [ ( "base", Field.string originalBase ) ]
                               )
                             ]
-                            (Forms.computeFormValidation Fixtures.uuidFixture)
+                            (Forms.computeFormValidation
+                                model
+                                clusterIndex
+                                Fixtures.uuidFixture
+                            )
 
                     newComputeForm =
                         ComputeForm.Update.handleUpdatingComputeFormName
+                            model
+                            clusterIndex
                             Fixtures.uuidFixture
                             newName
                             initialComputeForm
+
+                    model =
+                        Fixtures.initialModelFixture
+
+                    clusterIndex =
+                        0
 
                     newBase =
                         newValue "nodes.base"

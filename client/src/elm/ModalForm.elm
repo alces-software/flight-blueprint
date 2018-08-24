@@ -70,9 +70,16 @@ inputWithConfig form config =
             elmFormAttrs Field.String ElmForm.Text field
 
         additionalInputAttrs =
+            let
+                textAttrs =
+                    [ type_ "text" ]
+            in
             case config.fieldType of
                 Identifier ->
-                    [ type_ "text" ]
+                    textAttrs
+
+                GroupName ->
+                    textAttrs
 
                 Integer { min, max } ->
                     Maybe.Extra.values
@@ -184,9 +191,23 @@ errorMessage errorValue =
 
 customErrorMessage : Validations.CustomError -> String
 customErrorMessage error =
+    let
+        groupExists groupType =
+            String.join " "
+                [ "A"
+                , groupType
+                , "group with this name already exists for this cluster."
+                ]
+    in
     case error of
         InvalidIdentifierCharacters ->
             "Can only contain the letters a-z, and numbers 0-9."
 
         InvalidIdentifierFirstCharacter ->
             "First character must be a letter."
+
+        ExistingPrimaryGroup ->
+            groupExists "primary"
+
+        ExistingSecondaryGroup ->
+            groupExists "secondary"

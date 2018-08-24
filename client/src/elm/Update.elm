@@ -130,7 +130,7 @@ updateInterfaceState msg model =
                 | displayedForm =
                     Model.ComputeForm
                         clusterIndex
-                        (Forms.initComputeForm newGroupId)
+                        (Forms.initComputeForm model clusterIndex newGroupId)
                 , randomSeed = newSeed
             }
 
@@ -154,6 +154,8 @@ updateInterfaceState msg model =
                                     case formMsg of
                                         Form.Input "name" _ (Field.String newName) ->
                                             ComputeForm.Update.handleUpdatingComputeFormName
+                                                model
+                                                clusterIndex
                                                 newGroupId
                                                 newName
                                                 form
@@ -166,7 +168,11 @@ updateInterfaceState msg model =
 
                                 newForm =
                                     Form.update
-                                        (Forms.computeFormValidation newGroupId)
+                                        (Forms.computeFormValidation
+                                            model
+                                            clusterIndex
+                                            newGroupId
+                                        )
                                         formMsg
                                         preUpdatedForm
                             in
@@ -198,7 +204,10 @@ updateInterfaceState msg model =
                     Model.SecondaryGroupForm
                         clusterIndex
                         (SecondaryGroupForm.Model.ShowingNameForm
-                            Forms.initSecondaryGroupNameForm
+                            (Forms.initSecondaryGroupNameForm
+                                model
+                                clusterIndex
+                            )
                         )
             }
 
@@ -224,7 +233,10 @@ updateInterfaceState msg model =
                                     let
                                         newNameForm =
                                             Form.update
-                                                Forms.secondaryGroupNameFormValidation
+                                                (Forms.secondaryGroupNameFormValidation
+                                                    model
+                                                    clusterIndex
+                                                )
                                                 formMsg
                                                 nameForm
                                     in

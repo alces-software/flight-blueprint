@@ -1,6 +1,7 @@
 module Forms.ValidationsTests exposing (..)
 
 import Expect exposing (Expectation)
+import Fixtures exposing (groupFixture)
 import Form.Error exposing (..)
 import Form.Test exposing (..)
 import Form.Test.ValidationExpectation exposing (ValidationExpectation(..))
@@ -14,6 +15,29 @@ suite =
     describe "Validations module"
         [ describe "validateIdentifier"
             [ identifierValidationTests Validations.validateIdentifier ]
+        , describe "validateGroupName"
+            [ identifierValidationTests <| Validations.validateGroupName [] []
+            , Form.Test.describeValidation "with existing primary group"
+                (Validations.validateGroupName
+                    [ { groupFixture | name = "existingNodes" } ]
+                    []
+                )
+                [ ( "existingNodes"
+                  , Invalid <| CustomError Validations.ExistingPrimaryGroup
+                  )
+                , ( "newNodes", Valid )
+                ]
+            , Form.Test.describeValidation "with existing secondary group"
+                (Validations.validateGroupName
+                    []
+                    [ "existingNodes" ]
+                )
+                [ ( "existingNodes"
+                  , Invalid <| CustomError Validations.ExistingSecondaryGroup
+                  )
+                , ( "newNodes", Valid )
+                ]
+            ]
 
         -- XXX It would be nice to fuzz test these, but this seems
         -- non-trivial/non-obvious with the current elm-test and elm-form

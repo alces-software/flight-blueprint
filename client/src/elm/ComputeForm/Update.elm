@@ -50,8 +50,14 @@ handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
     }
 
 
-handleUpdatingComputeFormName : Uuid -> String -> ComputeForm -> ComputeForm
-handleUpdatingComputeFormName newGroupId newName computeForm =
+handleUpdatingComputeFormName :
+    Model
+    -> Int
+    -> Uuid
+    -> String
+    -> ComputeForm
+    -> ComputeForm
+handleUpdatingComputeFormName model clusterIndex newGroupId newName computeForm =
     let
         ( currentName, currentBase ) =
             ( value "name"
@@ -82,7 +88,7 @@ handleUpdatingComputeFormName newGroupId newName computeForm =
             String.endsWith "s"
 
         validation =
-            Forms.computeFormValidation newGroupId
+            Forms.computeFormValidation model clusterIndex newGroupId
     in
     Form.update validation
         (Form.Input "nodes.base" Form.Text (Field.String newBase))
