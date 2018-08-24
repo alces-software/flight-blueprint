@@ -130,11 +130,11 @@ elmFormAttrs toFieldValue inputType state =
 errorMessage : ErrorValue Validations.CustomError -> String
 errorMessage errorValue =
     let
-        mustBeLessThan i =
-            "Must be less than " ++ toString i ++ "."
+        overMaximum i =
+            "Maximum " ++ i ++ "."
 
-        mustBeGreaterThan i =
-            "Must be greater than " ++ toString i ++ "."
+        underMinimum i =
+            "Minimum " ++ i ++ "."
     in
     -- XXX Consider how to make error messages better when no value entered;
     -- not helpful to tell user that the value they haven't entered should be
@@ -165,22 +165,22 @@ errorMessage errorValue =
             "Must be a date."
 
         SmallerIntThan i ->
-            mustBeGreaterThan i
+            underMinimum <| toString i
 
         GreaterIntThan i ->
-            mustBeLessThan i
+            overMaximum <| toString i
 
         SmallerFloatThan i ->
-            mustBeGreaterThan i
+            underMinimum <| toString i
 
         GreaterFloatThan i ->
-            mustBeLessThan i
+            overMaximum <| toString i
 
         ShorterStringThan i ->
-            "Must be longer than " ++ toString i ++ " characters."
+            underMinimum <| toString i ++ " characters"
 
         LongerStringThan i ->
-            "Must be shorter than " ++ toString i ++ " characters."
+            overMaximum <| toString i ++ " characters"
 
         NotIncludedIn ->
             ""
