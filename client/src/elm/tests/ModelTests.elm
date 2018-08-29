@@ -7,6 +7,7 @@ import Fixtures exposing (clusterFixture, groupFixture, initialModelFixture)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Json.Decode as D
 import Model
+import Random.Pcg
 import Set
 import Test exposing (..)
 
@@ -95,7 +96,11 @@ suite =
                                 Expect.fail <| "Decoding model failed: " ++ message
 
             encodeAndDecode =
-                Model.encode >> D.decodeValue Model.decoder
+                Model.encode
+                    >> D.decodeValue (Model.decoder passedInSeed)
+
+            passedInSeed =
+                42
           in
           describe "encoding and decoding"
             [ modelDecodeTest "gives same `core`"
@@ -107,6 +112,12 @@ suite =
                     Expect.equal
                         ( decodedModel.exportedYaml, decodedModel.displayedForm )
                         ( "", Model.NoForm )
+                )
+            , modelDecodeTest "creates seed using value passed to decoder"
+                (\_ decodedModel ->
+                    Expect.equal
+                        decodedModel.randomSeed
+                        (Random.Pcg.initialSeed passedInSeed)
                 )
             ]
         ]

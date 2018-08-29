@@ -164,12 +164,19 @@ encodeNode node =
     E.string node.name
 
 
-decoder : D.Decoder Model
-decoder =
-    D.map2 (\initModel core -> { initModel | core = core })
+decoder : Int -> D.Decoder Model
+decoder randomSeed =
+    D.map3
+        (\initModel core seed ->
+            { initModel
+                | core = core
+                , randomSeed = seed
+            }
+        )
         -- XXX Remove use of `init` once decoding full model.
         (init 5 |> Tuple.first |> D.succeed)
         (D.field "core" coreDecoder)
+        (D.succeed <| Random.Pcg.initialSeed randomSeed)
 
 
 coreDecoder : D.Decoder CoreDomain
