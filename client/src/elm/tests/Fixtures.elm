@@ -12,12 +12,14 @@ module Fixtures
 import ClusterDomain exposing (ClusterDomain)
 import EveryDict
 import Fuzz exposing (Fuzzer)
+import Fuzz.Extra
+import Lazy.List exposing ((:::))
 import Model exposing (CoreDomain, Model)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg
 import Set
-import Shrink
+import Shrink exposing (Shrinker)
 import Uuid exposing (Uuid)
 
 
@@ -29,36 +31,31 @@ initialModelFixture =
 fuzzModel : Fuzzer Model
 fuzzModel =
     let
-        fuzzGroupsForClusters clusters =
-            -- XXX Just fuzz empty list of groups for now, rather than fuzzing
-            -- every group for every cluster - code below should work to do
-            -- that but seems to cause run-time errors like "RangeError:
-            -- Maximum call stack size exceeded" and "JavaScript heap out of
-            -- memory".
-            --
-            -- List.concatMap .computeGroupIds clusters
-            --     |> List.map
-            --         (\groupId ->
-            --             Fuzz.map
-            --                 (\group -> { group | id = groupId })
-            --                 fuzzGroup
-            --         )
-            --     |> Fuzz.Extra.sequence
-            --
-            Fuzz.constant []
-
-        fuzzModelWithClustersAndGroups clusters groups =
+        fuzzModelFromGroupIds groupIds =
             Fuzz.map Model
                 fuzzCore
-                |> Fuzz.andMap (Fuzz.constant clusters)
                 |> Fuzz.andMap
-                    (Fuzz.constant
-                        ((List.map (\g -> ( g.id, g ))
-                            >> EveryDict.fromList
-                         )
-                            groups
-                        )
+                    (Fuzz.list fuzzCluster
+                        |> Fuzz.map
+                            (List.map
+                                (\c ->
+                                    -- c
+                                    { c | computeGroupIds = groupIds }
+                                )
+                            )
                     )
+                |> Fuzz.andMap
+                    (Fuzz.constant EveryDict.empty)
+                -- (List.map
+                --     (\groupId ->
+                --         Fuzz.map (\g -> { g | id = groupId })
+                --             fuzzGroup
+                --     )
+                --     groupIds
+                --     |> Fuzz.Extra.sequence
+                --     |> Fuzz.map (List.map (\g -> ( g.id, g )))
+                --     |> Fuzz.map EveryDict.fromList
+                -- )
                 |> Fuzz.andMap Fuzz.string
                 |> Fuzz.andMap fuzzSeed
                 -- XXX Hard-coding this to NoForm is not very random but is easy to do,
@@ -67,13 +64,8 @@ fuzzModel =
                 -- actually random though.
                 |> Fuzz.andMap (Fuzz.constant Model.NoForm)
     in
-    Fuzz.list fuzzCluster
-        |> Fuzz.andThen
-            (\clusters ->
-                fuzzGroupsForClusters clusters
-                    |> Fuzz.andThen
-                        (fuzzModelWithClustersAndGroups clusters)
-            )
+    Fuzz.list fuzzUuid
+        |> Fuzz.andThen fuzzModelFromGroupIds
 
 
 fuzzCore : Fuzzer CoreDomain
@@ -102,7 +94,27 @@ fuzzSeed =
 
 fuzzUuid : Fuzzer Uuid
 fuzzUuid =
-    Fuzz.custom Uuid.uuidGenerator Shrink.noShrink
+    let
+        shrink uuid =
+            if uuid == baseUuid then
+                Lazy.List.empty
+            else
+                baseUuid ::: Lazy.List.empty
+
+        baseUuid =
+            uuidFromSeed 1
+    in
+    Fuzz.custom Uuid.uuidGenerator shrink
+
+
+uuidFromSeed : Int -> Uuid
+uuidFromSeed seed =
+    let
+        ( uuid, _ ) =
+            Random.Pcg.initialSeed seed
+                |> Random.Pcg.step Uuid.uuidGenerator
+    in
+    uuid
 
 
 groupFixture : PrimaryGroup
