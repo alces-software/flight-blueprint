@@ -5,6 +5,8 @@ module Model
         , Model
         , convertToYamlCmd
         , coreName
+        , decoder
+        , encode
         , groupWithId
         , init
         , primaryGroupsForCluster
@@ -16,6 +18,7 @@ import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.Model exposing (ComputeForm)
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
+import Json.Decode as D
 import Json.Encode as E
 import List.Extra
 import Maybe.Extra
@@ -159,6 +162,26 @@ encodeNodesSpecification nodesSpec =
 encodeNode : Node -> E.Value
 encodeNode node =
     E.string node.name
+
+
+decoder : D.Decoder Model
+decoder =
+    D.map2 (\initModel core -> { initModel | core = core })
+        -- XXX Remove use of `init` once decoding full model.
+        (init 5 |> Tuple.first |> D.succeed)
+        (D.field "core" coreDecoder)
+
+
+coreDecoder : D.Decoder CoreDomain
+coreDecoder =
+    D.map2 CoreDomain
+        (D.field "gateway" nodeDecoder)
+        (D.maybe <| D.field "infra" nodeDecoder)
+
+
+nodeDecoder : D.Decoder Node
+nodeDecoder =
+    D.map Node D.string
 
 
 coreName : String

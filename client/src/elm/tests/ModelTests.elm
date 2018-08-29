@@ -5,6 +5,7 @@ import EverySet
 import Expect exposing (Expectation)
 import Fixtures exposing (clusterFixture, groupFixture, initialModelFixture)
 import Fuzz exposing (Fuzzer, int, list, string)
+import Json.Decode as D
 import Model
 import Set
 import Test exposing (..)
@@ -81,5 +82,19 @@ suite =
                                     group1.secondaryGroups
                                     group2.secondaryGroups
                         )
+            ]
+        , let
+            encodeAndDecode =
+                Model.encode >> D.decodeValue Model.decoder
+          in
+          describe "encoding and decoding"
+            [ fuzz Fixtures.fuzzModel "gives same `core`" <|
+                \model ->
+                    case encodeAndDecode model of
+                        Ok decodedModel ->
+                            Expect.equal model.core decodedModel.core
+
+                        Err message ->
+                            Expect.fail <| "Decoding model failed: " ++ message
             ]
         ]
