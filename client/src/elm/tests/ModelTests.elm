@@ -84,17 +84,23 @@ suite =
                         )
             ]
         , let
+            modelDecodeTest description expectation =
+                fuzz Fixtures.fuzzModel description <|
+                    \model ->
+                        case encodeAndDecode model of
+                            Ok decodedModel ->
+                                expectation model decodedModel
+
+                            Err message ->
+                                Expect.fail <| "Decoding model failed: " ++ message
+
             encodeAndDecode =
                 Model.encode >> D.decodeValue Model.decoder
           in
           describe "encoding and decoding"
-            [ fuzz Fixtures.fuzzModel "gives same `core`" <|
-                \model ->
-                    case encodeAndDecode model of
-                        Ok decodedModel ->
-                            Expect.equal model.core decodedModel.core
-
-                        Err message ->
-                            Expect.fail <| "Decoding model failed: " ++ message
+            [ modelDecodeTest "gives same `core`"
+                (\model decodedModel ->
+                    Expect.equal model.core decodedModel.core
+                )
             ]
         ]
