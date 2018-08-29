@@ -102,5 +102,11 @@ suite =
                 (\model decodedModel ->
                     Expect.equal model.core decodedModel.core
                 )
+            , modelDecodeTest "gives consistent, default app state fields"
+                (\_ decodedModel ->
+                    Expect.equal
+                        ( decodedModel.exportedYaml, decodedModel.displayedForm )
+                        ( "", Model.NoForm )
+                )
             ]
         ]
