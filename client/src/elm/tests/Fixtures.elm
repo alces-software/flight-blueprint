@@ -12,6 +12,7 @@ module Fixtures
 import ClusterDomain exposing (ClusterDomain)
 import EveryDict
 import Fuzz exposing (Fuzzer)
+import Fuzz.Extra
 import Model exposing (CoreDomain, Model)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
@@ -30,22 +31,14 @@ fuzzModel : Fuzzer Model
 fuzzModel =
     let
         fuzzGroupsForClusters clusters =
-            -- XXX Just fuzz empty list of groups for now, rather than fuzzing
-            -- every group for every cluster - code below should work to do
-            -- that but seems to cause run-time errors like "RangeError:
-            -- Maximum call stack size exceeded" and "JavaScript heap out of
-            -- memory".
-            --
-            -- List.concatMap .computeGroupIds clusters
-            --     |> List.map
-            --         (\groupId ->
-            --             Fuzz.map
-            --                 (\group -> { group | id = groupId })
-            --                 fuzzGroup
-            --         )
-            --     |> Fuzz.Extra.sequence
-            --
-            Fuzz.constant []
+            List.concatMap .computeGroupIds clusters
+                |> List.map
+                    (\groupId ->
+                        Fuzz.map
+                            (\group -> { group | id = groupId })
+                            fuzzGroup
+                    )
+                |> Fuzz.Extra.sequence
 
         fuzzModelWithClustersAndGroups clusters groups =
             Fuzz.map Model
@@ -67,7 +60,7 @@ fuzzModel =
                 -- actually random though.
                 |> Fuzz.andMap (Fuzz.constant Model.NoForm)
     in
-    Fuzz.list fuzzCluster
+    shortListFuzzer fuzzCluster
         |> Fuzz.andThen
             (\clusters ->
                 fuzzGroupsForClusters clusters
@@ -121,7 +114,7 @@ fuzzGroup =
         fuzzUuid
         Fuzz.string
         fuzzNodes
-        (Fuzz.list Fuzz.string |> Fuzz.map Set.fromList)
+        (shortListFuzzer Fuzz.string |> Fuzz.map Set.fromList)
 
 
 nodesFixture : PrimaryGroup.NodesSpecification
@@ -135,12 +128,21 @@ nodesFixture =
 
 fuzzNodes : Fuzzer PrimaryGroup.NodesSpecification
 fuzzNodes =
+    let
+        -- Fuzz small ints to be used for each int in the fuzzed
+        -- `NodesSpecification`, this prevents lists of Nodes which are too
+        -- large being generated when `PrimaryGroup.nodes` is called for a
+        -- fuzzed `NodesSpecification` - previously these could be so large
+        -- that JavaScript would run out of memory when running tests.
+        smallIntFuzzer =
+            Fuzz.intRange 0 10
+    in
     Fuzz.map4
         PrimaryGroup.NodesSpecification
         Fuzz.string
-        Fuzz.int
-        Fuzz.int
-        Fuzz.int
+        smallIntFuzzer
+        smallIntFuzzer
+        smallIntFuzzer
 
 
 clusterFixture : ClusterDomain
@@ -153,9 +155,33 @@ fuzzCluster =
     Fuzz.map3 ClusterDomain
         Fuzz.string
         fuzzNode
-        (Fuzz.list fuzzUuid)
+        (shortListFuzzer fuzzUuid)
 
 
 fuzzNode : Fuzzer Node
 fuzzNode =
     Fuzz.map Node Fuzz.string
+
+
+{-| Fuzz a list of `a`s of length 4 or less.
+
+This is useful when the fuzzed list may be used for something somewhat
+computationally expensive, and having a short list is unlikely to effect
+whether tests will pass; using this in these situations should at least
+significantly speed up running tests, and can prevent JavaScript running out of
+memory when running tests (which previously could happen in some cases
+where we used `Fuzz.list` instead).
+
+-}
+shortListFuzzer : Fuzzer a -> Fuzzer (List a)
+shortListFuzzer itemFuzzer =
+    Fuzz.map5
+        (\a b c d length ->
+            [ a, b, c, d ]
+                |> List.take length
+        )
+        itemFuzzer
+        itemFuzzer
+        itemFuzzer
+        itemFuzzer
+        (Fuzz.intRange 0 4)
