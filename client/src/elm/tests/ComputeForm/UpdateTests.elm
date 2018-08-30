@@ -7,10 +7,7 @@ import Fixtures
 import Form
 import Form.Field as Field
 import Forms
-import Fuzz exposing (Fuzzer, int, list, string)
-import Random.Pcg
 import Test exposing (..)
-import Uuid
 
 
 suite : Test

@@ -1,10 +1,8 @@
 module ModelTests exposing (..)
 
 import EveryDict
-import EverySet
 import Expect exposing (Expectation)
 import Fixtures exposing (clusterFixture, groupFixture, initialModelFixture)
-import Fuzz exposing (Fuzzer, int, list, string)
 import Fuzzers
 import Json.Decode as D
 import Model

@@ -2,10 +2,8 @@ module PrimaryGroupTests exposing (..)
 
 import Expect exposing (Expectation)
 import Fixtures exposing (groupFixture, nodesFixture)
-import Fuzz exposing (Fuzzer, int, list, string)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
-import Set
 import Test exposing (..)
 
 
