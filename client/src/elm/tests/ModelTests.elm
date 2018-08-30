@@ -5,6 +5,7 @@ import EverySet
 import Expect exposing (Expectation)
 import Fixtures exposing (clusterFixture, groupFixture, initialModelFixture)
 import Fuzz exposing (Fuzzer, int, list, string)
+import Fuzzers
 import Json.Decode as D
 import Model
 import Random.Pcg
@@ -36,7 +37,7 @@ suite =
                     Expect.equal
                         (Model.primaryGroupsForCluster model 0)
                         [ primaryGroup ]
-            , fuzz Fixtures.groupFuzzer "never includes group not associated with cluster" <|
+            , fuzz Fuzzers.group "never includes group not associated with cluster" <|
                 \group ->
                     let
                         modelWithGroup =
@@ -54,8 +55,8 @@ suite =
             ]
         , describe "secondaryGroupsForCluster"
             [ fuzz2
-                Fixtures.groupFuzzer
-                Fixtures.groupFuzzer
+                Fuzzers.group
+                Fuzzers.group
                 "returns all secondary groups for the cluster primary groups"
               <|
                 \group1 group2 ->
@@ -86,7 +87,7 @@ suite =
             ]
         , let
             modelDecodeTest description expectation =
-                fuzz Fixtures.modelFuzzer description <|
+                fuzz Fuzzers.model description <|
                     \model ->
                         case encodeAndDecode model of
                             Ok decodedModel ->
