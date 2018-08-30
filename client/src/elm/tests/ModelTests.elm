@@ -36,7 +36,7 @@ suite =
                     Expect.equal
                         (Model.primaryGroupsForCluster model 0)
                         [ primaryGroup ]
-            , fuzz Fixtures.fuzzGroup "never includes group not associated with cluster" <|
+            , fuzz Fixtures.groupFuzzer "never includes group not associated with cluster" <|
                 \group ->
                     let
                         modelWithGroup =
@@ -54,8 +54,8 @@ suite =
             ]
         , describe "secondaryGroupsForCluster"
             [ fuzz2
-                Fixtures.fuzzGroup
-                Fixtures.fuzzGroup
+                Fixtures.groupFuzzer
+                Fixtures.groupFuzzer
                 "returns all secondary groups for the cluster primary groups"
               <|
                 \group1 group2 ->
@@ -86,7 +86,7 @@ suite =
             ]
         , let
             modelDecodeTest description expectation =
-                fuzz Fixtures.fuzzModel description <|
+                fuzz Fixtures.modelFuzzer description <|
                     \model ->
                         case encodeAndDecode model of
                             Ok decodedModel ->

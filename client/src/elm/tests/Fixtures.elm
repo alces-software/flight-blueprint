@@ -1,10 +1,10 @@
 module Fixtures
     exposing
         ( clusterFixture
-        , fuzzGroup
-        , fuzzModel
         , groupFixture
+        , groupFuzzer
         , initialModelFixture
+        , modelFuzzer
         , nodesFixture
         , uuidFixture
         )
@@ -27,22 +27,22 @@ initialModelFixture =
     Model.init 5 |> Tuple.first
 
 
-fuzzModel : Fuzzer Model
-fuzzModel =
+modelFuzzer : Fuzzer Model
+modelFuzzer =
     let
-        fuzzGroupsForClusters clusters =
+        groupsForClustersFuzzer clusters =
             List.concatMap .computeGroupIds clusters
                 |> List.map
                     (\groupId ->
                         Fuzz.map
                             (\group -> { group | id = groupId })
-                            fuzzGroup
+                            groupFuzzer
                     )
                 |> Fuzz.Extra.sequence
 
-        fuzzModelWithClustersAndGroups clusters groups =
+        modelWithClustersAndGroupsFuzzer clusters groups =
             Fuzz.map Model
-                fuzzCore
+                coreFuzzer
                 |> Fuzz.andMap (Fuzz.constant clusters)
                 |> Fuzz.andMap
                     (Fuzz.constant
@@ -53,27 +53,27 @@ fuzzModel =
                         )
                     )
                 |> Fuzz.andMap Fuzz.string
-                |> Fuzz.andMap fuzzSeed
+                |> Fuzz.andMap seedFuzzer
                 -- XXX Hard-coding this to NoForm is not very random but is easy to do,
                 -- and (for now at least) this shouldn't effect anything where this
                 -- fuzzer is being used. For robustness would be good to make this
                 -- actually random though.
                 |> Fuzz.andMap (Fuzz.constant Model.NoForm)
     in
-    shortListFuzzer fuzzCluster
+    shortListFuzzer clusterFuzzer
         |> Fuzz.andThen
             (\clusters ->
-                fuzzGroupsForClusters clusters
+                groupsForClustersFuzzer clusters
                     |> Fuzz.andThen
-                        (fuzzModelWithClustersAndGroups clusters)
+                        (modelWithClustersAndGroupsFuzzer clusters)
             )
 
 
-fuzzCore : Fuzzer CoreDomain
-fuzzCore =
+coreFuzzer : Fuzzer CoreDomain
+coreFuzzer =
     Fuzz.map2 CoreDomain
-        fuzzNode
-        (Fuzz.maybe fuzzNode)
+        nodeFuzzer
+        (Fuzz.maybe nodeFuzzer)
 
 
 uuidFixture : Uuid
@@ -88,13 +88,13 @@ uuidFixture =
     uuid
 
 
-fuzzSeed : Fuzzer Random.Pcg.Seed
-fuzzSeed =
+seedFuzzer : Fuzzer Random.Pcg.Seed
+seedFuzzer =
     Fuzz.map Random.Pcg.initialSeed Fuzz.int
 
 
-fuzzUuid : Fuzzer Uuid
-fuzzUuid =
+uuidFuzzer : Fuzzer Uuid
+uuidFuzzer =
     Fuzz.custom Uuid.uuidGenerator Shrink.noShrink
 
 
@@ -107,13 +107,13 @@ groupFixture =
     }
 
 
-fuzzGroup : Fuzzer PrimaryGroup
-fuzzGroup =
+groupFuzzer : Fuzzer PrimaryGroup
+groupFuzzer =
     Fuzz.map4
         PrimaryGroup
-        fuzzUuid
+        uuidFuzzer
         Fuzz.string
-        fuzzNodes
+        nodesSpecificationFuzzer
         (shortListFuzzer Fuzz.string |> Fuzz.map Set.fromList)
 
 
@@ -126,8 +126,8 @@ nodesFixture =
     }
 
 
-fuzzNodes : Fuzzer PrimaryGroup.NodesSpecification
-fuzzNodes =
+nodesSpecificationFuzzer : Fuzzer PrimaryGroup.NodesSpecification
+nodesSpecificationFuzzer =
     let
         -- Fuzz small ints to be used for each int in the fuzzed
         -- `NodesSpecification`, this prevents lists of Nodes which are too
@@ -150,16 +150,16 @@ clusterFixture =
     ClusterDomain.nextCluster []
 
 
-fuzzCluster : Fuzzer ClusterDomain
-fuzzCluster =
+clusterFuzzer : Fuzzer ClusterDomain
+clusterFuzzer =
     Fuzz.map3 ClusterDomain
         Fuzz.string
-        fuzzNode
-        (shortListFuzzer fuzzUuid)
+        nodeFuzzer
+        (shortListFuzzer uuidFuzzer)
 
 
-fuzzNode : Fuzzer Node
-fuzzNode =
+nodeFuzzer : Fuzzer Node
+nodeFuzzer =
     Fuzz.map Node Fuzz.string
 
 
