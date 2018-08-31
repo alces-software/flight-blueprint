@@ -81,16 +81,13 @@ convertToYamlCmd =
 encode : Model -> E.Value
 encode model =
     let
-        coreField =
-            ( "core", encodeCore model.core )
-
-        clustersField =
-            ( "clusters", E.list clusterItems )
-
         clusterItems =
             List.map (encodeCluster model) model.clusters
     in
-    E.object [ coreField, clustersField ]
+    E.object
+        [ ( "core", encodeCore model.core )
+        , ( "clusters", E.list clusterItems )
+        ]
 
 
 encodeCore : CoreDomain -> E.Value
@@ -110,22 +107,14 @@ encodeCore core =
 encodeCluster : Model -> ClusterDomain -> E.Value
 encodeCluster model cluster =
     let
-        loginField =
-            ( "login", encodeNode cluster.login )
-
-        computeField =
-            ( "compute", E.list computeGroupItems )
-
         computeGroupItems =
-            List.map encodePrimaryGroup groups
-
-        groups =
             groupsFor model cluster
+                |> List.map encodePrimaryGroup
     in
     E.object
         [ ( "name", E.string cluster.name )
-        , loginField
-        , computeField
+        , ( "login", encodeNode cluster.login )
+        , ( "compute", E.list computeGroupItems )
         ]
 
 
