@@ -140,12 +140,20 @@ encodePrimaryGroup group =
                 |> List.map E.string
                 |> E.list
           )
-        , ( "meta", encodeNodesSpecification group.nodes )
+        , ( "meta", encodePrimaryGroupMetaField group )
         , ( "nodes"
           , PrimaryGroup.nodes group
                 |> List.map encodeNode
                 |> E.list
           )
+        ]
+
+
+encodePrimaryGroupMetaField : PrimaryGroup -> E.Value
+encodePrimaryGroupMetaField group =
+    E.object
+        [ ( "id", E.string <| Uuid.toString group.id )
+        , ( "nodes", encodeNodesSpecification group.nodes )
         ]
 
 
