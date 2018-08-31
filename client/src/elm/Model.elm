@@ -84,12 +84,15 @@ encode model =
         coreField =
             ( "core", encodeCore model.core )
 
-        clusterFields =
+        clustersField =
+            ( "clusters", E.object clusterEntries )
+
+        clusterEntries =
             List.map
                 (\c -> ( c.name, encodeCluster model c ))
                 model.clusters
     in
-    E.object (coreField :: clusterFields)
+    E.object [ coreField, clustersField ]
 
 
 encodeCore : CoreDomain -> E.Value
