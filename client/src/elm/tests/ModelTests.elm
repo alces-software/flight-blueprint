@@ -106,6 +106,10 @@ suite =
                 (\model decodedModel ->
                     Expect.equal model.core decodedModel.core
                 )
+            , modelDecodeTest "gives same `clusters`"
+                (\model decodedModel ->
+                    Expect.equal model.clusters decodedModel.clusters
+                )
             , modelDecodeTest "gives consistent, default app state fields"
                 (\_ decodedModel ->
                     Expect.equal

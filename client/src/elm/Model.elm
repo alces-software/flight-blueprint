@@ -164,16 +164,18 @@ encodeNode node =
 
 decoder : Int -> D.Decoder Model
 decoder randomSeed =
-    D.map3
-        (\initModel core seed ->
+    D.map4
+        (\initModel core clusters seed ->
             { initModel
                 | core = core
+                , clusters = clusters
                 , randomSeed = seed
             }
         )
         -- XXX Remove use of `init` once decoding full model.
         (init 5 |> Tuple.first |> D.succeed)
         (D.field "core" coreDecoder)
+        (D.field "clusters" (D.list clusterDecoder))
         (D.succeed <| Random.Pcg.initialSeed randomSeed)
 
 
@@ -182,6 +184,40 @@ coreDecoder =
     D.map2 CoreDomain
         (D.field "gateway" nodeDecoder)
         (D.maybe <| D.field "infra" nodeDecoder)
+
+
+clusterDecoder : D.Decoder ClusterDomain
+clusterDecoder =
+    D.map3 ClusterDomain
+        (D.field "name" D.string)
+        (D.field "login" nodeDecoder)
+        (D.field "compute"
+            (D.list <| D.map .id primaryGroupDecoder)
+        )
+
+
+primaryGroupDecoder : D.Decoder PrimaryGroup
+primaryGroupDecoder =
+    D.map4 PrimaryGroup
+        (D.at [ "meta", "id" ] uuidDecoder)
+        -- XXX Do rest properly
+        (D.succeed "")
+        (D.succeed (PrimaryGroup.NodesSpecification "" 0 0 0))
+        (D.succeed Set.empty)
+
+
+uuidDecoder : D.Decoder Uuid
+uuidDecoder =
+    D.string
+        |> D.andThen
+            (\uuidString ->
+                case Uuid.fromString uuidString of
+                    Just uuid ->
+                        D.succeed uuid
+
+                    Nothing ->
+                        D.fail "Doesn't look like a valid UUID"
+            )
 
 
 nodeDecoder : D.Decoder Node
