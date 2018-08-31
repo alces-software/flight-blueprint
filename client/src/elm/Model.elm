@@ -85,12 +85,10 @@ encode model =
             ( "core", encodeCore model.core )
 
         clustersField =
-            ( "clusters", E.object clusterEntries )
+            ( "clusters", E.list clusterItems )
 
-        clusterEntries =
-            List.map
-                (\c -> ( c.name, encodeCluster model c ))
-                model.clusters
+        clusterItems =
+            List.map (encodeCluster model) model.clusters
     in
     E.object [ coreField, clustersField ]
 
@@ -116,18 +114,17 @@ encodeCluster model cluster =
             ( "login", encodeNode cluster.login )
 
         computeField =
-            ( "compute", E.object computeGroupFields )
+            ( "compute", E.list computeGroupItems )
 
-        computeGroupFields =
-            List.map
-                (\g -> ( g.name, encodePrimaryGroup g ))
-                groups
+        computeGroupItems =
+            List.map encodePrimaryGroup groups
 
         groups =
             groupsFor model cluster
     in
     E.object
-        [ loginField
+        [ ( "name", E.string cluster.name )
+        , loginField
         , computeField
         ]
 
@@ -135,7 +132,8 @@ encodeCluster model cluster =
 encodePrimaryGroup : PrimaryGroup -> E.Value
 encodePrimaryGroup group =
     E.object
-        [ ( "secondaryGroups"
+        [ ( "name", E.string group.name )
+        , ( "secondaryGroups"
           , Set.toList group.secondaryGroups
                 |> List.map E.string
                 |> E.list
