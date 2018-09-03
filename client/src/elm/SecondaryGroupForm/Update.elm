@@ -1,5 +1,6 @@
 module SecondaryGroupForm.Update exposing (handleSecondaryGroupCreate)
 
+import Blueprint
 import EveryDict exposing (EveryDict)
 import EverySet exposing (EverySet)
 import Maybe.Extra
@@ -13,7 +14,7 @@ handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds 
     let
         memberGroups : List PrimaryGroup
         memberGroups =
-            EverySet.map (Model.groupWithId model) memberGroupIds
+            EverySet.map (Blueprint.groupWithId currentBlueprint) memberGroupIds
                 |> EverySet.toList
                 |> Maybe.Extra.values
 
@@ -21,7 +22,7 @@ handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds 
         newGroups =
             List.foldl
                 updateGroupWithSecondaryGroup
-                model.clusterPrimaryGroups
+                currentBlueprint.clusterPrimaryGroups
                 memberGroups
 
         updateGroupWithSecondaryGroup : PrimaryGroup -> PrimaryGroupsDict -> PrimaryGroupsDict
@@ -30,8 +31,14 @@ handleSecondaryGroupCreate model clusterIndex secondaryGroupName memberGroupIds 
                 group.id
                 (PrimaryGroup.addSecondaryGroup secondaryGroupName group)
                 groups
+
+        { currentBlueprint } =
+            model
     in
     { model
-        | clusterPrimaryGroups = newGroups
+        | currentBlueprint =
+            { currentBlueprint
+                | clusterPrimaryGroups = newGroups
+            }
         , displayedForm = Model.NoForm
     }

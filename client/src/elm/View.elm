@@ -1,5 +1,6 @@
 module View exposing (view)
 
+import Blueprint exposing (CoreDomain)
 import Bootstrap.Modal as Modal
 import ClusterDomain exposing (ClusterDomain)
 import ComputeForm.View
@@ -14,7 +15,7 @@ import Html.Styled.Attributes as Attributes exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
 import List.Extra
 import ModalForm
-import Model exposing (CoreDomain, Model)
+import Model exposing (Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
@@ -45,8 +46,8 @@ view model =
         [ div
             [ css [ Css.property "grid-column-start" "1" ] ]
             (List.concat
-                [ [ viewCore model.core ]
-                , List.indexedMap (viewCluster model) model.clusters
+                [ [ viewCore model.currentBlueprint.core ]
+                , List.indexedMap (viewCluster model) model.currentBlueprint.clusters
                     |> List.concat
                 , [ addClusterButton ]
                 ]
@@ -97,7 +98,7 @@ viewModal model =
                 Model.ComputeForm clusterIndex form ->
                     let
                         maybeCluster =
-                            List.Extra.getAt clusterIndex model.clusters
+                            List.Extra.getAt clusterIndex currentBlueprint.clusters
                     in
                     case maybeCluster of
                         Just cluster ->
@@ -118,7 +119,7 @@ viewModal model =
                             -- XXX DRY up with ComputeForm branch.
                             let
                                 maybeCluster =
-                                    List.Extra.getAt clusterIndex model.clusters
+                                    List.Extra.getAt clusterIndex currentBlueprint.clusters
                             in
                             case maybeCluster of
                                 Just cluster ->
@@ -138,6 +139,9 @@ viewModal model =
                             -- We're at the group selection stage, so do not
                             -- show the modal.
                             hiddenModalTriplet
+
+        { currentBlueprint } =
+            model
 
         hiddenModalTriplet =
             ( Modal.hidden, "", Utils.nothing )
@@ -165,7 +169,7 @@ viewCore core =
         [ -- XXX If decide we want to allow changing `core` name then move this
           -- from `viewCluster` into `viewDomain`, and remove name as just text
           -- here.
-          text Model.coreName
+          text Blueprint.coreName
         , viewNode False coreColor Gateway Nothing core.gateway
         , infraNodeOrButton
         ]
@@ -253,7 +257,13 @@ secondaryGroupSelectionOverlayData : Model -> Maybe ( ClusterDomain, String, Eve
 secondaryGroupSelectionOverlayData model =
     case model.displayedForm of
         Model.SecondaryGroupForm clusterIndex form ->
-            case ( List.Extra.getAt clusterIndex model.clusters, form ) of
+            let
+                currentCluster =
+                    List.Extra.getAt
+                        clusterIndex
+                        model.currentBlueprint.clusters
+            in
+            case ( currentCluster, form ) of
                 ( Just cluster, SecondaryGroupForm.Model.SelectingGroups secondaryGroupName members ) ->
                     Just ( cluster, secondaryGroupName, members )
 

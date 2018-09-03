@@ -7,9 +7,10 @@ module Fixtures
         , uuidFixture
         )
 
+import Blueprint exposing (CoreDomain)
 import ClusterDomain exposing (ClusterDomain)
 import EveryDict
-import Model exposing (CoreDomain, Model)
+import Model exposing (Model)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg

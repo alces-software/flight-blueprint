@@ -1,10 +1,10 @@
-module Fuzzers exposing (group, model)
+module Fuzzers exposing (blueprint, group)
 
+import Blueprint exposing (Blueprint, CoreDomain)
 import ClusterDomain exposing (ClusterDomain)
 import EveryDict
 import Fuzz exposing (Fuzzer)
 import Fuzz.Extra
-import Model exposing (CoreDomain, Model)
 import Node exposing (Node)
 import PrimaryGroup exposing (PrimaryGroup)
 import Random.Pcg
@@ -13,8 +13,8 @@ import Shrink
 import Uuid exposing (Uuid)
 
 
-model : Fuzzer Model
-model =
+blueprint : Fuzzer Blueprint
+blueprint =
     let
         groupsForClustersFuzzer clusters =
             List.concatMap .computeGroupIds clusters
@@ -26,32 +26,24 @@ model =
                     )
                 |> Fuzz.Extra.sequence
 
-        modelWithClustersAndGroupsFuzzer clusters groups =
-            Fuzz.map Model
+        blueprintWithClustersAndGroupsFuzzer clusters groups =
+            Fuzz.map3 Blueprint
                 core
-                |> Fuzz.andMap (Fuzz.constant clusters)
-                |> Fuzz.andMap
-                    (Fuzz.constant
-                        ((List.map (\g -> ( g.id, g ))
-                            >> EveryDict.fromList
-                         )
-                            groups
-                        )
+                (Fuzz.constant clusters)
+                (Fuzz.constant
+                    ((List.map (\g -> ( g.id, g ))
+                        >> EveryDict.fromList
+                     )
+                        groups
                     )
-                |> Fuzz.andMap Fuzz.string
-                |> Fuzz.andMap seed
-                -- XXX Hard-coding this to NoForm is not very random but is easy to do,
-                -- and (for now at least) this shouldn't effect anything where this
-                -- fuzzer is being used. For robustness would be good to make this
-                -- actually random though.
-                |> Fuzz.andMap (Fuzz.constant Model.NoForm)
+                )
     in
     shortList cluster
         |> Fuzz.andThen
             (\clusters ->
                 groupsForClustersFuzzer clusters
                     |> Fuzz.andThen
-                        (modelWithClustersAndGroupsFuzzer clusters)
+                        (blueprintWithClustersAndGroupsFuzzer clusters)
             )
 
 

@@ -17,11 +17,17 @@ suite =
         [ let
             model =
                 { initialModelFixture
-                    | clusters = [ cluster ]
-                    , clusterPrimaryGroups =
-                        EveryDict.fromList
-                            [ ( primaryGroup.id, primaryGroup ) ]
+                    | currentBlueprint =
+                        { currentBlueprint
+                            | clusters = [ cluster ]
+                            , clusterPrimaryGroups =
+                                EveryDict.fromList
+                                    [ ( primaryGroup.id, primaryGroup ) ]
+                        }
                 }
+
+            { currentBlueprint } =
+                initialModelFixture
 
             cluster =
                 { clusterFixture | computeGroupIds = [ primaryGroup.id ] }
@@ -40,12 +46,18 @@ suite =
                     let
                         modelWithGroup =
                             { model
-                                | clusterPrimaryGroups =
-                                    EveryDict.insert
-                                        group.id
-                                        group
-                                        model.clusterPrimaryGroups
+                                | currentBlueprint =
+                                    { currentBlueprint
+                                        | clusterPrimaryGroups =
+                                            EveryDict.insert
+                                                group.id
+                                                group
+                                                currentBlueprint.clusterPrimaryGroups
+                                    }
                             }
+
+                        { currentBlueprint } =
+                            model
                     in
                     Expect.equal
                         (Model.primaryGroupsForCluster modelWithGroup 0)
@@ -61,13 +73,19 @@ suite =
                     let
                         model =
                             { initialModelFixture
-                                | clusters = [ cluster ]
-                                , clusterPrimaryGroups =
-                                    EveryDict.fromList
-                                        [ ( group1.id, group1 )
-                                        , ( group2.id, group2 )
-                                        ]
+                                | currentBlueprint =
+                                    { currentBlueprint
+                                        | clusters = [ cluster ]
+                                        , clusterPrimaryGroups =
+                                            EveryDict.fromList
+                                                [ ( group1.id, group1 )
+                                                , ( group2.id, group2 )
+                                                ]
+                                    }
                             }
+
+                        { currentBlueprint } =
+                            initialModelFixture
 
                         cluster =
                             { clusterFixture
@@ -82,51 +100,5 @@ suite =
                                     group1.secondaryGroups
                                     group2.secondaryGroups
                         )
-            ]
-        , let
-            modelDecodeTest description expectation =
-                fuzz Fuzzers.model description <|
-                    \model ->
-                        case encodeAndDecode model of
-                            Ok decodedModel ->
-                                expectation model decodedModel
-
-                            Err message ->
-                                Expect.fail <| "Decoding model failed: " ++ message
-
-            encodeAndDecode =
-                Model.encode
-                    >> D.decodeValue (Model.decoder passedInSeed)
-
-            passedInSeed =
-                42
-          in
-          describe "encoding and decoding"
-            [ modelDecodeTest "gives same `core`"
-                (\model decodedModel ->
-                    Expect.equal model.core decodedModel.core
-                )
-            , modelDecodeTest "gives same `clusters`"
-                (\model decodedModel ->
-                    Expect.equal model.clusters decodedModel.clusters
-                )
-            , modelDecodeTest "gives same `clusterPrimaryGroups`"
-                (\model decodedModel ->
-                    Expect.equal
-                        model.clusterPrimaryGroups
-                        decodedModel.clusterPrimaryGroups
-                )
-            , modelDecodeTest "gives consistent, default app state fields"
-                (\_ decodedModel ->
-                    Expect.equal
-                        ( decodedModel.exportedYaml, decodedModel.displayedForm )
-                        ( "", Model.NoForm )
-                )
-            , modelDecodeTest "creates seed using value passed to decoder"
-                (\_ decodedModel ->
-                    Expect.equal
-                        decodedModel.randomSeed
-                        (Random.Pcg.initialSeed passedInSeed)
-                )
             ]
         ]

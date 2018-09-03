@@ -38,20 +38,32 @@ update msg model =
 
 updateInterfaceState : Msg -> Model -> Model
 updateInterfaceState msg model =
+    let
+        { currentBlueprint } =
+            model
+    in
     case msg of
         AddCluster ->
             let
                 newClusters =
                     List.concat
-                        [ model.clusters
-                        , [ ClusterDomain.nextCluster model.clusters ]
+                        [ currentBlueprint.clusters
+                        , [ ClusterDomain.nextCluster currentBlueprint.clusters ]
                         ]
             in
-            { model | clusters = newClusters }
+            { model
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusters = newClusters
+                    }
+            }
 
         RemoveCluster clusterIndex ->
             { model
-                | clusters = List.Extra.removeAt clusterIndex model.clusters
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusters = List.Extra.removeAt clusterIndex currentBlueprint.clusters
+                    }
             }
 
         AddInfra ->
@@ -69,7 +81,7 @@ updateInterfaceState msg model =
             -- model.
             let
                 { core, clusters } =
-                    model
+                    currentBlueprint
 
                 newNode =
                     Node name
@@ -80,7 +92,12 @@ updateInterfaceState msg model =
                         newCore =
                             { core | gateway = newNode }
                     in
-                    { model | core = newCore }
+                    { model
+                        | currentBlueprint =
+                            { currentBlueprint
+                                | core = newCore
+                            }
+                    }
 
                 Infra ->
                     let
@@ -92,7 +109,12 @@ updateInterfaceState msg model =
                                 Nothing ->
                                     core
                     in
-                    { model | core = newCore }
+                    { model
+                        | currentBlueprint =
+                            { currentBlueprint
+                                | core = newCore
+                            }
+                    }
 
                 Login clusterIndex ->
                     let
@@ -105,7 +127,12 @@ updateInterfaceState msg model =
                         changeClusterLogin cluster =
                             { cluster | login = newNode }
                     in
-                    { model | clusters = newClusters }
+                    { model
+                        | currentBlueprint =
+                            { currentBlueprint
+                                | clusters = newClusters
+                            }
+                    }
 
                 Compute ->
                     -- XXX Handle compute better
@@ -117,9 +144,14 @@ updateInterfaceState msg model =
                     List.Extra.updateAt
                         clusterIndex
                         (\c -> { c | name = name })
-                        model.clusters
+                        currentBlueprint.clusters
             in
-            { model | clusters = newClusters }
+            { model
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusters = newClusters
+                    }
+            }
 
         StartAddingComputeGroup clusterIndex ->
             let
@@ -194,9 +226,14 @@ updateInterfaceState msg model =
                 -- being referenced at all' case. XXX See if this causes
                 -- problems and if I still think the same in future.
                 newGroups =
-                    EveryDict.remove groupId model.clusterPrimaryGroups
+                    EveryDict.remove groupId currentBlueprint.clusterPrimaryGroups
             in
-            { model | clusterPrimaryGroups = newGroups }
+            { model
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusterPrimaryGroups = newGroups
+                    }
+            }
 
         StartCreatingSecondaryGroup clusterIndex ->
             { model
@@ -288,13 +325,21 @@ updateInterfaceState msg model =
 changeInfra : Model -> Maybe Node -> Model
 changeInfra model infra =
     let
+        { currentBlueprint } =
+            model
+
         newCore =
             { currentCore | infra = infra }
 
         currentCore =
-            model.core
+            currentBlueprint.core
     in
-    { model | core = newCore }
+    { model
+        | currentBlueprint =
+            { currentBlueprint
+                | core = newCore
+            }
+    }
 
 
 changeSecondaryGroupMembers : Model -> (EverySet Uuid -> EverySet Uuid) -> Model

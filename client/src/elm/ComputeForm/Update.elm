@@ -23,13 +23,13 @@ handleSuccessfulComputeFormSubmit : Model -> Int -> PrimaryGroup -> Model
 handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
     let
         currentCluster =
-            List.Extra.getAt clusterIndex model.clusters
+            List.Extra.getAt clusterIndex currentBlueprint.clusters
 
         newClusters =
             List.Extra.updateAt
                 clusterIndex
                 addGroupId
-                model.clusters
+                currentBlueprint.clusters
 
         addGroupId cluster =
             { cluster
@@ -41,11 +41,17 @@ handleSuccessfulComputeFormSubmit model clusterIndex newGroup =
             EveryDict.insert
                 newGroup.id
                 newGroup
-                model.clusterPrimaryGroups
+                currentBlueprint.clusterPrimaryGroups
+
+        { currentBlueprint } =
+            model
     in
     { model
-        | clusters = newClusters
-        , clusterPrimaryGroups = newGroups
+        | currentBlueprint =
+            { currentBlueprint
+                | clusters = newClusters
+                , clusterPrimaryGroups = newGroups
+            }
         , displayedForm = Model.NoForm
     }
 
