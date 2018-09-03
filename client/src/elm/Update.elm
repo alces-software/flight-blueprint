@@ -8,7 +8,7 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Forms
 import List.Extra
-import Model exposing (CoreDomain, Model)
+import Model exposing (Model)
 import Msg exposing (..)
 import Node exposing (Node)
 import Random.Pcg
