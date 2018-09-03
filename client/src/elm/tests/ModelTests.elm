@@ -110,6 +110,12 @@ suite =
                 (\model decodedModel ->
                     Expect.equal model.clusters decodedModel.clusters
                 )
+            , modelDecodeTest "gives same `clusterPrimaryGroups`"
+                (\model decodedModel ->
+                    Expect.equal
+                        model.clusterPrimaryGroups
+                        decodedModel.clusterPrimaryGroups
+                )
             , modelDecodeTest "gives consistent, default app state fields"
                 (\_ decodedModel ->
                     Expect.equal

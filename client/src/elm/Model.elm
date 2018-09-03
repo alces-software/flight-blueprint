@@ -164,18 +164,34 @@ encodeNode node =
 
 decoder : Int -> D.Decoder Model
 decoder randomSeed =
-    D.map4
-        (\initModel core clusters seed ->
+    let
+        clusterPrimaryGroupsDecoder =
+            D.list (D.field "compute" (D.list primaryGroupDecoder))
+                |> D.map
+                    (List.concat
+                        >> List.map (\pg -> ( pg.id, pg ))
+                        >> EveryDict.fromList
+                    )
+    in
+    D.map5
+        (\initModel core clusters primaryGroups seed ->
             { initModel
                 | core = core
                 , clusters = clusters
+                , clusterPrimaryGroups = primaryGroups
                 , randomSeed = seed
             }
         )
         -- XXX Remove use of `init` once decoding full model.
         (init 5 |> Tuple.first |> D.succeed)
         (D.field "core" coreDecoder)
+        -- Decode `clusters` field in two ways, once for the clusters
+        -- themselves and once for the cluster primary groups. Might be
+        -- marginally more efficient to decode the primary groups once and
+        -- reuse these in both places, but that doesn't really matter and this
+        -- way should be more flexible to future changes.
         (D.field "clusters" (D.list clusterDecoder))
+        (D.field "clusters" clusterPrimaryGroupsDecoder)
         (D.succeed <| Random.Pcg.initialSeed randomSeed)
 
 
@@ -200,10 +216,11 @@ primaryGroupDecoder : D.Decoder PrimaryGroup
 primaryGroupDecoder =
     D.map4 PrimaryGroup
         (D.at [ "meta", "id" ] uuidDecoder)
-        -- XXX Do rest properly
-        (D.succeed "")
-        (D.succeed (PrimaryGroup.NodesSpecification "" 0 0 0))
-        (D.succeed Set.empty)
+        (D.field "name" D.string)
+        (D.at [ "meta", "nodes" ] nodesSpecificationDecoder)
+        (D.field "secondaryGroups"
+            (D.list D.string |> D.map Set.fromList)
+        )
 
 
 uuidDecoder : D.Decoder Uuid
@@ -218,6 +235,15 @@ uuidDecoder =
                     Nothing ->
                         D.fail "Doesn't look like a valid UUID"
             )
+
+
+nodesSpecificationDecoder : D.Decoder PrimaryGroup.NodesSpecification
+nodesSpecificationDecoder =
+    D.map4 PrimaryGroup.NodesSpecification
+        (D.field "base" D.string)
+        (D.field "startIndex" D.int)
+        (D.field "size" D.int)
+        (D.field "indexPadding" D.int)
 
 
 nodeDecoder : D.Decoder Node
