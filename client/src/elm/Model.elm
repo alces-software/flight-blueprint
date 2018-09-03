@@ -30,6 +30,19 @@ type alias Model =
     , exportedYaml : String
     , randomSeed : Seed
     , displayedForm : DisplayedForm
+    , currentUser : FlightUser
+    }
+
+
+type alias FlightUser =
+    { email : String
+
+    -- XXX Actually a Unix epoch timestamp, maybe should decode this.
+    , exp : String
+
+    -- XXX Actually a UUID, maybe should decode this.
+    , flightId : String
+    , username : String
     }
 
 

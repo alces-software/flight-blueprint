@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactElmComponent from 'react-elm-components';
 import yaml from 'js-yaml';
+import {auth} from 'flight-reactware';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
 import {Main as ElmApp} from '../elm/Main.elm';
 
@@ -26,4 +29,9 @@ const ElmAppComponent = (props) => {
   );
 };
 
-export default ElmAppComponent;
+export default connect(
+  createStructuredSelector({
+    currentUser: auth.selectors.currentUserSelector,
+    ssoToken: auth.selectors.ssoToken,
+  }),
+)(ElmAppComponent);
