@@ -11,7 +11,7 @@
     "compression": "^1.6.2",
     "elm-webpack-loader": "^4.5.0",
     "express": "^4.15.3",
-    "flight-reactware": "https://s3-eu-west-1.amazonaws.com/alces-flight/FlightReactware/0.1.54/flight-reactware.tgz",
+    "flight-reactware": "https://s3-eu-west-1.amazonaws.com/alces-flight/FlightReactware/0.1.56/flight-reactware.tgz",
     "history": "^4.6.1",
     "ignore-styles": "^5.0.1",
     "morgan": "^1.8.2",
