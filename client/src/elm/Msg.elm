@@ -24,7 +24,7 @@ type Msg
     | AddGroupToSecondaryGroup Uuid
     | RemoveGroupFromSecondaryGroup Uuid
     | CreateSecondaryGroup
-    | SetPrimaryGroupName Uuid String
+    | SetPrimaryGroupName Uuid Int String
 
 
 type NodeSpecifier
