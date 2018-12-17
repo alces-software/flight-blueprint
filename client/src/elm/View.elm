@@ -363,10 +363,17 @@ viewPrimaryGroup model clusterIsFocused color group =
         nodes =
             PrimaryGroup.nodes group
 
+        groupNameInput =
+            nameInput
+                clusterIsFocused
+                color
+                group
+                (SetPrimaryGroupName group.id)
+
         children =
             List.concat
                 [ [ div []
-                        [ text group.name
+                        [ groupNameInput
                         , removeButton clusterIsFocused <|
                             RemoveComputeGroup group.id
                         ]

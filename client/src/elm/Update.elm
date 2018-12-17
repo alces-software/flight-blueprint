@@ -8,6 +8,7 @@ import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Forms
 import List.Extra
+import Maybe
 import Model exposing (Model)
 import Msg exposing (..)
 import Node exposing (Node)
@@ -137,6 +138,21 @@ updateInterfaceState msg model =
                 Compute ->
                     -- XXX Handle compute better
                     model
+
+        SetPrimaryGroupName groupId name ->
+            let
+                newPrimaryGroups =
+                    EveryDict.update
+                        groupId
+                        (Maybe.map (\g -> { g | name = name }))
+                        currentBlueprint.clusterPrimaryGroups
+            in
+            { model
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusterPrimaryGroups = newPrimaryGroups
+                    }
+            }
 
         SetClusterName clusterIndex name ->
             let
