@@ -224,7 +224,7 @@ viewCluster model clusterIndex cluster =
 
         primaryGroups =
             Model.primaryGroupsForCluster model clusterIndex
-                |> List.map (viewPrimaryGroup model isFocusedCluster color)
+                |> List.map (viewPrimaryGroup model isFocusedCluster color clusterIndex)
 
         addComputeButton_ =
             addComputeButton isFocusedCluster clusterIndex
@@ -357,16 +357,23 @@ startGroupingButton disabled color clusterIndex =
         (StartCreatingSecondaryGroup clusterIndex)
 
 
-viewPrimaryGroup : Model -> Bool -> Color -> PrimaryGroup -> Html Msg
-viewPrimaryGroup model clusterIsFocused color group =
+viewPrimaryGroup : Model -> Bool -> Color -> Int -> PrimaryGroup -> Html Msg
+viewPrimaryGroup model clusterIsFocused color clusterIndex group =
     let
         nodes =
             PrimaryGroup.nodes group
 
+        groupNameInput =
+            nameInput
+                clusterIsFocused
+                color
+                group
+                (SetPrimaryGroupName group.id clusterIndex)
+
         children =
             List.concat
                 [ [ div []
-                        [ text group.name
+                        [ groupNameInput
                         , removeButton clusterIsFocused <|
                             RemoveComputeGroup group.id
                         ]

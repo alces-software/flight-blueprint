@@ -7,7 +7,9 @@ import EverySet exposing (EverySet)
 import Form exposing (Form)
 import Form.Field as Field exposing (Field)
 import Forms
+import Forms.Validations as Validations
 import List.Extra
+import Maybe
 import Model exposing (Model)
 import Msg exposing (..)
 import Node exposing (Node)
@@ -137,6 +139,50 @@ updateInterfaceState msg model =
                 Compute ->
                     -- XXX Handle compute better
                     model
+
+        SetPrimaryGroupName groupId clusterIndex name ->
+            let
+                updateFn maybeGroup =
+                    case maybeGroup of
+                        Nothing ->
+                            Nothing
+
+                        Just group ->
+                            let
+                                primaryGroups =
+                                    Model.primaryGroupsForCluster model clusterIndex
+
+                                secondaryGroups =
+                                    Model.secondaryGroupsForCluster model clusterIndex
+
+                                stringField =
+                                    Field.string name
+
+                                validationResult =
+                                    Validations.validateGroupName
+                                        primaryGroups
+                                        secondaryGroups
+                                        stringField
+                            in
+                            case validationResult of
+                                Ok name ->
+                                    Just { group | name = name }
+
+                                Err error ->
+                                    Just group
+
+                newPrimaryGroups =
+                    EveryDict.update
+                        groupId
+                        updateFn
+                        currentBlueprint.clusterPrimaryGroups
+            in
+            { model
+                | currentBlueprint =
+                    { currentBlueprint
+                        | clusterPrimaryGroups = newPrimaryGroups
+                    }
+            }
 
         SetClusterName clusterIndex name ->
             let
